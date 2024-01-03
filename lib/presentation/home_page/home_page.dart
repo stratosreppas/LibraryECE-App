@@ -6,6 +6,7 @@ import 'package:stratos_s_application3/widgets/app_bar/appbar_image.dart';
 import 'package:stratos_s_application3/widgets/app_bar/appbar_title.dart';
 import 'package:stratos_s_application3/widgets/app_bar/appbar_trailing_image.dart';
 import 'package:stratos_s_application3/widgets/app_bar/custom_app_bar.dart';
+import 'package:stratos_s_application3/widgets/custom_sidebar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
+            drawer: SideBar(),
             appBar: _buildAppBar(context),
             body: Container(
                 width: double.maxFinite,

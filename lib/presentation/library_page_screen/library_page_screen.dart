@@ -2,6 +2,7 @@ import '../library_page_screen/widgets/booklist_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/presentation/home_page/home_page.dart';
+import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
 import 'package:stratos_s_application3/presentation/notifications_page/notifications_page.dart';
 import 'package:stratos_s_application3/widgets/app_bar/appbar_image.dart';
 import 'package:stratos_s_application3/widgets/app_bar/appbar_title.dart';
@@ -9,6 +10,9 @@ import 'package:stratos_s_application3/widgets/app_bar/appbar_trailing_image.dar
 import 'package:stratos_s_application3/widgets/app_bar/custom_app_bar.dart';
 import 'package:stratos_s_application3/widgets/custom_bottom_bar.dart';
 import 'package:stratos_s_application3/widgets/custom_drop_down.dart';
+import 'package:stratos_s_application3/widgets/custom_sidebar.dart';
+import 'package:stratos_s_application3/widgets/custom_appbar.dart';
+
 import 'package:stratos_s_application3/widgets/custom_search_view.dart';
 
 // ignore_for_file: must_be_immutable
@@ -26,9 +30,7 @@ class LibraryPageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: _buildAppBar(context),
+        child: AppTemplate(
             body: SizedBox(
                 width: double.maxFinite,
                 child: Column(children: [
@@ -49,8 +51,7 @@ class LibraryPageScreen extends StatelessWidget {
                                 SizedBox(height: 21.v),
                                 _buildBookList(context)
                               ]))))
-                ])),
-            bottomNavigationBar: _buildBottomBar(context)));
+                ]))));
   }
 
   /// Section Widget
@@ -70,13 +71,7 @@ class LibraryPageScreen extends StatelessWidget {
                       decoration: AppDecoration.fillOnPrimary.copyWith(
                           borderRadius: BorderRadiusStyle.circleBorder15),
                       child: AppbarImage(imagePath: ImageConstant.imgImage1)))
-            ])),
-        actions: [
-          AppbarTrailingImage(
-              imagePath: ImageConstant.imgMegaphone,
-              margin: EdgeInsets.symmetric(horizontal: 5.h, vertical: 7.v))
-        ],
-        styleType: Style.bgFill);
+            ])));
   }
 
   /// Section Widget

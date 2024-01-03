@@ -24,6 +24,8 @@ import 'package:stratos_s_application3/presentation/app_navigation_screen/app_na
 class AppRoutes {
   static const String bootPageScreen = '/boot_page_screen';
 
+  static const String templatePage = '/app_template.dart';
+
   static const String informationPageScreen = '/information_page_screen';
 
   static const String faqsPageScreen = '/faqs_page_screen';
