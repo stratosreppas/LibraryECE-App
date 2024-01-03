@@ -19,7 +19,7 @@ class CustomDropDown extends StatelessWidget {
     this.suffixConstraints,
     this.contentPadding,
     this.borderDecoration,
-    this.fillColor,
+    this.fillColor = Colors.white,
     this.filled = true,
     this.validator,
     this.onChanged,

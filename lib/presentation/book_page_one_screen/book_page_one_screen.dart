@@ -74,8 +74,7 @@ class BookPageOneScreen extends StatelessWidget {
                       width: 340.h,
                       decoration:
                           BoxDecoration(color: theme.colorScheme.primary))
-                ])),
-            bottomNavigationBar: _buildBottomBar(context)));
+                ]))));
   }
 
   /// Section Widget
@@ -229,13 +228,6 @@ class BookPageOneScreen extends StatelessWidget {
             ]));
   }
 
-  /// Section Widget
-  Widget _buildBottomBar(BuildContext context) {
-    return CustomBottomBar(onChanged: (BottomBarEnum type) {
-      Navigator.pushNamed(navigatorKey.currentContext!, getCurrentRoute(type));
-    });
-  }
-
   /// Common widget
   Widget _buildExtendableRich2(BuildContext context) {
     return Container(
@@ -253,34 +245,6 @@ class BookPageOneScreen extends StatelessWidget {
               SizedBox(height: 7.v),
               Text("Συμμετρία", style: theme.textTheme.bodyMedium)
             ]));
-  }
-
-  ///Handling route based on bottom click actions
-  String getCurrentRoute(BottomBarEnum type) {
-    switch (type) {
-      case BottomBarEnum.Home:
-        return AppRoutes.homePage;
-      case BottomBarEnum.Library:
-        return "/";
-      case BottomBarEnum.Notifications:
-        return "/";
-      case BottomBarEnum.Profile:
-        return AppRoutes.notificationsPage;
-      default:
-        return "/";
-    }
-  }
-
-  ///Handling page based on route
-  Widget getCurrentPage(String currentRoute) {
-    switch (currentRoute) {
-      case AppRoutes.homePage:
-        return HomePage();
-      case AppRoutes.notificationsPage:
-        return NotificationsPage();
-      default:
-        return DefaultWidget();
-    }
   }
 
   /// Navigates to the locationPageScreen when the action is triggered.

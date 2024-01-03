@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 
-// ignore: must_be_immutable
 class BookItemWidget extends StatelessWidget {
-  BookItemWidget({
+  const BookItemWidget({
     Key? key,
-    this.onTapImgOperatingSystemImage,
-  }) : super(
-          key: key,
-        );
+    required this.onTapImgOperatingSystemImage,
+  }) : super(key: key);
 
-  VoidCallback? onTapImgOperatingSystemImage;
+  final VoidCallback onTapImgOperatingSystemImage;
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +22,14 @@ class BookItemWidget extends StatelessWidget {
             imagePath: ImageConstant.imgRectangle21115x75,
             height: 115.v,
             width: 75.h,
-            radius: BorderRadius.circular(
-              3.h,
-            ),
+            radius: BorderRadius.circular(3.h),
             alignment: Alignment.center,
-            onTap: () {
-              onTapImgOperatingSystemImage!.call();
-            },
+            onTap: onTapImgOperatingSystemImage,
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
             child: Container(
               padding: EdgeInsets.symmetric(
                 horizontal: 11.h,
@@ -45,8 +40,7 @@ class BookItemWidget extends StatelessWidget {
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: 1.v),
                   SizedBox(

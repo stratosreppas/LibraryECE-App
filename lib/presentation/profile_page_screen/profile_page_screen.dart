@@ -30,8 +30,7 @@ class ProfilePageScreen extends StatelessWidget {
                   _buildRichTooltipGrid(context),
                   SizedBox(height: 16.v),
                   _buildLoanComponentColumn(context)
-                ])),
-            bottomNavigationBar: _buildBottomBar(context)));
+                ]))));
   }
 
   /// Section Widget
@@ -99,41 +98,6 @@ class ProfilePageScreen extends StatelessWidget {
             });
           })
     ]);
-  }
-
-  /// Section Widget
-  Widget _buildBottomBar(BuildContext context) {
-    return CustomBottomBar(onChanged: (BottomBarEnum type) {
-      Navigator.pushNamed(navigatorKey.currentContext!, getCurrentRoute(type));
-    });
-  }
-
-  ///Handling route based on bottom click actions
-  String getCurrentRoute(BottomBarEnum type) {
-    switch (type) {
-      case BottomBarEnum.Home:
-        return AppRoutes.homePage;
-      case BottomBarEnum.Library:
-        return "/";
-      case BottomBarEnum.Notifications:
-        return "/";
-      case BottomBarEnum.Profile:
-        return AppRoutes.notificationsPage;
-      default:
-        return "/";
-    }
-  }
-
-  ///Handling page based on route
-  Widget getCurrentPage(String currentRoute) {
-    switch (currentRoute) {
-      case AppRoutes.homePage:
-        return HomePage();
-      case AppRoutes.notificationsPage:
-        return NotificationsPage();
-      default:
-        return DefaultWidget();
-    }
   }
 
   /// Navigates to the bookPageThreeScreen when the action is triggered.

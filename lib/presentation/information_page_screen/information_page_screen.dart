@@ -150,3 +150,5 @@ class InformationPageScreen extends StatelessWidget {
     Navigator.pop(context);
   }
 }
+
+

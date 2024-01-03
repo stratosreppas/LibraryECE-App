@@ -40,7 +40,7 @@ class LibraryPageScreen extends StatelessWidget {
                               child: Column(children: [
                                 Padding(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 24.h),
+                                    EdgeInsets.symmetric(horizontal: 24.h),
                                     child: CustomSearchView(
                                         controller: searchController,
                                         hintText: "  Αναζητήστε εδώ")),
@@ -92,14 +92,14 @@ class LibraryPageScreen extends StatelessWidget {
                           margin: EdgeInsets.fromLTRB(30.h, 7.v, 10.h, 7.v),
                           child: CustomImageView(
                               imagePath:
-                                  ImageConstant.imgArrowdownBlueGray10024x24,
+                              ImageConstant.imgArrowdownBlueGray10024x24,
                               height: 24.adaptSize,
                               width: 24.adaptSize)),
                       hintText: "Εξάμηνα",
                       hintStyle: theme.textTheme.bodyLarge!,
                       items: dropdownItemList,
                       contentPadding:
-                          EdgeInsets.only(left: 30.h, top: 9.v, bottom: 9.v),
+                      EdgeInsets.only(left: 30.h, top: 9.v, bottom: 9.v),
                       borderDecoration: DropDownStyleHelper.outlineBlack,
                       onChanged: (value) {}))),
           Expanded(
@@ -116,7 +116,7 @@ class LibraryPageScreen extends StatelessWidget {
                       hintStyle: theme.textTheme.bodyLarge!,
                       items: dropdownItemList1,
                       contentPadding:
-                          EdgeInsets.only(left: 19.h, top: 9.v, bottom: 9.v),
+                      EdgeInsets.only(left: 19.h, top: 9.v, bottom: 9.v),
                       borderDecoration: DropDownStyleHelper.outlineBlack,
                       onChanged: (value) {})))
         ]));

@@ -1,7 +1,7 @@
 name: stratos_s_application3
 description: A new Flutter project.
 version: 1.0.0+1
-environment: 
+environment:
   sdk: '>=2.12.0 <3.0.0'
 dependencies: 
   flutter: 
