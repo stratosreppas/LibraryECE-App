@@ -17,7 +17,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget{
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Image.asset(
-              'assets/images/img_ntua_logo.png',
+              'assets/images/image_logo.png',
               width: 30, // Adjust the size as needed
               height: 30,
             ),
@@ -27,7 +27,7 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget{
             'ECE Library',
             style: TextStyle(
               fontFamily: 'Lexend', // Use Lexend font
-              fontSize: 20,
+              fontSize: 12,
               fontWeight: FontWeight.bold,
               shadows: [
                 Shadow(
