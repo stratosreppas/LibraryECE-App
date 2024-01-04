@@ -19,35 +19,44 @@ class NotificationsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: AppTemplate(
-        body: Padding(
-          padding: EdgeInsets.only(
-            left: 5.h,
-            top: 19.v,
-            right: 5.h,
-          ),
-          child: ListView.separated(
-            physics: BouncingScrollPhysics(),
-            shrinkWrap: true,
-            separatorBuilder: (
-              context,
-              index,
-            ) {
-              return SizedBox(
-                height: 14.v,
-              );
-            },
-            itemCount: 6,
-            itemBuilder: (context, index) {
-              return NotificationlistItemWidget();
-            },
-          ),
-        ),
-        initialIndex: 2,
+    return
+      WillPopScope(
+          onWillPop: () async {
+            // Pop all routes until reaching the home page
+            Navigator.popUntil(context, ModalRoute.withName(AppRoutes.homePage));
 
-      ),
-    );
+            return false;
+          }, // Prevent default behavior (popping the current route)
+        child: SafeArea(
+        child: AppTemplate(
+          body: Padding(
+            padding: EdgeInsets.only(
+              left: 5.h,
+              top: 19.v,
+              right: 5.h,
+            ),
+            child: ListView.separated(
+              physics: BouncingScrollPhysics(),
+              shrinkWrap: true,
+              separatorBuilder: (
+                context,
+                index,
+              ) {
+                return SizedBox(
+                  height: 14.v,
+                );
+              },
+              itemCount: 6,
+              itemBuilder: (context, index) {
+                return NotificationlistItemWidget();
+              },
+            ),
+          ),
+          initialIndex: 2,
+
+        ),
+            ),
+      );
   }
 
   /// Section Widget

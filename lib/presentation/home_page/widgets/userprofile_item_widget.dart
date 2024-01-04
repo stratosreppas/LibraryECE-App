@@ -16,7 +16,8 @@ class UserprofileItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(1.h, 6.v, 5.h, 6.v),
-      decoration: AppDecoration.outlineOnPrimaryContainer,
+      decoration: AppDecoration.outlineOnPrimaryContainer.copyWith(
+          borderRadius: BorderRadius.circular(10.h)), // Added rounded corners
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

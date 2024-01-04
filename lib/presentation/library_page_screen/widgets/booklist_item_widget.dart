@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
+import 'book.dart';
 
-// ignore: must_be_immutable
 class BooklistItemWidget extends StatelessWidget {
   BooklistItemWidget({
     Key? key,
     this.onTapImgImage,
-  }) : super(
-    key: key,
-  );
+  }) : super(key: key);
 
-  VoidCallback? onTapImgImage;
+  final VoidCallback? onTapImgImage;
 
   @override
   Widget build(BuildContext context) {
@@ -41,50 +39,21 @@ class BooklistItemWidget extends StatelessWidget {
             decoration: AppDecoration.fillPrimary.copyWith(
               borderRadius: BorderRadiusStyle.roundedBorder10,
             ),
-            child: Row(
-              children: [
-                Container(
-                  height: 170.v,
-                  width: 120.h,
-                  margin: EdgeInsets.only(bottom: 2.v),
-                  child: Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      CustomImageView(
-                        imagePath: ImageConstant.imgRectangle21170x120,
-                        height: 170.v,
-                        width: 120.h,
-                        radius: BorderRadius.circular(
-                          3.h,
-                        ),
-                        alignment: Alignment.center,
-                        onTap: () {
-                          onTapImgImage!.call();
-                        },
-                      ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 5.v),
-                          decoration: AppDecoration.fillBlueGray.copyWith(
-                            borderRadius: BorderRadiusStyle.customBorderBL5,
-                          ),
-                          child: SizedBox(
-                            width: 120.h,
-                            child: Text(
-                              "ΠΡΟΓΡΑΜΜΑΤΙΣΜΟΣ ΣΕ UNIX",
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: theme.textTheme.labelMedium,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: List.generate(
+                  6,
+                      (index) => Container(
+                    margin: EdgeInsets.only(right: 8.h), // Adjust the margin as needed
+                    child: BookWidget(
+                      onTap: () {
+                        onTapImgImage?.call();
+                      },
+                    ),
                   ),
                 ),
-              ],
+              ),
             ),
           ),
           SizedBox(height: 2.v),

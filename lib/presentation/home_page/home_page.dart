@@ -34,68 +34,45 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: AppTemplate(
-            body: Container(
-                width: double.maxFinite,
-                padding: EdgeInsets.symmetric(horizontal: 11.h, vertical: 20.v),
-                child: Column(children: [
-                  SizedBox(height: 7.v),
-                  Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.h, vertical: 7.v),
-                      decoration: AppDecoration.fillPrimary.copyWith(
-                          borderRadius: BorderRadiusStyle.roundedBorder10),
-                      child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            SizedBox(height: 12.v),
-                            _buildProgressBar(context),
-                            SizedBox(height: 15.v),
-                            _buildCurrentLoans(context)
-                          ])),
-                  SizedBox(height: 13.v),
-                  _buildFavouriteBooks(context)
-                ]))));
-  }
-
-  /// Section Widget
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return CustomAppBar(
-        title: SizedBox(
-            height: 30.v,
-            width: 199.h,
-            child: Stack(alignment: Alignment.centerLeft, children: [
-              AppbarTitle(
-                  text: "ECE Library",
-                  margin: EdgeInsets.only(top: 3.v, bottom: 12.v)),
-              Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                      margin: EdgeInsets.only(left: 9.h, right: 160.h),
-                      decoration: AppDecoration.fillOnPrimary.copyWith(
-                          borderRadius: BorderRadiusStyle.circleBorder15),
-                      child: AppbarImage(imagePath: ImageConstant.imgImage1)))
-            ])),
-        actions: [
-          AppbarTrailingImage(
-              imagePath: ImageConstant.imgMegaphone,
-              margin: EdgeInsets.symmetric(horizontal: 5.h, vertical: 7.v))
-        ],
-        styleType: Style.bgFill);
+            body:
+            SingleChildScrollView(
+              child: Container(
+                  width: double.maxFinite,
+                  padding: EdgeInsets.symmetric(horizontal: 11.h, vertical: 2.v),
+                  child: Column(children: [
+                    SizedBox(height: 7.v),
+                    Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8.h, vertical: 7.v),
+                        decoration: AppDecoration.fillPrimary.copyWith(
+                            borderRadius: BorderRadiusStyle.roundedBorder10),
+                        child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              SizedBox(height: 12.v),
+                              _buildProgressBar(context),
+                              SizedBox(height: 15.v),
+                              _buildCurrentLoans(context)
+                            ])),
+                    SizedBox(height: 5.v),
+                    _buildFavouriteBooks(context)
+                  ])),
+            )));
   }
 
   /// Section Widget
   Widget _buildProgressBar(BuildContext context) {
     return SizedBox(
-        height: 149.v,
+        height: 144.v,
         width: 304.h,
         child: Stack(alignment: Alignment.bottomRight, children: [
           Align(
               alignment: Alignment.topRight,
               child: Container(
                   width: 132.h,
-                  margin: EdgeInsets.only(top: 5.v),
+                  margin: EdgeInsets.only(top: 5.v, right: 30.h),
                   child: Text("ΚΩΣΤΑΣ ΠΑΠΑΔΟΠΟΥΛΟΣ",
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -104,8 +81,8 @@ class HomePage extends StatelessWidget {
           Align(
               alignment: Alignment.bottomRight,
               child: Container(
-                  margin: EdgeInsets.only(right: 8.h),
-                  padding: EdgeInsets.symmetric(horizontal: 6.h, vertical: 9.v),
+                  margin: EdgeInsets.only(right: 8.h, top: 1.v),
+                  padding: EdgeInsets.symmetric(horizontal: 6.h, vertical: 6.v),
                   decoration: AppDecoration.fillRed900.copyWith(
                       borderRadius: BorderRadiusStyle.roundedBorder10),
                   child: Column(
@@ -155,7 +132,7 @@ class HomePage extends StatelessWidget {
                                   value: 0.5,
                                   backgroundColor: appTheme.gray60001,
                                   color: appTheme.green900,
-                                  strokeWidth: 2.h))),
+                                  strokeWidth: 6.h))),
                       Align(
                           alignment: Alignment.center,
                           child: SizedBox(
@@ -165,7 +142,7 @@ class HomePage extends StatelessWidget {
                                   value: 0.5,
                                   backgroundColor: appTheme.gray500,
                                   color: appTheme.lime800,
-                                  strokeWidth: 2.h))),
+                                  strokeWidth: 6.h))),
                       Align(
                           alignment: Alignment.center,
                           child: SizedBox(
@@ -175,7 +152,7 @@ class HomePage extends StatelessWidget {
                                   value: 0.5,
                                   backgroundColor: appTheme.blueGray100,
                                   color: theme.colorScheme.onPrimaryContainer,
-                                  strokeWidth: 2.h)))
+                                  strokeWidth: 6.h)))
                     ])),
                 Padding(
                     padding: EdgeInsets.only(left: 8.h, top: 67.v),
@@ -244,7 +221,7 @@ class HomePage extends StatelessWidget {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     separatorBuilder: (context, index) {
-                      return SizedBox(height: 17.v);
+                      return SizedBox(height: 12.v);
                     },
                     itemCount: 3,
                     itemBuilder: (context, index) {

@@ -13,7 +13,7 @@ class RichtooltipgridItemWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: 15.h,
-        vertical: 14.v,
+        vertical: 10.v,
       ),
       decoration: AppDecoration.outlineBlack9001.copyWith(
         borderRadius: BorderRadiusStyle.roundedBorder10,

@@ -145,7 +145,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
 
   /// Navigates to the homePageContainerScreen when the action is triggered.
   onTapLogin(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.homePageContainerScreen);
+    Navigator.pushNamed(context, AppRoutes.homePage);
   }
 
   /// Navigates to the signupPageScreen when the action is triggered.

@@ -20,48 +20,31 @@ class ProfilePageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: AppTemplate(
-            body: Container(
-                width: double.maxFinite,
-                padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 6.v),
-                child: Column(children: [
-                  SizedBox(height: 8.v),
-                  _buildRichTooltipGrid(context),
-                  SizedBox(height: 16.v),
-                  _buildLoanComponentColumn(context)
-                ]
-                )
-            ),
-          initialIndex: 3,
-        )
-    );
-  }
+    return
+      WillPopScope(
+          onWillPop: () async {
+            // Pop all routes until reaching the home page
+            Navigator.popUntil(context, ModalRoute.withName(AppRoutes.homePage));
 
-  /// Section Widget
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return CustomAppBar(
-        title: SizedBox(
-            height: 30.v,
-            width: 199.h,
-            child: Stack(alignment: Alignment.centerLeft, children: [
-              AppbarTitle(
-                  text: "ECE Library",
-                  margin: EdgeInsets.only(top: 3.v, bottom: 12.v)),
-              Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                      margin: EdgeInsets.only(left: 9.h, right: 160.h),
-                      decoration: AppDecoration.fillOnPrimary.copyWith(
-                          borderRadius: BorderRadiusStyle.circleBorder15),
-                      child: AppbarImage(imagePath: ImageConstant.imgImage1)))
-            ])),
-        actions: [
-          AppbarTrailingImage(
-              imagePath: ImageConstant.imgMegaphone,
-              margin: EdgeInsets.symmetric(horizontal: 5.h, vertical: 7.v))
-        ],
-        styleType: Style.bgFill);
+            return false;
+          }, // Prevent default behavior (popping the current route)
+        child: SafeArea(
+          child: AppTemplate(
+              body: Container(
+                  width: double.maxFinite,
+                  padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 6.v),
+                  child: Column(children: [
+                    SizedBox(height: 8.v),
+                    _buildRichTooltipGrid(context),
+                    SizedBox(height: 16.v),
+                    _buildLoanComponentColumn(context)
+                  ]
+                  )
+              ),
+            initialIndex: 3,
+          )
+            ),
+      );
   }
 
   /// Section Widget
@@ -82,28 +65,50 @@ class ProfilePageScreen extends StatelessWidget {
             }));
   }
 
-  /// Section Widget
   Widget _buildLoanComponentColumn(BuildContext context) {
-    return Column(children: [
-      CustomElevatedButton(
-          height: 43.v,
-          text: "Ιστορικό Δανεισμών",
-          buttonStyle: CustomButtonStyles.fillPrimaryTL10,
-          buttonTextStyle: CustomTextStyles.titleSmallOnPrimary_2),
-      ListView.separated(
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          separatorBuilder: (context, index) {
-            return SizedBox(height: 1.v);
-          },
-          itemCount: 2,
-          itemBuilder: (context, index) {
-            return LoancomponentItemWidget(onTapthLoan: () {
-              onTapthLoan(context);
-            });
-          })
-    ]);
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          CustomElevatedButton(
+            height: 43.v,
+            text: "Ιστορικό Δανεισμών",
+            buttonStyle: CustomButtonStyles.fillPrimaryTL10,
+            buttonTextStyle: CustomTextStyles.titleSmallOnPrimary_2,
+          ),
+          Container(
+            height: 240.v,
+            child: ListView.separated(
+              physics: ScrollPhysics(),
+              shrinkWrap: true,
+              separatorBuilder: (context, index) {
+                return SizedBox.shrink();
+              },
+              itemCount: 1,
+              itemBuilder: (context, index) {
+                return LoancomponentItemWidget(onTapthLoan: () {
+                  onTapthLoan(context);
+                });
+              },
+            ),
+          ),
+          Container(
+            height: 6.v, // Adjust the height as needed
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(10.0),
+                bottomRight: Radius.circular(10.0),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
+
+
+
+
 
   /// Navigates to the bookPageThreeScreen when the action is triggered.
   onTapthLoan(BuildContext context) {

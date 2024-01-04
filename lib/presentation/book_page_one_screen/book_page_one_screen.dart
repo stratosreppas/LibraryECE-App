@@ -9,6 +9,7 @@ import 'package:stratos_s_application3/widgets/app_bar/custom_app_bar.dart';
 import 'package:stratos_s_application3/widgets/custom_bottom_bar.dart';
 import 'package:stratos_s_application3/widgets/custom_floating_text_field.dart';
 import 'package:stratos_s_application3/widgets/custom_outlined_button.dart';
+import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
 
 // ignore_for_file: must_be_immutable
 class BookPageOneScreen extends StatelessWidget {
@@ -21,89 +22,69 @@ class BookPageOneScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: _buildAppBar(context),
-            body: Container(
-                width: double.maxFinite,
-                padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 3.v),
-                child: Column(children: [
-                  SizedBox(height: 4.v),
-                  _buildAvailableCopies(context),
-                  SizedBox(height: 6.v),
-                  Container(
-                      height: 11.v,
-                      width: 340.h,
-                      decoration: BoxDecoration(
-                          color: theme.colorScheme.primary,
-                          borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(10.h)))),
-                  Expanded(
-                      child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16.h),
-                          decoration: AppDecoration.fillPrimary,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                SizedBox(height: 13.v),
-                                _buildExtendableRich1(context),
-                                SizedBox(height: 12.v),
-                                _buildExtendableRich2(context),
-                                SizedBox(height: 12.v),
-                                CustomFloatingTextField(
-                                    controller: authorsController,
-                                    labelText: "Συγγραφείς",
-                                    labelStyle: theme.textTheme.bodyMedium!,
-                                    hintText: "Συγγραφείς",
-                                    textInputAction: TextInputAction.done),
-                                SizedBox(height: 12.v),
-                                _buildExtendableRich2(context),
-                                SizedBox(height: 12.v),
-                                _buildExtendableRich2(context),
-                                SizedBox(height: 12.v),
-                                _buildExtendableRich2(context),
-                                Spacer(),
-                                SizedBox(height: 12.v),
-                                _buildExtendableRich2(context),
-                                SizedBox(height: 85.v),
-                                _buildExtendableRich2(context),
-                                _buildExtendableRich2(context)
-                              ]))),
-                  Container(
-                      height: 11.v,
-                      width: 340.h,
-                      decoration:
-                          BoxDecoration(color: theme.colorScheme.primary))
-                ]))));
-  }
-
-  /// Section Widget
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return CustomAppBar(
-        title: SizedBox(
-            height: 30.v,
-            width: 199.h,
-            child: Stack(alignment: Alignment.centerLeft, children: [
-              AppbarTitle(
-                  text: "ECE Library",
-                  margin: EdgeInsets.only(top: 3.v, bottom: 12.v)),
-              Align(
-                  alignment: Alignment.centerLeft,
+      child: AppTemplate(
+        body: Container(
+          width: double.maxFinite,
+          padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 3.v),
+          child: Column(
+            children: [
+              SizedBox(height: 4.v),
+              _buildAvailableCopies(context),
+              SizedBox(height: 6.v),
+              SizedBox(
+                child: Container(
+                  height: 11.v,
+                  width: 340.h,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(10.h)),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
                   child: Container(
-                      margin: EdgeInsets.only(left: 9.h, right: 160.h),
-                      decoration: AppDecoration.fillOnPrimary.copyWith(
-                          borderRadius: BorderRadiusStyle.circleBorder15),
-                      child: AppbarImage(imagePath: ImageConstant.imgImage1)))
-            ])),
-        actions: [
-          AppbarTrailingImage(
-              imagePath: ImageConstant.imgMegaphone,
-              margin: EdgeInsets.symmetric(horizontal: 5.h, vertical: 7.v))
-        ],
-        styleType: Style.bgFill);
+                    padding: EdgeInsets.symmetric(horizontal: 16.h),
+                    decoration: AppDecoration.fillPrimary,
+                    child: Column(
+                      children: [
+                        SizedBox(height: 13.v),
+                        _buildExtendableRich1(context),
+                        SizedBox(height: 12.v),
+                        _buildExtendableRich2(context),
+                        SizedBox(height: 12.v),
+                        _buildExtendableRich2(context),
+                        SizedBox(height: 12.v),
+                        _buildExtendableRich2(context),
+                        SizedBox(height: 12.v),
+                        _buildExtendableRich2(context),
+                        SizedBox(height: 12.v),
+                        _buildExtendableRich2(context),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                height: 11.v,
+                width: 340.h,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10.0),
+                    bottomRight: Radius.circular(10.0),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        initialIndex: 1,
+      ),
+    );
   }
 
-  /// Section Widget
+/// Section Widget
   Widget _buildAvailableCopies(BuildContext context) {
     return Padding(
         padding: EdgeInsets.only(left: 14.h, right: 11.h),

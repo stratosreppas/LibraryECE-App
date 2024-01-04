@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:stratos_s_application3/presentation/home_page/home_page.dart';
+import 'package:stratos_s_application3/presentation/library_page_screen/library_page_screen.dart';
+import 'package:stratos_s_application3/presentation/notifications_page/notifications_page.dart';
+import 'package:stratos_s_application3/presentation/profile_page_screen/profile_page_screen.dart';
+import 'package:stratos_s_application3/core/utils/navigation_utils.dart';
+
 
 class CustomBottomBar extends StatefulWidget {
   CustomBottomBar({this.onChanged, int initialIndex = 0})
@@ -72,7 +79,7 @@ class CustomBottomBarState extends State<CustomBottomBar> {
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
-                      padding: EdgeInsets.only(top: 8.v),
+                      padding: EdgeInsets.only(top: 2.v),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -129,12 +136,12 @@ class CustomBottomBarState extends State<CustomBottomBar> {
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Padding(
-                      padding: EdgeInsets.only(top: 8.v),
+                      padding: EdgeInsets.only(top: 1.v),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Container(
-                            height: 32.v,
+                            height: 40.v,
                             width: 64.h,
                             decoration: BoxDecoration(
                               color: appTheme.blueGray100,
@@ -146,7 +153,7 @@ class CustomBottomBarState extends State<CustomBottomBar> {
                           Padding(
                             padding: EdgeInsets.only(
                               left: 15.h,
-                              top: 4.v,
+                              top: 0.5.v,
                               right: 14.h,
                             ),
                             child: Text(
@@ -185,24 +192,28 @@ class CustomBottomBarState extends State<CustomBottomBar> {
         onTap: (index) {
           selectedIndex = index;
           widget.onChanged?.call(bottomMenuList[index].type);
-// Use Navigator to navigate to the corresponding page based on the selected index
-          Navigator.pushNamed(context, AppRoutes.homePage); // Replace with your home page route
 
+          // Use Navigator to navigate to the corresponding page based on the selected index
           switch (bottomMenuList[index].type) {
             case BottomBarEnum.Home:
-              Navigator.pushNamed(context, AppRoutes.homePage); // Replace with your home page route
+              slideLeftTo(context, HomePage()); // Replace with your profile page route
               break;
             case BottomBarEnum.Library:
-              Navigator.pushNamed(context, AppRoutes.libraryPageScreen); // Replace with your library page route
+              slideLeftTo(context, LibraryPageScreen()); // Replace with your profile page route
               break;
             case BottomBarEnum.Notifications:
-              Navigator.pushNamed(context, AppRoutes.notificationsPage); // Replace with your notifications page route
+              slideLeftTo(context, NotificationsPage()); // Replace with your profile page route
               break;
             case BottomBarEnum.Profile:
-              Navigator.pushNamed(context, AppRoutes.profilePageScreen); // Replace with your profile page route
+              slideLeftTo(context, ProfilePageScreen()); // Replace with your profile page route
               break;
           }
-          setState(() {});        },
+
+          // Pop all routes until you reach the main page
+
+          setState(() {});
+        },
+
       ),
     );
   }

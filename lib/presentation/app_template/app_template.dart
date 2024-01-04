@@ -15,6 +15,7 @@ class AppTemplate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawerScrimColor: Colors.grey.withOpacity(0.0),
       endDrawer: SideBar(),
       appBar: TopBar(),
       body: body,
