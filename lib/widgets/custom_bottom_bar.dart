@@ -182,8 +182,22 @@ class CustomBottomBarState extends State<CustomBottomBar> {
         onTap: (index) {
           selectedIndex = index;
           widget.onChanged?.call(bottomMenuList[index].type);
-          setState(() {});
-        },
+// Use Navigator to navigate to the corresponding page based on the selected index
+          switch (bottomMenuList[index].type) {
+            case BottomBarEnum.Home:
+              Navigator.pushReplacementNamed(context, AppRoutes.homePage); // Replace with your home page route
+              break;
+            case BottomBarEnum.Library:
+              Navigator.pushReplacementNamed(context, AppRoutes.libraryPageScreen); // Replace with your library page route
+              break;
+            case BottomBarEnum.Notifications:
+              Navigator.pushReplacementNamed(context, AppRoutes.notificationsPage); // Replace with your notifications page route
+              break;
+            case BottomBarEnum.Profile:
+              Navigator.pushReplacementNamed(context, AppRoutes.profilePageScreen); // Replace with your profile page route
+              break;
+          }
+          setState(() {});        },
       ),
     );
   }
