@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/presentation/boot_page_screen/boot_page_screen.dart';
+import 'package:stratos_s_application3/presentation/home_page/home_page.dart';
 import 'package:stratos_s_application3/presentation/information_page_screen/information_page_screen.dart';
 import 'package:stratos_s_application3/presentation/faqs_page_screen/faqs_page_screen.dart';
 import 'package:stratos_s_application3/presentation/artemis_page_screen/artemis_page_screen.dart';
@@ -20,11 +21,12 @@ import 'package:stratos_s_application3/presentation/location_page_screen/locatio
 import 'package:stratos_s_application3/presentation/result_page_screen/result_page_screen.dart';
 import 'package:stratos_s_application3/presentation/filters_page_screen/filters_page_screen.dart';
 import 'package:stratos_s_application3/presentation/app_navigation_screen/app_navigation_screen.dart';
+import 'package:stratos_s_application3/presentation/notifications_page/notifications_page.dart';
 
 class AppRoutes {
   static const String bootPageScreen = '/boot_page_screen';
 
-  static const String templatePage = '/app_template.dart';
+  static const String templatePage = '/app_template';
 
   static const String informationPageScreen = '/information_page_screen';
 
@@ -73,6 +75,8 @@ class AppRoutes {
   static Map<String, WidgetBuilder> routes = {
     bootPageScreen: (context) => BootPageScreen(),
     informationPageScreen: (context) => InformationPageScreen(),
+    homePage: (context) => HomePage(),
+    notificationsPage: (context) => NotificationsPage(),
     faqsPageScreen: (context) => FaqsPageScreen(),
     artemisPageScreen: (context) => ArtemisPageScreen(),
     rulesPageScreen: (context) => RulesPageScreen(),

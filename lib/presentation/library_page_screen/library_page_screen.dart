@@ -51,27 +51,12 @@ class LibraryPageScreen extends StatelessWidget {
                                 SizedBox(height: 21.v),
                                 _buildBookList(context)
                               ]))))
-                ]))));
-  }
-
-  /// Section Widget
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return CustomAppBar(
-        title: SizedBox(
-            height: 30.v,
-            width: 199.h,
-            child: Stack(alignment: Alignment.centerLeft, children: [
-              AppbarTitle(
-                  text: "ECE Library",
-                  margin: EdgeInsets.only(top: 3.v, bottom: 12.v)),
-              Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                      margin: EdgeInsets.only(left: 9.h, right: 160.h),
-                      decoration: AppDecoration.fillOnPrimary.copyWith(
-                          borderRadius: BorderRadiusStyle.circleBorder15),
-                      child: AppbarImage(imagePath: ImageConstant.imgImage1)))
-            ])));
+                ]
+                )
+            ),
+          initialIndex: 1,
+        )
+    );
   }
 
   /// Section Widget
@@ -134,41 +119,6 @@ class LibraryPageScreen extends StatelessWidget {
                 onTapImgImage(context);
               });
             }));
-  }
-
-  /// Section Widget
-  Widget _buildBottomBar(BuildContext context) {
-    return CustomBottomBar(onChanged: (BottomBarEnum type) {
-      Navigator.pushNamed(navigatorKey.currentContext!, getCurrentRoute(type));
-    });
-  }
-
-  ///Handling route based on bottom click actions
-  String getCurrentRoute(BottomBarEnum type) {
-    switch (type) {
-      case BottomBarEnum.Home:
-        return AppRoutes.homePage;
-      case BottomBarEnum.Library:
-        return "/";
-      case BottomBarEnum.Notifications:
-        return "/";
-      case BottomBarEnum.Profile:
-        return AppRoutes.notificationsPage;
-      default:
-        return "/";
-    }
-  }
-
-  ///Handling page based on route
-  Widget getCurrentPage(String currentRoute) {
-    switch (currentRoute) {
-      case AppRoutes.homePage:
-        return HomePage();
-      case AppRoutes.notificationsPage:
-        return NotificationsPage();
-      default:
-        return DefaultWidget();
-    }
   }
 
   /// Navigates to the bookPageFiveScreen when the action is triggered.

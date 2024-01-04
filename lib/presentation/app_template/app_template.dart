@@ -8,8 +8,9 @@ import 'package:stratos_s_application3/widgets/custom_bottom_bar.dart';
 class AppTemplate extends StatelessWidget {
 
   final Widget body;
+  int initialIndex;
 
-  AppTemplate({required this.body});
+  AppTemplate({required this.body, this.initialIndex = 0});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class AppTemplate extends StatelessWidget {
       endDrawer: SideBar(),
       appBar: TopBar(),
       body: body,
-      bottomNavigationBar: CustomBottomBar(),
+      bottomNavigationBar: CustomBottomBar(initialIndex: initialIndex),
     );
   }
 }

@@ -7,16 +7,33 @@ import 'package:stratos_s_application3/widgets/app_bar/appbar_title.dart';
 import 'package:stratos_s_application3/widgets/app_bar/appbar_trailing_image.dart';
 import 'package:stratos_s_application3/widgets/app_bar/custom_app_bar.dart';
 import 'package:stratos_s_application3/widgets/custom_sidebar.dart';
+import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
+import '../library_page_screen/widgets/booklist_item_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:stratos_s_application3/presentation/home_page/home_page.dart';
+import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
+import 'package:stratos_s_application3/presentation/notifications_page/notifications_page.dart';
+import 'package:stratos_s_application3/widgets/app_bar/appbar_image.dart';
+import 'package:stratos_s_application3/widgets/app_bar/appbar_title.dart';
+import 'package:stratos_s_application3/widgets/app_bar/appbar_trailing_image.dart';
+import 'package:stratos_s_application3/widgets/app_bar/custom_app_bar.dart';
+import 'package:stratos_s_application3/widgets/custom_bottom_bar.dart';
+import 'package:stratos_s_application3/widgets/custom_drop_down.dart';
+import 'package:stratos_s_application3/widgets/custom_sidebar.dart';
+import 'package:stratos_s_application3/widgets/custom_appbar.dart';
+
+import 'package:stratos_s_application3/widgets/custom_search_view.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
+
+  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            drawer: SideBar(),
-            appBar: _buildAppBar(context),
+        child: AppTemplate(
             body: Container(
                 width: double.maxFinite,
                 padding: EdgeInsets.symmetric(horizontal: 11.h, vertical: 20.v),

@@ -10,6 +10,7 @@ import 'package:stratos_s_application3/widgets/app_bar/appbar_trailing_image.dar
 import 'package:stratos_s_application3/widgets/app_bar/custom_app_bar.dart';
 import 'package:stratos_s_application3/widgets/custom_bottom_bar.dart';
 import 'package:stratos_s_application3/widgets/custom_elevated_button.dart';
+import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
 
 // ignore_for_file: must_be_immutable
 class ProfilePageScreen extends StatelessWidget {
@@ -20,8 +21,7 @@ class ProfilePageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-            appBar: _buildAppBar(context),
+        child: AppTemplate(
             body: Container(
                 width: double.maxFinite,
                 padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 6.v),
@@ -30,7 +30,12 @@ class ProfilePageScreen extends StatelessWidget {
                   _buildRichTooltipGrid(context),
                   SizedBox(height: 16.v),
                   _buildLoanComponentColumn(context)
-                ]))));
+                ]
+                )
+            ),
+          initialIndex: 3,
+        )
+    );
   }
 
   /// Section Widget

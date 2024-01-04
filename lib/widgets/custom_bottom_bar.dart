@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 
 class CustomBottomBar extends StatefulWidget {
-  CustomBottomBar({this.onChanged});
+  CustomBottomBar({this.onChanged, int initialIndex = 0})
+  : assert(initialIndex >= 0),
+  selectedIndex = initialIndex;
 
   Function(BottomBarEnum)? onChanged;
+  late final int selectedIndex;
 
   @override
   CustomBottomBarState createState() => CustomBottomBarState();
 }
 
 class CustomBottomBarState extends State<CustomBottomBar> {
-  int selectedIndex = 0;
 
   List<BottomMenuModel> bottomMenuList = [
     BottomMenuModel(
@@ -42,6 +44,7 @@ class CustomBottomBarState extends State<CustomBottomBar> {
 
   @override
   Widget build(BuildContext context) {
+    int selectedIndex = widget.selectedIndex;
     return Container(
       height: 70.v,
       decoration: BoxDecoration(
@@ -183,18 +186,20 @@ class CustomBottomBarState extends State<CustomBottomBar> {
           selectedIndex = index;
           widget.onChanged?.call(bottomMenuList[index].type);
 // Use Navigator to navigate to the corresponding page based on the selected index
+          Navigator.pushNamed(context, AppRoutes.homePage); // Replace with your home page route
+
           switch (bottomMenuList[index].type) {
             case BottomBarEnum.Home:
-              Navigator.pushReplacementNamed(context, AppRoutes.homePage); // Replace with your home page route
+              Navigator.pushNamed(context, AppRoutes.homePage); // Replace with your home page route
               break;
             case BottomBarEnum.Library:
-              Navigator.pushReplacementNamed(context, AppRoutes.libraryPageScreen); // Replace with your library page route
+              Navigator.pushNamed(context, AppRoutes.libraryPageScreen); // Replace with your library page route
               break;
             case BottomBarEnum.Notifications:
-              Navigator.pushReplacementNamed(context, AppRoutes.notificationsPage); // Replace with your notifications page route
+              Navigator.pushNamed(context, AppRoutes.notificationsPage); // Replace with your notifications page route
               break;
             case BottomBarEnum.Profile:
-              Navigator.pushReplacementNamed(context, AppRoutes.profilePageScreen); // Replace with your profile page route
+              Navigator.pushNamed(context, AppRoutes.profilePageScreen); // Replace with your profile page route
               break;
           }
           setState(() {});        },

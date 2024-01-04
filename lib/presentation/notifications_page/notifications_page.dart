@@ -5,19 +5,22 @@ import 'package:stratos_s_application3/widgets/app_bar/appbar_image.dart';
 import 'package:stratos_s_application3/widgets/app_bar/appbar_title.dart';
 import 'package:stratos_s_application3/widgets/app_bar/appbar_trailing_image.dart';
 import 'package:stratos_s_application3/widgets/app_bar/custom_app_bar.dart';
+import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
 
 // ignore_for_file: must_be_immutable
 class NotificationsPage extends StatelessWidget {
-  const NotificationsPage({Key? key})
+  NotificationsPage({Key? key})
       : super(
           key: key,
         );
 
+  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: _buildAppBar(context),
+      child: AppTemplate(
         body: Padding(
           padding: EdgeInsets.only(
             left: 5.h,
@@ -41,6 +44,8 @@ class NotificationsPage extends StatelessWidget {
             },
           ),
         ),
+        initialIndex: 2,
+
       ),
     );
   }
