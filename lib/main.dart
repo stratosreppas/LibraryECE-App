@@ -9,6 +9,8 @@ void main() {
     DeviceOrientation.portraitUp,
   ]);
 
+  SystemChannels.textInput.invokeMethod('TextInput.hide');
+
   ///Please update theme as per your need if required.
   ThemeHelper().changeTheme('primary');
   runApp(MyApp());
