@@ -126,10 +126,10 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                         },
                         style: OutlinedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
+                            borderRadius: BorderRadius.circular(20.h),
                           ),
                           side: BorderSide(color: appTheme.blueGray100),
-                          fixedSize: Size(101, 40),
+                          fixedSize: Size(101.v, 40.h),
                           backgroundColor: appTheme.blueGray100,
                         ),
                         child: Row(
@@ -157,7 +157,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                   Text(
                     "Don’t have an account? ",
                     style: CustomTextStyles.bodyLargeBlack900
-                        .copyWith(fontSize: 14.0),
+                        .copyWith(fontSize: 14.0.h),
                   ),
                   GestureDetector(
                       onTap: () {
@@ -171,7 +171,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                               borderRadius: BorderRadiusStyle.roundedBorder10),
                           child: Text("Sign up",
                               style: CustomTextStyles.bodyLargeOnPrimary
-                                  .copyWith(fontSize: 15.0))))
+                                  .copyWith(fontSize: 15.0.h))))
                 ],
               )
             ]),

@@ -3,17 +3,8 @@ import 'package:stratos_s_application3/presentation/book_page_one_screen/book_pa
 import '../library_page_screen/widgets/booklist_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/presentation/home_page/home_page.dart';
 import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
-import 'package:stratos_s_application3/presentation/notifications_page/notifications_page.dart';
-import 'package:stratos_s_application3/widgets/app_bar/appbar_image.dart';
-import 'package:stratos_s_application3/widgets/app_bar/appbar_title.dart';
-import 'package:stratos_s_application3/widgets/app_bar/appbar_trailing_image.dart';
-import 'package:stratos_s_application3/widgets/app_bar/custom_app_bar.dart';
-import 'package:stratos_s_application3/widgets/custom_bottom_bar.dart';
 import 'package:stratos_s_application3/widgets/custom_drop_down.dart';
-import 'package:stratos_s_application3/widgets/custom_sidebar.dart';
-import 'package:stratos_s_application3/widgets/custom_appbar.dart';
 import 'package:stratos_s_application3/core/utils/navigation_utils.dart';
 
 import 'package:stratos_s_application3/widgets/custom_search_view.dart';

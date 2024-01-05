@@ -262,14 +262,14 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                           padding: EdgeInsets.only(top: 20.v),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 74, right: 74),
+                          padding: EdgeInsets.only(left: 84.v, right: 84.v),
                           child: Container(
-                            padding: EdgeInsets.only(left: 25, right: 25),
+                            padding: EdgeInsets.only(left: 25.v, right: 25.v),
                             decoration: BoxDecoration(
                                 border: Border.all(
                                   color: appTheme.blueGray100,
                                 ),
-                                borderRadius: BorderRadius.circular(4)),
+                                borderRadius: BorderRadius.circular(4.h)),
                             child: DropdownButton(
                                 hint: Center(
                                   child: Text(
@@ -312,10 +312,10 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                           },
                           style: OutlinedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
+                              borderRadius: BorderRadius.circular(20.h),
                             ),
                             side: BorderSide(color: appTheme.blueGray100),
-                            fixedSize: Size(101, 40),
+                            fixedSize: Size(101.v, 40.h),
                             backgroundColor: appTheme.blueGray100,
                           ),
                           child: Row(

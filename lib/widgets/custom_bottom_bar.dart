@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/presentation/home_page/home_page.dart';
 import 'package:stratos_s_application3/presentation/library_page_screen/library_page_screen.dart';
 import 'package:stratos_s_application3/presentation/notifications_page/notifications_page.dart';
 import 'package:stratos_s_application3/presentation/profile_page_screen/profile_page_screen.dart';
 import 'package:stratos_s_application3/core/utils/navigation_utils.dart';
 
-
 class CustomBottomBar extends StatefulWidget {
   CustomBottomBar({this.onChanged, int initialIndex = 0})
-  : assert(initialIndex >= 0),
-  selectedIndex = initialIndex;
+      : assert(initialIndex >= 0),
+        selectedIndex = initialIndex;
 
   Function(BottomBarEnum)? onChanged;
   late final int selectedIndex;
@@ -21,7 +19,6 @@ class CustomBottomBar extends StatefulWidget {
 }
 
 class CustomBottomBarState extends State<CustomBottomBar> {
-
   List<BottomMenuModel> bottomMenuList = [
     BottomMenuModel(
       icon: ImageConstant.imgHome,
@@ -196,16 +193,20 @@ class CustomBottomBarState extends State<CustomBottomBar> {
           // Use Navigator to navigate to the corresponding page based on the selected index
           switch (bottomMenuList[index].type) {
             case BottomBarEnum.Home:
-              slideLeftTo(context, HomePage()); // Replace with your profile page route
+              slideLeftTo(
+                  context, HomePage()); // Replace with your profile page route
               break;
             case BottomBarEnum.Library:
-              slideLeftTo(context, LibraryPageScreen()); // Replace with your profile page route
+              slideLeftTo(context,
+                  LibraryPageScreen()); // Replace with your profile page route
               break;
             case BottomBarEnum.Notifications:
-              slideLeftTo(context, NotificationsPage()); // Replace with your profile page route
+              slideLeftTo(context,
+                  NotificationsPage()); // Replace with your profile page route
               break;
             case BottomBarEnum.Profile:
-              slideLeftTo(context, ProfilePageScreen()); // Replace with your profile page route
+              slideLeftTo(context,
+                  ProfilePageScreen()); // Replace with your profile page route
               break;
           }
 
@@ -213,7 +214,6 @@ class CustomBottomBarState extends State<CustomBottomBar> {
 
           setState(() {});
         },
-
       ),
     );
   }
@@ -248,7 +248,7 @@ class DefaultWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(100.v),
       child: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
