@@ -248,7 +248,7 @@ class DefaultWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: EdgeInsets.all(100.v),
+      padding: EdgeInsets.all(10.v),
       child: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

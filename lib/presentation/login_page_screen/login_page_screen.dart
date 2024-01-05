@@ -141,7 +141,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                             Text(
                               "Login",
                               style: TextStyle(
-                                  fontSize: 14.0, color: Colors.black),
+                                  fontSize: 14.0.h, color: Colors.black),
                             ),
                           ],
                         ),

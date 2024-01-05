@@ -262,9 +262,9 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                           padding: EdgeInsets.only(top: 20.v),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: 84.v, right: 84.v),
+                          padding: EdgeInsets.only(left: 74.h, right: 74.h),
                           child: Container(
-                            padding: EdgeInsets.only(left: 25.v, right: 25.v),
+                            padding: EdgeInsets.only(left: 25.h, right: 25.h),
                             decoration: BoxDecoration(
                                 border: Border.all(
                                   color: appTheme.blueGray100,
@@ -284,9 +284,10 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                                   Icons.arrow_drop_down,
                                   color: appTheme.blueGray100,
                                 ),
-                                iconSize: 36,
+                                iconSize: 36.h,
                                 style: TextStyle(
-                                    color: appTheme.blueGray100, fontSize: 15),
+                                    color: appTheme.blueGray100,
+                                    fontSize: 14.h),
                                 isExpanded: true,
                                 underline: SizedBox(),
                                 value: selectedRole,
@@ -315,7 +316,7 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                               borderRadius: BorderRadius.circular(20.h),
                             ),
                             side: BorderSide(color: appTheme.blueGray100),
-                            fixedSize: Size(101.v, 40.h),
+                            fixedSize: Size(101.h, 40.v),
                             backgroundColor: appTheme.blueGray100,
                           ),
                           child: Row(
@@ -327,7 +328,7 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                               Text(
                                 "Sign Up",
                                 style: TextStyle(
-                                    fontSize: 14.0, color: Colors.black),
+                                    fontSize: 14.0.h, color: Colors.black),
                               ),
                             ],
                           ),
