@@ -7,7 +7,6 @@ class AppbarSubtitle extends StatelessWidget {
     Key? key,
     required this.text,
     this.margin,
-    this.onTap,
   }) : super(
           key: key,
         );
@@ -16,22 +15,16 @@ class AppbarSubtitle extends StatelessWidget {
 
   EdgeInsetsGeometry? margin;
 
-  Function? onTap;
-
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        onTap!.call();
-      },
-      child: Padding(
-        padding: margin ?? EdgeInsets.zero,
-        child: Text(
-          text,
-          style: CustomTextStyles.titleMediumMedium.copyWith(
+    return Padding(
+      padding: margin ?? EdgeInsets.zero,
+      child: Text(
+        text,
+        style: TextStyle(
             color: appTheme.blueGray100,
-          ),
-        ),
+            fontSize: 16.h,
+            fontWeight: FontWeight.w500),
       ),
     );
   }
