@@ -4,42 +4,39 @@ import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
 
-
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: AppTemplate(
-            body:
-            SingleChildScrollView(
-              child: Container(
-                  width: double.maxFinite,
-                  padding: EdgeInsets.symmetric(horizontal: 11.h, vertical: 2.v),
-                  child: Column(children: [
-                    SizedBox(height: 7.v),
-                    Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8.h, vertical: 7.v),
-                        decoration: AppDecoration.fillPrimary.copyWith(
-                            borderRadius: BorderRadiusStyle.roundedBorder10),
-                        child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              SizedBox(height: 12.v),
-                              _buildProgressBar(context),
-                              SizedBox(height: 15.v),
-                              _buildCurrentLoans(context)
-                            ])),
-                    SizedBox(height: 5.v),
-                    _buildFavouriteBooks(context)
-                  ])),
-            )));
+            body: SingleChildScrollView(
+      child: Container(
+          width: double.maxFinite,
+          padding: EdgeInsets.symmetric(horizontal: 11.h, vertical: 2.v),
+          child: Column(children: [
+            SizedBox(height: 7.v),
+            Container(
+                padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 7.v),
+                decoration: AppDecoration.fillPrimary
+                    .copyWith(borderRadius: BorderRadiusStyle.roundedBorder10),
+                child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SizedBox(height: 12.v),
+                      _buildProgressBar(context),
+                      SizedBox(height: 15.v),
+                      _buildCurrentLoans(context)
+                    ])),
+            SizedBox(height: 5.v),
+            _buildFavouriteBooks(context)
+          ])),
+    )));
   }
 
   /// Section Widget
