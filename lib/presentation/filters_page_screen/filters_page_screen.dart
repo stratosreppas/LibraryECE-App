@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/widgets/custom_drop_down.dart';
+import 'package:stratos_s_application3/presentation/filters_page_screen/widgets/checkbox_dropdown_widget.dart';
 import 'package:stratos_s_application3/widgets/custom_elevated_button.dart';
 
 // ignore_for_file: must_be_immutable
 class FiltersPageScreen extends StatelessWidget {
   FiltersPageScreen({Key? key}) : super(key: key);
 
-  List<String> dropdownItemList = ["Item One", "Item Two", "Item Three"];
+  List<String> categoriesList = ["1ο Εξάμηνο", "2ο Εξάμηνο", "3ο Εξάμηνο"];
 
-  List<String> dropdownItemList1 = ["Item One", "Item Two", "Item Three"];
+  List<String> authorsList = ["Author 1", "Author 2", "Author 3"];
 
-  List<String> dropdownItemList2 = ["Item One", "Item Two", "Item Three"];
+  List<String> publisherList = ["Τζιόλα", "Παπασωτηρίου", "Κλειδαριθμός"];
 
-  List<String> dropdownItemList3 = ["Item One", "Item Two", "Item Three"];
+  List<String> publicationYearList = ["2002", "2016", "20020"];
 
-  List<String> dropdownItemList4 = ["Item One", "Item Two", "Item Three"];
+  List<String> languageList = [
+    "Ελληνικά",
+    "Αγγλικά",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -24,83 +27,62 @@ class FiltersPageScreen extends StatelessWidget {
             body: Container(
                 width: double.maxFinite,
                 padding: EdgeInsets.symmetric(vertical: 2.v),
-                child: Column(children: [
-                  Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                          padding: EdgeInsets.only(left: 4.h),
-                          child: Row(children: [
-                            CustomImageView(
-                                imagePath: ImageConstant.imgClose,
-                                height: 24.adaptSize,
-                                width: 24.adaptSize,
+                child: SingleChildScrollView(
+                  child: Column(children: [
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                            padding: EdgeInsets.only(left: 4.h),
+                            child: Row(children: [
+                              GestureDetector(
                                 onTap: () {
-                                  onTapImgClose(context);
-                                }),
-                            Padding(
-                                padding: EdgeInsets.only(
-                                    left: 9.h, top: 2.v, bottom: 2.v),
-                                child: Text("Φίλτρα",
-                                    style:
-                                        CustomTextStyles.titleMediumBlack900))
-                          ]))),
-                  SizedBox(height: 56.v),
-                  CustomDropDown(
-                      icon: Container(
-                          margin: EdgeInsets.fromLTRB(30.h, 13.v, 10.h, 13.v),
-                          child: CustomImageView(
-                              imagePath: ImageConstant.imgArrowdownBlueGray100,
-                              height: 24.adaptSize,
-                              width: 24.adaptSize)),
-                      hintText: "Κατηγορίες",
-                      items: dropdownItemList,
-                      onChanged: (value) {}),
-                  SizedBox(height: 23.v),
-                  CustomDropDown(
-                      icon: Container(
-                          margin: EdgeInsets.fromLTRB(30.h, 13.v, 10.h, 13.v),
-                          child: CustomImageView(
-                              imagePath: ImageConstant.imgArrowdownBlueGray100,
-                              height: 24.adaptSize,
-                              width: 24.adaptSize)),
-                      hintText: "Συγγραφείς",
-                      items: dropdownItemList1,
-                      onChanged: (value) {}),
-                  SizedBox(height: 23.v),
-                  CustomDropDown(
-                      icon: Container(
-                          margin: EdgeInsets.fromLTRB(30.h, 13.v, 10.h, 13.v),
-                          child: CustomImageView(
-                              imagePath: ImageConstant.imgArrowdownBlueGray100,
-                              height: 24.adaptSize,
-                              width: 24.adaptSize)),
-                      hintText: "Εκδόσεις",
-                      items: dropdownItemList2,
-                      onChanged: (value) {}),
-                  SizedBox(height: 23.v),
-                  CustomDropDown(
-                      icon: Container(
-                          margin: EdgeInsets.fromLTRB(30.h, 13.v, 10.h, 13.v),
-                          child: CustomImageView(
-                              imagePath: ImageConstant.imgArrowdownBlueGray100,
-                              height: 24.adaptSize,
-                              width: 24.adaptSize)),
-                      hintText: "Χρονολογία Έκδοσης",
-                      items: dropdownItemList3,
-                      onChanged: (value) {}),
-                  SizedBox(height: 23.v),
-                  CustomDropDown(
-                      icon: Container(
-                          margin: EdgeInsets.fromLTRB(30.h, 13.v, 10.h, 13.v),
-                          child: CustomImageView(
-                              imagePath: ImageConstant.imgArrowdownBlueGray100,
-                              height: 24.adaptSize,
-                              width: 24.adaptSize)),
-                      hintText: "Γλώσσα",
-                      items: dropdownItemList4,
-                      onChanged: (value) {}),
-                  SizedBox(height: 5.v)
-                ])),
+                                  onTapClose(context);
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 4.h),
+                                  child: Icon(
+                                    Icons.clear,
+                                    color: Colors.black,
+                                    size: 28.adaptSize,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 9.h, top: 2.v, bottom: 2.v),
+                                  child: Text("Φίλτρα",
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14.h,
+                                          fontWeight: FontWeight.w500)))
+                            ]))),
+                    SizedBox(height: 20.v),
+                    CheckBoxDropDownWidget(
+                      header: "Κατηγορίες",
+                      contents: categoriesList,
+                    ),
+                    SizedBox(height: 20.v),
+                    CheckBoxDropDownWidget(
+                      header: "Συγγραφείς",
+                      contents: authorsList,
+                    ),
+                    SizedBox(height: 20.v),
+                    CheckBoxDropDownWidget(
+                      header: "Εκδόσεις",
+                      contents: publisherList,
+                    ),
+                    SizedBox(height: 20.v),
+                    CheckBoxDropDownWidget(
+                      header: "Χρονολογία Έκδοσης",
+                      contents: publicationYearList,
+                    ),
+                    SizedBox(height: 20.v),
+                    CheckBoxDropDownWidget(
+                      header: "Γλώσσα",
+                      contents: languageList,
+                    )
+                  ]),
+                )),
             bottomNavigationBar: _buildFrameThirtyEight(context)));
   }
 
@@ -135,7 +117,7 @@ class FiltersPageScreen extends StatelessWidget {
   }
 
   /// Navigates back to the previous screen.
-  onTapImgClose(BuildContext context) {
+  onTapClose(BuildContext context) {
     Navigator.pop(context);
   }
 
