@@ -2,18 +2,6 @@ class ImageConstant {
   // Image folder path
   static String imagePath = 'assets/images';
 
-  // Information Page images
-  static String imgCall = '$imagePath/img_call.svg';
-
-  static String imgEmail = '$imagePath/img_email.svg';
-
-  static String imgClock = '$imagePath/img_clock.svg';
-
-  static String imgLinkedin = '$imagePath/img_linkedin.svg';
-
-  // SignUp Page images
-  static String imgAccountCircle = '$imagePath/img_account_circle.svg';
-
   // Library Page images
   static String imgArrowdownBlueGray10024x24 =
       '$imagePath/img_arrowdown_blue_gray_100_24x24.svg';
@@ -65,12 +53,8 @@ class ImageConstant {
   // Common images
   static String imgImage1 = '$imagePath/img_image_1.png';
 
-  static String imgArrowLeft = '$imagePath/img_arrow_left.svg';
-
   static String imgArrowdownBlueGray100 =
       '$imagePath/img_arrowdown_blue_gray_100.svg';
-
-  static String imgEye = '$imagePath/img_eye.svg';
 
   static String imgArrowright = '$imagePath/img_arrowright.svg';
 

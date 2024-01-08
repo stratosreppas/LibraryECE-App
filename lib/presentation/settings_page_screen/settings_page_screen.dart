@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/widgets/app_bar/appbar_leading_image.dart';
 import 'package:stratos_s_application3/widgets/app_bar/appbar_subtitle.dart';
 import 'package:stratos_s_application3/widgets/app_bar/custom_app_bar.dart';
 import 'package:stratos_s_application3/widgets/custom_drop_down.dart';
@@ -66,14 +65,21 @@ class SettingsPageScreen extends StatelessWidget {
   PreferredSizeWidget _buildAppBar(BuildContext context) {
     return CustomAppBar(
         leadingWidth: 30.h,
-        leading: AppbarLeadingImage(
-            imagePath: ImageConstant.imgArrowLeft,
-            margin: EdgeInsets.only(left: 6.h, top: 9.v, bottom: 9.v),
-            onTap: () {
-              onTapArrowLeft(context);
-            }),
+        leading: GestureDetector(
+          onTap: () {
+            onTapArrowLeft(context);
+          },
+          child: Padding(
+            padding: EdgeInsets.only(left: 5.h),
+            child: Icon(
+              Icons.arrow_back,
+              color: appTheme.blueGray100,
+              size: 28.adaptSize,
+            ),
+          ),
+        ),
         title: AppbarSubtitle(
-            text: "Ρυθμίσεις", margin: EdgeInsets.only(left: 6.h)),
+            text: "Ρυθμίσεις", margin: EdgeInsets.only(left: 14.h)),
         styleType: Style.bgFill);
   }
 
