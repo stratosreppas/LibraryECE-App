@@ -10,18 +10,13 @@ class Item {
     required this.headerText,
   });
   int id;
-  final expandedText;
+  final String expandedText;
   final String headerText;
 }
 
-class ArtemisPageScreen extends StatefulWidget {
+class ArtemisPageScreen extends StatelessWidget {
   ArtemisPageScreen({Key? key}) : super(key: key);
 
-  @override
-  State<ArtemisPageScreen> createState() => _ArtemisPageScreenState();
-}
-
-class _ArtemisPageScreenState extends State<ArtemisPageScreen> {
   final List<Item> faqs = <Item>[
     Item(
         id: 1,

@@ -40,16 +40,15 @@ class AppNavigationScreen extends StatelessWidget {
                         _buildScreenTitle(
                           context,
                           screenTitle: "Home Page",
-                          onTapScreenTitle: () => onTapScreenTitle(
-                              context, AppRoutes.homePage),
+                          onTapScreenTitle: () =>
+                              onTapScreenTitle(context, AppRoutes.homePage),
                         ),
                         _buildScreenTitle(
                           context,
                           screenTitle: "Template Page",
-                          onTapScreenTitle: () => onTapScreenTitle(
-                              context, AppRoutes.templatePage),
+                          onTapScreenTitle: () =>
+                              onTapScreenTitle(context, AppRoutes.templatePage),
                         ),
-
                         _buildScreenTitle(
                           context,
                           screenTitle: "FAQs Page",
@@ -73,12 +72,6 @@ class AppNavigationScreen extends StatelessWidget {
                           screenTitle: "Settings Page",
                           onTapScreenTitle: () => onTapScreenTitle(
                               context, AppRoutes.settingsPageScreen),
-                        ),
-                        _buildScreenTitle(
-                          context,
-                          screenTitle: "LogOut Page",
-                          onTapScreenTitle: () => onTapScreenTitle(
-                              context, AppRoutes.logoutPageScreen),
                         ),
                         _buildScreenTitle(
                           context,
@@ -109,6 +102,12 @@ class AppNavigationScreen extends StatelessWidget {
                           screenTitle: "Profile Page",
                           onTapScreenTitle: () => onTapScreenTitle(
                               context, AppRoutes.profilePageScreen),
+                        ),
+                        _buildScreenTitle(
+                          context,
+                          screenTitle: "Notifications Page",
+                          onTapScreenTitle: () => onTapScreenTitle(
+                              context, AppRoutes.notificationsPage),
                         ),
                         _buildScreenTitle(
                           context,

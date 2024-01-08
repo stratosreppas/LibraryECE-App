@@ -132,7 +132,7 @@ class HomePage extends StatelessWidget {
                                   strokeWidth: 6.h)))
                     ])),
                 Padding(
-                    padding: EdgeInsets.only(left: 8.h, top: 67.v),
+                    padding: EdgeInsets.only(left: 8.h, top: 65.v),
                     child: Column(children: [
                       Container(
                           width: 56.h,
@@ -142,8 +142,10 @@ class HomePage extends StatelessWidget {
                               .copyWith(
                                   borderRadius:
                                       BorderRadiusStyle.roundedBorder10),
-                          child: Text("7 days",
-                              style: CustomTextStyles.bodyMediumOnPrimary)),
+                          child: Center(
+                            child: Text("7 days",
+                                style: CustomTextStyles.bodyMediumOnPrimary),
+                          )),
                       SizedBox(height: 5.v),
                       Container(
                           width: 56.h,
@@ -151,8 +153,10 @@ class HomePage extends StatelessWidget {
                               horizontal: 6.h, vertical: 1.v),
                           decoration: AppDecoration.fillLime.copyWith(
                               borderRadius: BorderRadiusStyle.roundedBorder10),
-                          child: Text("7 days",
-                              style: CustomTextStyles.bodyMediumOnPrimary)),
+                          child: Center(
+                            child: Text("7 days",
+                                style: CustomTextStyles.bodyMediumOnPrimary),
+                          )),
                       SizedBox(height: 5.v),
                       Container(
                           width: 56.h,
@@ -160,8 +164,10 @@ class HomePage extends StatelessWidget {
                               horizontal: 6.h, vertical: 1.v),
                           decoration: AppDecoration.fillLightGreen.copyWith(
                               borderRadius: BorderRadiusStyle.roundedBorder10),
-                          child: Text("6 days",
-                              style: CustomTextStyles.bodyMediumOnPrimary))
+                          child: Center(
+                            child: Text("6 days",
+                                style: CustomTextStyles.bodyMediumOnPrimary),
+                          ))
                     ]))
               ]))
         ]));

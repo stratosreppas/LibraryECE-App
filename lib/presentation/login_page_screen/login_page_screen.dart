@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/widgets/custom_text_form_field.dart';
 
-// ignore_for_file: must_be_immutable
 class LoginPageScreen extends StatefulWidget {
   LoginPageScreen({Key? key}) : super(key: key);
 

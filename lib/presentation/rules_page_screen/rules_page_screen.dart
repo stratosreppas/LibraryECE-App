@@ -14,14 +14,9 @@ class Item {
   final String headerText;
 }
 
-class RulesPageScreen extends StatefulWidget {
+class RulesPageScreen extends StatelessWidget {
   RulesPageScreen({Key? key}) : super(key: key);
 
-  @override
-  State<RulesPageScreen> createState() => _RulesPageScreenState();
-}
-
-class _RulesPageScreenState extends State<RulesPageScreen> {
   final List<Item> faqs = <Item>[
     Item(
         id: 1,

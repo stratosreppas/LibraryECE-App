@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/widgets/custom_text_form_field.dart';
 
-// ignore_for_file: must_be_immutable
 class SignupPageScreen extends StatefulWidget {
   SignupPageScreen({Key? key}) : super(key: key);
 
@@ -99,15 +98,15 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                 padding: EdgeInsets.only(top: 20.v),
                 child: Stack(alignment: Alignment.center, children: [
                   Container(
-                      width: 140.v,
-                      height: 140.h,
+                      width: 140.h,
+                      height: 140.v,
                       decoration: BoxDecoration(
                         color: appTheme.blueGray100,
                         shape: BoxShape.circle,
                       )),
                   Icon(
                     Icons.account_circle_outlined,
-                    size: 143,
+                    size: 162.h,
                   ),
                 ]),
               ),

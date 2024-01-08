@@ -6,7 +6,6 @@ import 'package:stratos_s_application3/presentation/faqs_page_screen/faqs_page_s
 import 'package:stratos_s_application3/presentation/artemis_page_screen/artemis_page_screen.dart';
 import 'package:stratos_s_application3/presentation/rules_page_screen/rules_page_screen.dart';
 import 'package:stratos_s_application3/presentation/settings_page_screen/settings_page_screen.dart';
-import 'package:stratos_s_application3/presentation/logout_page_screen/logout_page_screen.dart';
 import 'package:stratos_s_application3/presentation/login_page_screen/login_page_screen.dart';
 import 'package:stratos_s_application3/presentation/signup_page_screen/signup_page_screen.dart';
 import 'package:stratos_s_application3/presentation/home_page_container_screen/home_page_container_screen.dart';
@@ -81,7 +80,6 @@ class AppRoutes {
     artemisPageScreen: (context) => ArtemisPageScreen(),
     rulesPageScreen: (context) => RulesPageScreen(),
     settingsPageScreen: (context) => SettingsPageScreen(),
-    logoutPageScreen: (context) => LogoutPageScreen(),
     loginPageScreen: (context) => LoginPageScreen(),
     signupPageScreen: (context) => SignupPageScreen(),
     homePageContainerScreen: (context) => HomePageContainerScreen(),

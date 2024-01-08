@@ -1,108 +1,45 @@
-import '../notifications_page/widgets/notificationlist_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/widgets/app_bar/appbar_image.dart';
-import 'package:stratos_s_application3/widgets/app_bar/appbar_title.dart';
-import 'package:stratos_s_application3/widgets/app_bar/appbar_trailing_image.dart';
-import 'package:stratos_s_application3/widgets/app_bar/custom_app_bar.dart';
 import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
+import 'package:stratos_s_application3/presentation/notifications_page/widgets/notification_widget.dart';
 
-// ignore_for_file: must_be_immutable
 class NotificationsPage extends StatelessWidget {
-  NotificationsPage({Key? key})
-      : super(
-          key: key,
-        );
-
-  GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-
+  // Define a list of notifications with different values
+  final List<Map<String, String>> notificationsData = [
+    {
+      'header': "Χριστουγεννιάτικο Ωράριο Λειτουργίας Βιβλιοθήκης ΣΗΜΜΥ",
+      'date': "27/12/2023",
+      'content':
+          "Η βιβλιοθήκη κατά τη διάρκεια των διακοπών των Χριστουγέννων θα είναι ανοιχτή 27-29/12/2023 και 3-5/1/2024 και ώρες 09.00-15.00."
+    },
+    {
+      'header': "Another Notification",
+      'date': "01/01/2024",
+      'content': "This is another notification content."
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return
-      WillPopScope(
-          onWillPop: () async {
-            // Pop all routes until reaching the home page
-            Navigator.popUntil(context, ModalRoute.withName(AppRoutes.homePage));
-
-            return false;
-          }, // Prevent default behavior (popping the current route)
-        child: SafeArea(
-        child: AppTemplate(
-          body: Padding(
-            padding: EdgeInsets.only(
-              left: 5.h,
-              top: 19.v,
-              right: 5.h,
-            ),
-            child: ListView.separated(
-              physics: BouncingScrollPhysics(),
-              shrinkWrap: true,
-              separatorBuilder: (
-                context,
-                index,
-              ) {
-                return SizedBox(
-                  height: 14.v,
-                );
-              },
-              itemCount: 6,
-              itemBuilder: (context, index) {
-                return NotificationlistItemWidget();
-              },
-            ),
+    return SafeArea(
+      child: AppTemplate(
+        body: Padding(
+          padding:
+              EdgeInsets.only(top: 20.h, bottom: 20.h, left: 10.h, right: 10.h),
+          child: ListView.builder(
+            itemCount: notificationsData.length,
+            itemBuilder: (context, index) {
+              // Build NotificationWidget based on data from the list
+              return NotificationWidget(
+                header: notificationsData[index]['header'] ?? '',
+                date: notificationsData[index]['date'] ?? '',
+                content: notificationsData[index]['content'] ?? '',
+              );
+            },
           ),
-          initialIndex: 2,
-
         ),
-            ),
-      );
-  }
-
-  /// Section Widget
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return CustomAppBar(
-      title: SizedBox(
-        height: 30.v,
-        width: 199.h,
-        child: Stack(
-          alignment: Alignment.centerLeft,
-          children: [
-            AppbarTitle(
-              text: "ECE Library",
-              margin: EdgeInsets.only(
-                top: 3.v,
-                bottom: 12.v,
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                margin: EdgeInsets.only(
-                  left: 9.h,
-                  right: 160.h,
-                ),
-                decoration: AppDecoration.fillOnPrimary.copyWith(
-                  borderRadius: BorderRadiusStyle.circleBorder15,
-                ),
-                child: AppbarImage(
-                  imagePath: ImageConstant.imgImage1,
-                ),
-              ),
-            ),
-          ],
-        ),
+        initialIndex: 2,
       ),
-      actions: [
-        AppbarTrailingImage(
-          imagePath: ImageConstant.imgMegaphone,
-          margin: EdgeInsets.symmetric(
-            horizontal: 5.h,
-            vertical: 7.v,
-          ),
-        ),
-      ],
-      styleType: Style.bgFill,
     );
   }
 }
