@@ -88,7 +88,7 @@ class AppRoutes {
     favouritesPageScreen: (context) => FavouritesPageScreen(),
     bookPageFourScreen: (context) => BookPageFourScreen(),
     bookPageOneScreen: (context) => BookPageOneScreen(),
-    bookPageThreeScreen: (context) => BookPageThreeScreen(),
+    bookPageThreeScreen: (context) => PhotoPage(),
     bookPageFiveScreen: (context) => BookPageFiveScreen(),
     locationPageScreen: (context) => LocationPageScreen(),
     resultPageScreen: (context) => ResultPageScreen(),

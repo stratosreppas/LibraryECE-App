@@ -1,14 +1,22 @@
-CREATE DATABASE Library;
-USE Library;
+DROP DATABASE ecel;
+CREATE DATABASE ecel;
+USE ecel;
 
--- DROP DATABASE Library;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 CREATE TABLE books (
   id int(11) NOT NULL ,
   title varchar(255) DEFAULT NULL,
   subtitle varchar(255) DEFAULT NULL,
   author varchar(255) DEFAULT NULL,
-  isbn varchar(50) DEFAULT NULL,
+  isbn varchar(50) NOT NULL,
   year varchar(4) DEFAULT NULL,
   language varchar(50) DEFAULT NULL,
   edition varchar(50) DEFAULT NULL,
@@ -18,28 +26,15 @@ CREATE TABLE books (
   publisher varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
-
-
 CREATE TABLE `temp` (
   `te` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Άδειασμα δεδομένων του πίνακα `temp`
---
 
 INSERT INTO `temp` (`te`) VALUES
 ('a'),
 ('%%%a%%'),
 ('k%'),
 ('k');
-
--- --------------------------------------------------------
-
---
--- Δομή πίνακα για τον πίνακα `transaction`
---
 
 CREATE TABLE `transaction` (
   `transaction_id` int(11) NOT NULL,
@@ -49,13 +44,6 @@ CREATE TABLE `transaction` (
   `must_return_date` date DEFAULT NULL,
   `return_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
--- --------------------------------------------------------
-
---
--- Δομή πίνακα για τον πίνακα `visitor`
---
 
 CREATE TABLE `visitor` (
   `id` int(11) NOT NULL,
@@ -69,55 +57,24 @@ CREATE TABLE `visitor` (
   `penalty` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Άδειασμα δεδομένων του πίνακα `visitor`
---
-
-INSERT INTO `visitor` (`id`, `name`, `surname`, `am`, `property`, `barcode`, `phone`, `mail`, `penalty`) VALUES
-(1, 'John', 'Doe', '123445', 1, NULL, '698980', NULL, NULL),
-
-
---
--- Ευρετήρια για άχρηστους πίνακες
---
-
---
--- Ευρετήρια για πίνακα `books`
---
 ALTER TABLE `books`
   ADD PRIMARY KEY (`id`);
 
---
--- Ευρετήρια για πίνακα `transaction`
---
 ALTER TABLE `transaction`
   ADD PRIMARY KEY (`transaction_id`);
 
---
--- Ευρετήρια για πίνακα `visitor`
---
 ALTER TABLE `visitor`
   ADD PRIMARY KEY (`id`);
 
---
--- AUTO_INCREMENT για άχρηστους πίνακες
---
-
---
--- AUTO_INCREMENT για πίνακα `books`
---
 ALTER TABLE `books`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9623;
 
---
--- AUTO_INCREMENT για πίνακα `transaction`
---
+ALTER TABLE `books`
+  ADD INDEX `idx_isbn` (`isbn`);
+
 ALTER TABLE `transaction`
   MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76890;
 
---
--- AUTO_INCREMENT για πίνακα `visitor`
---
 ALTER TABLE `visitor`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6894;
 COMMIT;
@@ -127,27 +84,29 @@ COMMIT;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
 CREATE TABLE favorites (
-  isbn int(11) NOT NULL,
+  isbn varchar(50) NOT NULL,
   id int(11) NOT NULL,
-  PRIMARY KEY (id,isbn),
-  CONSTRAINT fk_favorites_isbn FOREIGN KEY (isbn) REFERENCES books(isbn) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT fk_favorites_user_id FOREIGN KEY (id) REFERENCES visitor(id) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (id, isbn)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE notify (
-  isbn int(11) NOT NULL,
   id int(11) NOT NULL,
-  PRIMARY KEY (id,isbn),
-  CONSTRAINT fk_notify_isbn FOREIGN KEY (isbn) REFERENCES books(isbn) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT fk_notify_user_id FOREIGN KEY (id) REFERENCES visitor(id) ON DELETE CASCADE ON UPDATE CASCADE
+  isbn varchar(50) NOT NULL,
+  PRIMARY KEY (id, isbn)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-ALTER TABLE `books`
-ADD COLUMN `image` BLOB;
+ALTER TABLE `favorites`
+  ADD CONSTRAINT `fk_favorites_isbn` FOREIGN KEY (isbn) REFERENCES `books` (isbn) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_favorites_user_id` FOREIGN KEY (`id`) REFERENCES `visitor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-UPDATE `books`
-SET `image` = LOAD_FILE('/assets/images/img_book.png')
+ALTER TABLE `notify`
+  ADD CONSTRAINT `fk_notify_isbn` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_notify_user_id` FOREIGN KEY (`id`) REFERENCES `visitor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `books`
+  ADD COLUMN `image` BLOB;
 
 ALTER TABLE `visitor`
-ADD COLUMN `password` VARCHAR(255) DEFAULT NULL;
+  ADD COLUMN `password` VARCHAR(255) DEFAULT NULL;
+
 

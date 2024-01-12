@@ -8912,10 +8912,16 @@ INSERT INTO `books` (`id`, `title`, `subtitle`, `author`, `isbn`, `year`, `langu
 
 -- --------------------------------------------------------
 
+
+INSERT INTO `visitor` (`id`, `name`, `surname`, `am`, `property`, `barcode`, `phone`, `mail`, `penalty`) VALUES
+(1, 'John', 'Doe', '123445', 1, NULL, '698980', NULL, NULL);
+
 INSERT INTO `visitor` (`name`, `surname`, `am`, `property`, `phone`, `mail`)
 VALUES
 ('Alice', 'Smith', '123456', 1, '1234567890', 'alice@example.com'),
 ('Bob', 'Johnson', '789012', 2, '9876543210', 'bob@example.com');
+
+
 
 -- --------------------------------------------------------
 
@@ -8935,3 +8941,7 @@ VALUES
 ('9786185495510', 2);  -- Visitor 2 wants to be notified about book with ISBN 9786185495510
 
 -- --------------------------------------------------------
+
+-- Temporary Image for all books
+UPDATE `books`
+SET `image` = LOAD_FILE('/assets/images/img_book.png')
