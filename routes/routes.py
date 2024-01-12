@@ -1,42 +1,21 @@
-from flask import Flask, jsonify, g
+from flask import Flask, jsonify
+from flask_mysqldb import MySQL
 import mysql.connector
 
 app = Flask(__name__)
 
 # MySQL Connection Configuration
-DATABASE_CONFIG = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': '',
-    'database': 'ecel'
-}
+app.config['MYSQL_HOST'] = 'localhost'
+app.config["MYSQL_USER"] = 'root'
+app.config["MYSQL_PASSWORD"] = ''
+app.config["MYSQL_DB"] = 'ecel'
 
-def get_db():
-    if 'db' not in g:
-        try:
-            g.db = mysql.connector.connect(**DATABASE_CONFIG)
-        except mysql.connector.Error as err:
-            print(f"Error: {err}")
-            g.db = None  # Set to None to indicate a failed connection
-    return g.db
+db = MySQL(app)
 
-def close_db(e=None):
-    db = g.pop('db', None)
-    if db is not None:
-        db.close()
-
-@app.before_request
-def before_request():
-    g.db = get_db()
-
-@app.teardown_request
-def teardown_request(exception=None):
-    close_db()
-
-@app.route('/api/first_book_image')
+@app.route('/api/first_book_image', methods = ['GET'])
 def get_first_book_image():
     try:
-        cursor = g.db.cursor()
+        cursor = db.connection.cursor()
         cursor.execute('SELECT image_url FROM books LIMIT 1')
         data = cursor.fetchone()
         cursor.close()
