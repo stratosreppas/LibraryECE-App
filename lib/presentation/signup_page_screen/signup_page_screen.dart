@@ -31,7 +31,9 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
     'Προπτυχιακός/ή',
     'Μεταπτυχιακός/ή',
     "Υποψήφιος/α Διδάκτωρ",
-    'Καθηγητής/τρια'
+    'Καθηγητής/τρια',
+    "Κατατακτήριος/α",
+    "Φοιτητής/τρια \nάλλης σχολής"
   ];
   String? dropdownValue;
 

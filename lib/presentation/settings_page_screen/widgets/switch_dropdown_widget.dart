@@ -1,32 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 
-class CheckBoxDropDownWidget extends StatefulWidget {
+class SwitchDropDownWidget extends StatefulWidget {
   final String header;
   final List<String> contents;
 
-  CheckBoxDropDownWidget(
-      {Key? key, required this.header, required this.contents})
-      : super(key: key);
+  SwitchDropDownWidget({required this.header, required this.contents});
 
   @override
-  State<CheckBoxDropDownWidget> createState() => CheckBoxDropDownWidgetState();
+  State<SwitchDropDownWidget> createState() => SwitchDropDownWidgetState();
 }
 
-class CheckBoxDropDownWidgetState extends State<CheckBoxDropDownWidget> {
-  List<bool?> checkboxValues = [];
+class SwitchDropDownWidgetState extends State<SwitchDropDownWidget> {
+  List<bool> switchValues = [];
 
   @override
   void initState() {
     super.initState();
     // Initialize checkboxValues with false for each content item
-    checkboxValues = List<bool?>.filled(widget.contents.length, false);
-  }
-
-  void clearSelection() {
-    setState(() {
-      checkboxValues = List<bool?>.filled(widget.contents.length, false);
-    });
+    switchValues = List<bool>.filled(widget.contents.length, true);
   }
 
   @override
@@ -55,11 +47,11 @@ class CheckBoxDropDownWidgetState extends State<CheckBoxDropDownWidget> {
         iconColor: appTheme.blueGray100,
         children: List.generate(
           widget.contents.length,
-          (index) => CheckboxListTile(
-            value: checkboxValues[index],
-            onChanged: (bool? value) {
+          (index) => SwitchListTile(
+            value: switchValues[index],
+            onChanged: (bool value) {
               setState(() {
-                checkboxValues[index] = value;
+                switchValues[index] = value;
               });
             },
             title: Center(
@@ -71,9 +63,11 @@ class CheckBoxDropDownWidgetState extends State<CheckBoxDropDownWidget> {
                 ),
               ),
             ),
-            activeColor: appTheme.blueGray100,
-            checkColor: theme.primaryColor,
-            side: BorderSide(color: appTheme.blueGray100, width: 2.h),
+            activeColor: theme.primaryColor,
+            activeTrackColor: appTheme.blueGray100,
+            inactiveTrackColor: appTheme.blueGray100,
+            inactiveThumbColor: theme.primaryColor,
+            trackOutlineColor: MaterialStateProperty.all(appTheme.blueGray100),
           ),
         ),
       ),

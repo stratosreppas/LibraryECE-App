@@ -1,19 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:stratos_s_application3/presentation/settings_page_screen/widgets/radio_button_dropdown_widget.dart';
+import 'package:stratos_s_application3/presentation/settings_page_screen/widgets/switch_dropdown_widget.dart';
 import 'package:stratos_s_application3/widgets/app_bar/appbar_subtitle.dart';
 import 'package:stratos_s_application3/widgets/app_bar/custom_app_bar.dart';
-import 'package:stratos_s_application3/widgets/custom_drop_down.dart';
 import 'package:stratos_s_application3/widgets/custom_elevated_button.dart';
 
 // ignore_for_file: must_be_immutable
 class SettingsPageScreen extends StatelessWidget {
   SettingsPageScreen({Key? key}) : super(key: key);
 
-  List<String> dropdownItemList = ["Item One", "Item Two", "Item Three"];
+  List<String> notificationsDropDownItemList = [
+    "Ανακοινώσεις",
+    "Επιστροφή/Ανανέωση Βιβλίου",
+    "Διαθεσιμότητα Βιβλίου"
+  ];
 
-  List<String> dropdownItemList1 = ["Item One", "Item Two", "Item Three"];
+  List<String> homePageDropDownItemList = [
+    "Αγαπημένα Βιβλία",
+    "Προτείνονται για Εσάς",
+    "Νέες Προσθήκες",
+    "Δημοφιλή"
+  ];
 
-  List<String> dropdownItemList2 = ["Item One", "Item Two", "Item Three"];
+  List<String> libraryPageDropDownItemList = [
+    "Προτείνονται για Εσάς",
+    "Είδατε Πρόσφατα",
+    "Νέες Προσθήκες",
+    "Δημοφιλή"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -23,41 +38,22 @@ class SettingsPageScreen extends StatelessWidget {
             body: Container(
                 width: double.maxFinite,
                 padding: EdgeInsets.symmetric(vertical: 40.v),
-                child: Column(children: [
-                  CustomDropDown(
-                      icon: Container(
-                          margin: EdgeInsets.fromLTRB(30.h, 13.v, 10.h, 13.v),
-                          child: CustomImageView(
-                              imagePath: ImageConstant.imgArrowdownBlueGray100,
-                              height: 24.adaptSize,
-                              width: 24.adaptSize)),
-                      hintText: "Ειδοποιήσεις",
-                      items: dropdownItemList,
-                      onChanged: (value) {}),
-                  SizedBox(height: 20.v),
-                  CustomDropDown(
-                      icon: Container(
-                          margin: EdgeInsets.fromLTRB(30.h, 13.v, 10.h, 13.v),
-                          child: CustomImageView(
-                              imagePath: ImageConstant.imgArrowdownBlueGray100,
-                              height: 24.adaptSize,
-                              width: 24.adaptSize)),
-                      hintText: "Αρχική Σελίδα",
-                      items: dropdownItemList1,
-                      onChanged: (value) {}),
-                  SizedBox(height: 20.v),
-                  CustomDropDown(
-                      icon: Container(
-                          margin: EdgeInsets.fromLTRB(30.h, 13.v, 10.h, 13.v),
-                          child: CustomImageView(
-                              imagePath: ImageConstant.imgArrowdownBlueGray100,
-                              height: 24.adaptSize,
-                              width: 24.adaptSize)),
-                      hintText: "Σελίδα Βιβλιοθήκης",
-                      items: dropdownItemList2,
-                      onChanged: (value) {}),
-                  SizedBox(height: 5.v)
-                ])),
+                child: SingleChildScrollView(
+                  child: Column(children: [
+                    SwitchDropDownWidget(
+                        header: "Ειδοποιήσεις",
+                        contents: notificationsDropDownItemList),
+                    SizedBox(height: 20.v),
+                    RadioButtonDropDownWidget(
+                        header: "Αρχική Σελίδα",
+                        contents: homePageDropDownItemList),
+                    SizedBox(height: 20.v),
+                    SwitchDropDownWidget(
+                        header: "Σελίδα Βιβλιοθήκης",
+                        contents: libraryPageDropDownItemList),
+                    SizedBox(height: 20.v),
+                  ]),
+                )),
             bottomNavigationBar: _buildLogout(context)));
   }
 
@@ -93,8 +89,49 @@ class SettingsPageScreen extends StatelessWidget {
         buttonStyle: CustomButtonStyles.fillRed,
         buttonTextStyle: CustomTextStyles.titleMediumOnPrimarySemiBold,
         onPressed: () {
-          onTapLogout(context);
+          _showLogoutConfirmationDialog(context);
         });
+  }
+
+  void _showLogoutConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            "Logout",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: appTheme.blueGray100, fontSize: 20.h),
+          ),
+          content: Text(
+            "Are you sure you want to logout?",
+            style: TextStyle(color: appTheme.blueGray100, fontSize: 14.h),
+            textAlign: TextAlign.center,
+          ),
+          backgroundColor: appTheme.red900,
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text(
+                "Cancel",
+                style: TextStyle(color: appTheme.blueGray100, fontSize: 14.h),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+                onTapLogout(context); // Perform the logout action
+              },
+              child: Text("Logout",
+                  style:
+                      TextStyle(color: appTheme.blueGray100, fontSize: 14.h)),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   /// Navigates back to the previous screen.
@@ -104,6 +141,6 @@ class SettingsPageScreen extends StatelessWidget {
 
   /// Navigates to the logoutPageScreen when the action is triggered.
   onTapLogout(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.logoutPageScreen);
+    Navigator.pushNamed(context, AppRoutes.loginPageScreen);
   }
 }

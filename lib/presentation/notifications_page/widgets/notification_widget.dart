@@ -13,8 +13,16 @@ class NotificationWidget extends StatefulWidget {
   State<NotificationWidget> createState() => _NotificationWidgetState();
 }
 
-class _NotificationWidgetState extends State<NotificationWidget> {
+class _NotificationWidgetState extends State<NotificationWidget>
+    with TickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(milliseconds: 600),
+    vsync: this,
+  );
+  late final Animation<double> _animation =
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
   bool _hasBeenExpanded = false;
+  bool _hasBeenColored = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,16 +47,24 @@ class _NotificationWidgetState extends State<NotificationWidget> {
           if (!_hasBeenExpanded && value) {
             setState(() {
               _hasBeenExpanded = true;
+              _hasBeenColored = true;
             });
+            _controller.forward(); // Start the animation when expanding
+          } else if (_hasBeenExpanded && !value) {
+            setState(() {
+              _hasBeenExpanded = false;
+            });
+            _controller.reverse(); // Reverse the animation when collapsing
           }
         },
         collapsedIconColor: appTheme.blueGray100,
-        backgroundColor: !_hasBeenExpanded
-            ? theme.primaryColor
-            : theme.primaryColor.withOpacity(0.7),
-        collapsedBackgroundColor: !_hasBeenExpanded
-            ? theme.primaryColor
-            : theme.primaryColor.withOpacity(0.7),
+        backgroundColor:
+            _hasBeenColored // Change color if _hasBeenColored is true
+                ? theme.primaryColor.withOpacity(0.7)
+                : theme.primaryColor,
+        collapsedBackgroundColor: _hasBeenColored
+            ? theme.primaryColor.withOpacity(0.7)
+            : theme.primaryColor,
         collapsedShape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.h)),
         childrenPadding: EdgeInsets.all(8.h),
@@ -56,11 +72,14 @@ class _NotificationWidgetState extends State<NotificationWidget> {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.h)),
         iconColor: appTheme.blueGray100,
         children: [
-          Text(
-            widget.content,
-            style: TextStyle(
-              color: appTheme.blueGray100,
-              fontSize: 13.h,
+          SizeTransition(
+            sizeFactor: _animation,
+            child: Text(
+              widget.content,
+              style: TextStyle(
+                color: appTheme.blueGray100,
+                fontSize: 13.h,
+              ),
             ),
           )
         ],

@@ -61,6 +61,7 @@ class ArtemisPageScreen extends StatelessWidget {
                   expandedHeaderPadding: EdgeInsets.only(top: 4.adaptSize),
                   children: faqs.map<ExpansionPanelRadio>((Item item) {
                     return ExpansionPanelRadio(
+                      canTapOnHeader: true,
                       value: item.id,
                       headerBuilder: (BuildContext context, bool isExpanded) {
                         return ListTile(

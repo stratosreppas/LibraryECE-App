@@ -1,32 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 
-class CheckBoxDropDownWidget extends StatefulWidget {
+class RadioButtonDropDownWidget extends StatefulWidget {
   final String header;
   final List<String> contents;
 
-  CheckBoxDropDownWidget(
-      {Key? key, required this.header, required this.contents})
-      : super(key: key);
+  RadioButtonDropDownWidget({required this.header, required this.contents});
 
   @override
-  State<CheckBoxDropDownWidget> createState() => CheckBoxDropDownWidgetState();
+  State<RadioButtonDropDownWidget> createState() =>
+      RadioButtonDropDownWidgetState();
 }
 
-class CheckBoxDropDownWidgetState extends State<CheckBoxDropDownWidget> {
-  List<bool?> checkboxValues = [];
+class RadioButtonDropDownWidgetState extends State<RadioButtonDropDownWidget> {
+  late int? selectedValue;
 
   @override
   void initState() {
     super.initState();
-    // Initialize checkboxValues with false for each content item
-    checkboxValues = List<bool?>.filled(widget.contents.length, false);
-  }
-
-  void clearSelection() {
-    setState(() {
-      checkboxValues = List<bool?>.filled(widget.contents.length, false);
-    });
+    // Set the initial value to the index of the first item
+    selectedValue = widget.contents.isNotEmpty ? 0 : null;
   }
 
   @override
@@ -55,11 +48,12 @@ class CheckBoxDropDownWidgetState extends State<CheckBoxDropDownWidget> {
         iconColor: appTheme.blueGray100,
         children: List.generate(
           widget.contents.length,
-          (index) => CheckboxListTile(
-            value: checkboxValues[index],
-            onChanged: (bool? value) {
+          (index) => RadioListTile(
+            groupValue: selectedValue,
+            value: index,
+            onChanged: (int? value) {
               setState(() {
-                checkboxValues[index] = value;
+                selectedValue = value;
               });
             },
             title: Center(
@@ -72,8 +66,7 @@ class CheckBoxDropDownWidgetState extends State<CheckBoxDropDownWidget> {
               ),
             ),
             activeColor: appTheme.blueGray100,
-            checkColor: theme.primaryColor,
-            side: BorderSide(color: appTheme.blueGray100, width: 2.h),
+            controlAffinity: ListTileControlAffinity.trailing,
           ),
         ),
       ),

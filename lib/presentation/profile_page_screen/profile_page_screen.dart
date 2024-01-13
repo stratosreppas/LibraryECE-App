@@ -13,31 +13,27 @@ class ProfilePageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-      WillPopScope(
-          onWillPop: () async {
-            // Pop all routes until reaching the home page
-            Navigator.popUntil(context, ModalRoute.withName(AppRoutes.homePage));
+    return WillPopScope(
+      onWillPop: () async {
+        // Pop all routes until reaching the home page
+        Navigator.popUntil(context, ModalRoute.withName(AppRoutes.homePage));
 
-            return false;
-          }, // Prevent default behavior (popping the current route)
-        child: SafeArea(
+        return false;
+      }, // Prevent default behavior (popping the current route)
+      child: SafeArea(
           child: AppTemplate(
-              body: Container(
-                  width: double.maxFinite,
-                  padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 6.v),
-                  child: Column(children: [
-                    SizedBox(height: 8.v),
-                    _buildRichTooltipGrid(context),
-                    SizedBox(height: 16.v),
-                    _buildLoanComponentColumn(context)
-                  ]
-                  )
-              ),
-            initialIndex: 3,
-          )
-            ),
-      );
+        body: Container(
+            width: double.maxFinite,
+            padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 6.v),
+            child: Column(children: [
+              SizedBox(height: 8.v),
+              _buildRichTooltipGrid(context),
+              SizedBox(height: 16.v),
+              _buildLoanComponentColumn(context)
+            ])),
+        initialIndex: 3,
+      )),
+    );
   }
 
   /// Section Widget
@@ -98,10 +94,6 @@ class ProfilePageScreen extends StatelessWidget {
       ),
     );
   }
-
-
-
-
 
   /// Navigates to the bookPageThreeScreen when the action is triggered.
   onTapthLoan(BuildContext context) {

@@ -3,11 +3,15 @@ import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/presentation/filters_page_screen/widgets/checkbox_dropdown_widget.dart';
 import 'package:stratos_s_application3/widgets/custom_elevated_button.dart';
 
-// ignore_for_file: must_be_immutable
-class FiltersPageScreen extends StatelessWidget {
+class FiltersPageScreen extends StatefulWidget {
   FiltersPageScreen({Key? key}) : super(key: key);
 
-  List<String> categoriesList = ["1ο Εξάμηνο", "2ο Εξάμηνο", "3ο Εξάμηνο"];
+  @override
+  State<FiltersPageScreen> createState() => _FiltersPageScreenState();
+}
+
+class _FiltersPageScreenState extends State<FiltersPageScreen> {
+  List<String> categoriesList = ["Μαθηματικά", "Φυσική", "Σήματα"];
 
   List<String> authorsList = ["Author 1", "Author 2", "Author 3"];
 
@@ -19,6 +23,9 @@ class FiltersPageScreen extends StatelessWidget {
     "Ελληνικά",
     "Αγγλικά",
   ];
+
+  final List<GlobalKey<CheckBoxDropDownWidgetState>> checkBoxKeys =
+      List.generate(5, (index) => GlobalKey<CheckBoxDropDownWidgetState>());
 
   @override
   Widget build(BuildContext context) {
@@ -58,26 +65,31 @@ class FiltersPageScreen extends StatelessWidget {
                             ]))),
                     SizedBox(height: 20.v),
                     CheckBoxDropDownWidget(
+                      key: checkBoxKeys[0],
                       header: "Κατηγορίες",
                       contents: categoriesList,
                     ),
                     SizedBox(height: 20.v),
                     CheckBoxDropDownWidget(
+                      key: checkBoxKeys[1],
                       header: "Συγγραφείς",
                       contents: authorsList,
                     ),
                     SizedBox(height: 20.v),
                     CheckBoxDropDownWidget(
+                      key: checkBoxKeys[2],
                       header: "Εκδόσεις",
                       contents: publisherList,
                     ),
                     SizedBox(height: 20.v),
                     CheckBoxDropDownWidget(
+                      key: checkBoxKeys[3],
                       header: "Χρονολογία Έκδοσης",
                       contents: publicationYearList,
                     ),
                     SizedBox(height: 20.v),
                     CheckBoxDropDownWidget(
+                      key: checkBoxKeys[4],
                       header: "Γλώσσα",
                       contents: languageList,
                     )
@@ -121,9 +133,11 @@ class FiltersPageScreen extends StatelessWidget {
     Navigator.pop(context);
   }
 
-  /// Navigates to the resultPageScreen when the action is triggered.
   onTapTxtWidget(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.resultPageScreen);
+    // You can now access checkBoxKeys and their states
+    for (var key in checkBoxKeys) {
+      key.currentState?.clearSelection();
+    }
   }
 
   /// Navigates to the resultPageScreen when the action is triggered.

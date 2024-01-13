@@ -83,6 +83,7 @@ class _FaqsPageScreenState extends State<FaqsPageScreen> {
                   children: faqs.map<ExpansionPanelRadio>((Item item) {
                     return ExpansionPanelRadio(
                       value: item.id,
+                      canTapOnHeader: true,
                       headerBuilder: (BuildContext context, bool isExpanded) {
                         return ListTile(
                           title: Text(item.headerText,
