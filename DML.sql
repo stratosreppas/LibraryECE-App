@@ -104,7 +104,7 @@ ALTER TABLE `notify`
   ADD CONSTRAINT `fk_notify_user_id` FOREIGN KEY (`id`) REFERENCES `visitor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `books`
-  ADD COLUMN `image` BLOB;
+  ADD COLUMN `image_url` varchar(255) DEFAULT NULL,
 
 ALTER TABLE `visitor`
   ADD COLUMN `password` VARCHAR(255) DEFAULT NULL;
