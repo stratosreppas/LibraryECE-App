@@ -29,7 +29,9 @@ class ResultPageScreen extends StatefulWidget {
 }
 
 class _ResultPageScreenState extends State<ResultPageScreen> {
+
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+  TextEditingController searchController = TextEditingController();
 
   List<Book> books = [];
 
@@ -45,8 +47,6 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('i am here');
-    print(books);
     return SafeArea(
       child: AppTemplate(
         body: SizedBox(
@@ -54,6 +54,60 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                SizedBox(height: 16.v),
+                Padding(
+                  padding: EdgeInsets.all(8.h),
+                  child: SearchBar(
+                              backgroundColor:
+                              MaterialStateProperty.resolveWith<Color?>(
+                  (Set<MaterialState> states) {
+                              // Return the color for the default state
+                              return theme.primaryColor;
+                            },
+                            ),
+                            controller: searchController,
+                            hintText: " Αναζητήστε εδώ",
+                            hintStyle:
+                            MaterialStateProperty.resolveWith<TextStyle?>(
+                  (Set<MaterialState> states) {
+                                // Return the style for the default state
+                                return TextStyle(
+                  color: appTheme.blueGray100,
+                  fontSize: 15.h,
+                                ); // Customize with your color
+                              },
+                            ),
+                            trailing: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: GestureDetector(
+                  onTap: () {
+                    // Navigate when the trailing icon is tapped
+                    Navigator.pushNamed(
+                        context, AppRoutes.resultPageScreen);
+                  },
+                  child: Icon(
+                    Icons.search_outlined,
+                    color: appTheme.blueGray100,
+                  ),
+                                ),
+                              ),
+                            ],
+                            onSubmitted: (String string) {
+                              Navigator.pushNamed(
+                  context, AppRoutes.resultPageScreen);
+                            },
+                            textStyle:
+                            MaterialStateProperty.resolveWith<TextStyle?>(
+                  (Set<MaterialState> states) {
+                                // Return the style for the default state
+                                return TextStyle(
+                    color: appTheme
+                        .blueGray100); // Customize with your color
+                              },
+                            ),
+                          ),
+                ),
                 for (Book book in books)
                   Column(
                     children: [
