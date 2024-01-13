@@ -19,7 +19,10 @@ class _PhotoPageState extends State<PhotoPage> {
 
   Future<void> fetchData() async {
     try {
-      final response = await http.get(Uri.parse('http://192.168.1.187:5000/api/first_book_image'));
+
+      // TODO: Change the IP address to your own machine's IP address
+      final response =
+      await http.get(Uri.parse('http://192.168.1.187:5000/api/first_book_image'));
 
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
@@ -52,7 +55,6 @@ class _PhotoPageState extends State<PhotoPage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +64,19 @@ class _PhotoPageState extends State<PhotoPage> {
       body: Center(
         child: isDatabaseConnected
             ? imageUrl.isNotEmpty
-            ? Text('Image URL: $imageUrl')
+            ? Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.network(
+              imageUrl,
+              height: 200, // Set the desired height
+              width: 200, // Set the desired width
+              fit: BoxFit.contain, // Adjust the fit as needed
+            ),
+            SizedBox(height: 16),
+            Text('Image URL: $imageUrl'),
+          ],
+        )
             : Text('No image available')
             : Text('Database not connected'),
       ),

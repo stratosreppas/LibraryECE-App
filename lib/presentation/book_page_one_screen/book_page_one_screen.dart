@@ -5,6 +5,7 @@ import 'package:stratos_s_application3/presentation/app_template/app_template.da
 
 // ignore_for_file: must_be_immutable
 class BookPageOneScreen extends StatelessWidget {
+
   BookPageOneScreen({Key? key}) : super(key: key);
 
   TextEditingController authorsController = TextEditingController();
