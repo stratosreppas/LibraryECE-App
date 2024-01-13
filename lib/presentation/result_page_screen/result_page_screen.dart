@@ -1,4 +1,7 @@
+import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
+
 import '../result_page_screen/widgets/twelve_item_widget.dart';
+import '../result_page_screen/widgets/result_box.dart';
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/presentation/home_page/home_page.dart';
@@ -11,230 +14,114 @@ import 'package:stratos_s_application3/widgets/custom_bottom_bar.dart';
 import 'package:stratos_s_application3/widgets/custom_floating_button.dart';
 import 'package:stratos_s_application3/widgets/custom_icon_button.dart';
 import 'package:stratos_s_application3/widgets/custom_outlined_button.dart';
+import 'package:stratos_s_application3/routes/classes/Book.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class ResultPageScreen extends StatelessWidget {
+class ResultPageScreen extends StatefulWidget {
   ResultPageScreen({Key? key})
       : super(
           key: key,
         );
 
+  @override
+  State<ResultPageScreen> createState() => _ResultPageScreenState();
+}
+
+class _ResultPageScreenState extends State<ResultPageScreen> {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+
+  List<Book> books = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData().then((fetchedBooks) {
+      setState(() {
+        this.books = fetchedBooks;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    print('i am here');
+    print(books);
     return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: _buildAppBar(context),
+      child: AppTemplate(
         body: SizedBox(
           width: SizeUtils.width,
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _buildTwelve(context),
-                SizedBox(height: 3.v),
-                _buildTf(context),
+                for (Book book in books)
+                  Column(
+                    children: [
+                      SizedBox(height: 16.v),
+                      ResultBox(book: book),
+                    ],
+                  ),
               ],
             ),
           ),
         ),
-        bottomNavigationBar: _buildBottomBar(context),
         floatingActionButton: _buildFloatingActionButton(context),
       ),
     );
   }
 
-  /// Section Widget
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return CustomAppBar(
-      title: SizedBox(
-        height: 30.v,
-        width: 199.h,
-        child: Stack(
-          alignment: Alignment.centerLeft,
-          children: [
-            AppbarTitle(
-              text: "ECE Library",
-              margin: EdgeInsets.only(
-                top: 3.v,
-                bottom: 12.v,
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                margin: EdgeInsets.only(
-                  left: 9.h,
-                  right: 160.h,
-                ),
-                decoration: AppDecoration.fillOnPrimary.copyWith(
-                  borderRadius: BorderRadiusStyle.circleBorder15,
-                ),
-                child: AppbarImage(
-                  imagePath: ImageConstant.imgImage1,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      actions: [
-        AppbarTrailingImage(
-          imagePath: ImageConstant.imgMegaphone,
-          margin: EdgeInsets.symmetric(
-            horizontal: 5.h,
-            vertical: 7.v,
-          ),
-        ),
-      ],
-      styleType: Style.bgFill,
-    );
+  Future<List<Book>> fetchData() async {
+    try {
+      print('hi');
+      final response = await http.get(Uri.parse('http://10.3.26.23:5000/api/all_books/el-en'));
+
+      print('Response status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final List<dynamic> dataList = json.decode(response.body);
+
+        if (dataList.isNotEmpty) {
+          List<Book> books = dataList.map((map) {
+            return Book(
+              title: map['title'] ?? '',
+              author: map['author'] ?? '',
+              imageurl: map['image_url'] ?? '',
+              isbn: map['isbn'] ?? '',
+              subtitle: map['subtitle'] ?? '',
+              publisher: map['publisher'] ?? '',
+              year: map['year'] ?? '',
+              language: map['language'] ?? '',
+              category: map['category'] ?? '',
+              edition: map['edition'] ?? '',
+              dewey: map['dewey'] ?? '',
+              copies: map['copies'] ?? '',
+            );
+          }).toList();
+
+          books.forEach((book) {
+            print('Book Title: ${book.title}');
+            print('Book Author: ${book.author}');
+            print('Book Image URL: ${book.imageurl}');
+          });
+
+          if (mounted) {
+            return books;
+          }
+        } else {
+          print('Δεν βρέθηκαν βιβλία με τα συγκεκριμένα κριτήρια.');
+        }
+      } else {
+        print('Σόρρυ, υπάρχει κάποιο θέμα με τη βάση.');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+
+    // Return an empty list in case of an error or no data
+    return [];
   }
 
-  /// Section Widget
-  Widget _buildTwelve(BuildContext context) {
-    return ListView.separated(
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      separatorBuilder: (
-        context,
-        index,
-      ) {
-        return SizedBox(
-          height: 1.v,
-        );
-      },
-      itemCount: 5,
-      itemBuilder: (context, index) {
-        return TwelveItemWidget();
-      },
-    );
-  }
-
-  /// Section Widget
-  Widget _buildAvailableCopies2(BuildContext context) {
-    return CustomOutlinedButton(
-      height: 27.v,
-      width: 166.h,
-      text: "Διαθέσιμα Αντίτυπα: 2",
-      margin: EdgeInsets.only(left: 3.h),
-    );
-  }
-
-  /// Section Widget
-  Widget _buildTf(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 14.h),
-      padding: EdgeInsets.symmetric(vertical: 7.v),
-      decoration: AppDecoration.fillPrimary.copyWith(
-        borderRadius: BorderRadiusStyle.roundedBorder10,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            height: 160.v,
-            width: 116.h,
-            margin: EdgeInsets.only(left: 14.h),
-            child: Stack(
-              alignment: Alignment.topRight,
-              children: [
-                CustomImageView(
-                  imagePath: ImageConstant.imgRectangle2114,
-                  height: 160.v,
-                  width: 116.h,
-                  radius: BorderRadius.circular(
-                    3.h,
-                  ),
-                  alignment: Alignment.center,
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: 4.v,
-                      right: 4.h,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CustomIconButton(
-                          height: 25.adaptSize,
-                          width: 25.adaptSize,
-                          padding: EdgeInsets.all(2.h),
-                          child: CustomImageView(
-                            imagePath: ImageConstant.imgLinkedinBlack900,
-                          ),
-                        ),
-                        CustomImageView(
-                          imagePath: ImageConstant.imgFavoriteRed90001,
-                          height: 20.v,
-                          width: 22.h,
-                          margin: EdgeInsets.only(
-                            left: 7.h,
-                            top: 3.v,
-                            bottom: 1.v,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-              left: 7.h,
-              top: 10.v,
-              bottom: 5.v,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 194.h,
-                  child: Text(
-                    "ΣΥΓΧΡΟΝΑ ΣΥΣΤΗΜΑΤΑ ΑΥΤΟΜΑΤΟΥ ΕΛΕΓΧΟΥ",
-                    maxLines: null,
-                    overflow: TextOverflow.ellipsis,
-                    style: CustomTextStyles.bodyMediumOnPrimary_1.copyWith(
-                      height: 1.71,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 185.h,
-                  child: Text(
-                    "BISHOP ROBERT, DORF RICHARD",
-                    maxLines: null,
-                    overflow: TextOverflow.ellipsis,
-                    style: CustomTextStyles.bodySmallRobotoOnPrimary.copyWith(
-                      height: 2.00,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 41.v),
-                _buildAvailableCopies2(context),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  /// Section Widget
-  Widget _buildBottomBar(BuildContext context) {
-    return CustomBottomBar(
-      onChanged: (BottomBarEnum type) {
-        Navigator.pushNamed(
-            navigatorKey.currentContext!, getCurrentRoute(type));
-      },
-    );
-  }
 
   /// Section Widget
   Widget _buildFloatingActionButton(BuildContext context) {
@@ -247,34 +134,16 @@ class ResultPageScreen extends StatelessWidget {
         height: 30.0.v,
         width: 30.0.h,
       ),
+      onTap: () {
+        onTapFloatingActionButton(context);
+      },
     );
   }
 
-  ///Handling route based on bottom click actions
-  String getCurrentRoute(BottomBarEnum type) {
-    switch (type) {
-      case BottomBarEnum.Home:
-        return AppRoutes.homePage;
-      case BottomBarEnum.Library:
-        return "/";
-      case BottomBarEnum.Notifications:
-        return "/";
-      case BottomBarEnum.Profile:
-        return AppRoutes.notificationsPage;
-      default:
-        return "/";
-    }
-  }
-
-  ///Handling page based on route
-  Widget getCurrentPage(String currentRoute) {
-    switch (currentRoute) {
-      case AppRoutes.homePage:
-        return HomePage();
-      case AppRoutes.notificationsPage:
-        return NotificationsPage();
-      default:
-        return DefaultWidget();
-    }
+/// Navigates to the filtersPageScreen when the action is triggered.
+  onTapFloatingActionButton(BuildContext context) {
+    Navigator.pushNamed(context, AppRoutes.filtersPageScreen);
   }
 }
+
+

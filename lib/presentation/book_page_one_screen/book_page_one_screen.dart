@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/widgets/custom_outlined_button.dart';
 import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
+import 'package:stratos_s_application3/routes/classes/Book.dart';
+import  'package:http/http.dart' as http;
+import 'dart:convert';
+
 
 // ignore_for_file: must_be_immutable
 class BookPageOneScreen extends StatelessWidget {
@@ -30,7 +34,8 @@ class BookPageOneScreen extends StatelessWidget {
                   width: 340.h,
                   decoration: BoxDecoration(
                     color: theme.colorScheme.primary,
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(10.h)),
+                    borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(10.h)),
                   ),
                 ),
               ),
@@ -77,7 +82,7 @@ class BookPageOneScreen extends StatelessWidget {
     );
   }
 
-/// Section Widget
+  /// Section Widget
   Widget _buildAvailableCopies(BuildContext context) {
     return Padding(
         padding: EdgeInsets.only(left: 14.h, right: 11.h),
@@ -103,7 +108,7 @@ class BookPageOneScreen extends StatelessWidget {
                         height: 25.v,
                         width: 186.h,
                         child:
-                            Stack(alignment: Alignment.centerRight, children: [
+                        Stack(alignment: Alignment.centerRight, children: [
                           CustomImageView(
                               imagePath: ImageConstant.imgRectangle30,
                               height: 25.v,
@@ -116,7 +121,7 @@ class BookPageOneScreen extends StatelessWidget {
                                   padding: EdgeInsets.only(right: 5.h),
                                   child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      MainAxisAlignment.center,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Padding(
@@ -128,7 +133,7 @@ class BookPageOneScreen extends StatelessWidget {
                                                     .bodySmallRobotoOnPrimary11)),
                                         CustomImageView(
                                             imagePath:
-                                                ImageConstant.imgFavorite,
+                                            ImageConstant.imgFavorite,
                                             height: 24.adaptSize,
                                             width: 24.adaptSize,
                                             margin: EdgeInsets.only(left: 5.h))
@@ -220,6 +225,7 @@ class BookPageOneScreen extends StatelessWidget {
               Text("Συμμετρία", style: theme.textTheme.bodyMedium)
             ]));
   }
+
 
   /// Navigates to the locationPageScreen when the action is triggered.
   onTapImgImage(BuildContext context) {

@@ -8,10 +8,14 @@ import 'package:stratos_s_application3/widgets/custom_bottom_bar.dart';
 class AppTemplate extends StatelessWidget {
 
   final Widget body;
+  final Widget floatingActionButton;
   int initialIndex;
 
-  AppTemplate({required this.body, this.initialIndex = 0});
-
+  AppTemplate({
+    required this.body,
+    this.floatingActionButton = const SizedBox(width: 0.0, height: 0.0),
+    this.initialIndex = 0,
+  });
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +24,7 @@ class AppTemplate extends StatelessWidget {
       appBar: TopBar(),
       body: body,
       bottomNavigationBar: CustomBottomBar(initialIndex: initialIndex),
+      floatingActionButton: floatingActionButton,
     );
   }
 }

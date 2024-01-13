@@ -12,6 +12,7 @@ class Book {
   final String category;
   final String edition;
   final String dewey;
+  final int copies;
 
 
 
@@ -26,6 +27,7 @@ Book({
   required this.category,
   required this.edition,
   required this.dewey,
-  required this.subtitle
+  required this.subtitle,
+  required this.copies,
 });
 }

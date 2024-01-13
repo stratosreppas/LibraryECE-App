@@ -19,7 +19,7 @@ class _PhotoPageState extends State<PhotoPage> {
 
   Future<void> fetchData() async {
     try {
-
+      print('hi');
       // TODO: Change the IP address to your own machine's IP address
       final response =
       await http.get(Uri.parse('http://192.168.1.187:5000/api/first_book_image'));

@@ -24,6 +24,7 @@ class Transaction extends Book{
     required String category,
     required String edition,
     required String dewey,
+    required int copies,
   }) : super(
     title: title,
     subtitle: subtitle,
@@ -36,5 +37,6 @@ class Transaction extends Book{
     category: category,
     edition: edition,
     dewey: dewey,
+    copies: copies,
   );
 }
