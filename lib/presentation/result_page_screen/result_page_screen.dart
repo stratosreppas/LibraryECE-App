@@ -93,6 +93,23 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                     ),
                   ),
                 ),
+                Row(
+                  // write a text here
+                  children: [
+                    SizedBox(width: 16.h),
+                    Text(
+                      'Αποτελέσματα για: '),
+                  ],
+                ),
+                SizedBox(height: 16.v),
+                Row(
+                  // write a text here
+                  children: [
+                    SizedBox(width: 16.h),
+                    Text(
+                      'Αναζήτηση με βάση τα φίλτρα: '),
+                  ],
+                ),
                 for (Book book in books)
                   Column(
                     children: [
@@ -100,11 +117,13 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                       ResultBox(book: book),
                     ],
                   ),
+                SizedBox(height: 16.v),
               ],
             ),
           ),
         ),
         floatingActionButton: _buildFloatingActionButton(context),
+        initialIndex: 1,
       ),
     );
   }
