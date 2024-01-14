@@ -4,9 +4,11 @@ import 'package:stratos_s_application3/core/app_export.dart';
 class CheckBoxDropDownWidget extends StatefulWidget {
   final String header;
   final List<String> contents;
+  final Function(String) onSelectedValuesChanged; // Callback function
+
 
   CheckBoxDropDownWidget(
-      {Key? key, required this.header, required this.contents})
+      {Key? key, required this.header, required this.contents, required this.onSelectedValuesChanged})
       : super(key: key);
 
   @override
@@ -28,6 +30,35 @@ class CheckBoxDropDownWidgetState extends State<CheckBoxDropDownWidget> {
       checkboxValues = List<bool?>.filled(widget.contents.length, false);
     });
   }
+
+
+  String getSelectedValues() {
+
+    List<String> selectedValues = [];
+
+    for (int i = 0; i < widget.contents.length; i++) {
+      if (checkboxValues[i] == true) {
+        if (widget.header == 'Γλώσσα') {
+          switch (widget.contents[i]) {
+            case 'Ελληνικά':
+              selectedValues.add('el');
+              break;
+            case 'Αγγλικά':
+              selectedValues.add('en');
+              break;
+            default:
+              break;
+          }
+        }
+        else
+          selectedValues.add(widget.contents[i]);
+      }
+    }
+
+    // Join the selected values with a '-' in between
+    return selectedValues.join('-');
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +91,7 @@ class CheckBoxDropDownWidgetState extends State<CheckBoxDropDownWidget> {
             onChanged: (bool? value) {
               setState(() {
                 checkboxValues[index] = value;
+                widget.onSelectedValuesChanged(getSelectedValues());
               });
             },
             title: Center(
