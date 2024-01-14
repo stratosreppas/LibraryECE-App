@@ -29,7 +29,7 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
   ];
 
   final List<GlobalKey<CheckBoxDropDownWidgetState>> checkBoxKeys =
-  List.generate(5, (index) => GlobalKey<CheckBoxDropDownWidgetState>());
+      List.generate(5, (index) => GlobalKey<CheckBoxDropDownWidgetState>());
 
   @override
   Widget build(BuildContext context) {
@@ -135,8 +135,8 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
   Future<void> fetchData() async {
     try {
       print('hi');
-      final response =
-      await http.get(Uri.parse('http://10.3.26.23:5000/api/all_books/el-en'));
+      final response = await http
+          .get(Uri.parse('http://10.3.24.70:5000/api/all_books/el-en'));
 
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
