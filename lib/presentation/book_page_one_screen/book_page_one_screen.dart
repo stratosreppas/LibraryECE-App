@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/widgets/custom_outlined_button.dart';
 import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
-import 'package:stratos_s_application3/routes/classes/Book.dart';
-import  'package:http/http.dart' as http;
-import 'dart:convert';
 
 
 // ignore_for_file: must_be_immutable

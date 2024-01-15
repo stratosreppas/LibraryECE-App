@@ -26,16 +26,6 @@ CREATE TABLE books (
   publisher varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE `temp` (
-  `te` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-INSERT INTO `temp` (`te`) VALUES
-('a'),
-('%%%a%%'),
-('k%'),
-('k');
-
 CREATE TABLE `transaction` (
   `transaction_id` int(11) NOT NULL,
   `visitor_id` int(11) DEFAULT NULL,
@@ -53,7 +43,8 @@ CREATE TABLE `visitor` (
   `property` int(11) DEFAULT NULL,
   `barcode` varchar(50) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
-  `mail` varchar(50) DEFAULT NULL,
+  `mail` varchar(50) NOT NULL,
+  password varchar(50) NOT NULL,
   `penalty` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -104,9 +95,7 @@ ALTER TABLE `notify`
   ADD CONSTRAINT `fk_notify_user_id` FOREIGN KEY (`id`) REFERENCES `visitor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `books`
-  ADD COLUMN `image_url` varchar(500) DEFAULT NULL,
+  ADD COLUMN `image_url` varchar(500) DEFAULT NULL;
 
 ALTER TABLE `visitor`
   ADD COLUMN `password` VARCHAR(255) DEFAULT NULL;
-
-

@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session
 from flask_mysqldb import MySQL
 import mysql.connector
 
@@ -11,6 +11,24 @@ app.config["MYSQL_PASSWORD"] = ''
 app.config["MYSQL_DB"] = 'ecel'
 
 db = MySQL(app)
+
+@app.route('/login', methods=['POST'])
+def user_login():
+    try:
+        data = request.json
+        mail = data.get('mail')
+        password = data.get('password')
+        cursor = db.connection.cursor()
+        cursor.execute(f"SELECT COUNT(*) FROM visitor WHERE mail='{mail}' and password='{password}'")
+        user_data = cursor.fetchone()
+        cursor.close()
+
+        if user_data[0]==1:
+            return jsonify({"status": "success", "message": "Successful Login"})
+        else:
+            return jsonify({"status": "failure", "message": "Incorrect credentials. \nPlease ensure your username and password are correct."})
+    except Exception as e:
+        return jsonify({'error': f'Database error: {str(e)}'})
 
 @app.route('/api/first_book_image', methods = ['GET'])
 def get_first_book_image():
@@ -90,8 +108,9 @@ def get_all_books():
         cursor.execute(query, params)
 
         data = cursor.fetchall()
-
+        print(data)
         if data:
+
             columns = [desc[0] for desc in cursor.description]
             results = [dict(zip(columns, row)) for row in data]
 
