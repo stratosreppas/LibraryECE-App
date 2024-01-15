@@ -30,7 +30,12 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
 
   String searchText = '';
 
-  String languages = '';
+  String languages = 'NaN';
+  String categories = 'NaN';
+  String authors = 'NaN';
+  String publishers = 'NaN';
+  String years = 'NaN';
+
 
   final List<GlobalKey<CheckBoxDropDownWidgetState>> checkBoxKeys =
   List.generate(5, (index) => GlobalKey<CheckBoxDropDownWidgetState>());
@@ -103,7 +108,7 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
                       header: "Κατηγορίες",
                       contents: categoriesList,
                       onSelectedValuesChanged: (selectedValues) {
-                        print(selectedValues);
+                        categories = selectedValues;
                       },
                     ),
                     SizedBox(height: 20.v),
@@ -112,7 +117,7 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
                       header: "Συγγραφείς",
                       contents: authorsList,
                       onSelectedValuesChanged: (selectedValues) {
-                        print(selectedValues);
+                        authors = selectedValues;
                       },
                     ),
                     SizedBox(height: 20.v),
@@ -121,7 +126,7 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
                       header: "Εκδόσεις",
                       contents: publisherList,
                       onSelectedValuesChanged: (selectedValues) {
-                        print(selectedValues);
+                        publishers = selectedValues;
                       },
                     ),
                     SizedBox(height: 20.v),
@@ -130,7 +135,7 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
                       header: "Χρονολογία Έκδοσης",
                       contents: publicationYearList,
                       onSelectedValuesChanged: (selectedValues) {
-                        print(selectedValues);
+                        years = selectedValues;
                       },
                     ),
                     SizedBox(height: 20.v),
@@ -172,7 +177,7 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
                   buttonStyle: CustomButtonStyles.fillPrimaryTL19,
                   buttonTextStyle: CustomTextStyles.titleSmallOnPrimary_1,
                   onPressed: () {
-                    onTapf(context, languages);
+                    onTapf(context, languages, authors, publishers, years, categories);
                   })
             ]));
   }
@@ -191,9 +196,9 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
   }
 
   /// Navigates to the resultPageScreen when the action is triggered.
-  onTapf(BuildContext context, String languages) {
+  onTapf(BuildContext context, String languages, String authors, String publishers, String years, String categories) {
     Navigator.pushNamed(context, AppRoutes.resultPageScreen, arguments: { 'searchText': searchText, // Pass searchText as a parameter to the next screen
-      'languages': languages, // Pass books as a parameter to the next screen
+      'languages': languages, 'authors': authors, 'publishers': publishers, 'years': years, 'categories': categories, // Pass books as a parameter to the next screen
     });
   }
 }

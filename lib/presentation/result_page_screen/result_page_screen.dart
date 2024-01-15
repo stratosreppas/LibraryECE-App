@@ -49,6 +49,26 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
       languages = args['languages'];
     }
 
+    if (args.containsKey('categories')) {
+      // Get the value associated with the 'languages' key
+      categories = args['categories'];
+    }
+
+    if (args.containsKey('authors')) {
+      // Get the value associated with the 'languages' key
+      authors = args['authors'];
+    }
+
+    if (args.containsKey('publishers')) {
+      // Get the value associated with the 'languages' key
+      publishers = args['publishers'];
+    }
+
+    if (args.containsKey('years')) {
+      // Get the value associated with the 'languages' key
+      years = args['years'];
+    }
+
     if (args.containsKey('searchText')) {
       // Get the value associated with the 'languages' key
       searchText = args['searchText'];
