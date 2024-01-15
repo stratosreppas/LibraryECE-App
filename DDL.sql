@@ -8912,16 +8912,11 @@ INSERT INTO `books` (`id`, `title`, `subtitle`, `author`, `isbn`, `year`, `langu
 
 -- --------------------------------------------------------
 
-
-INSERT INTO `visitor` (`id`, `name`, `surname`, `am`, `property`, `barcode`, `phone`, `mail`, `penalty`) VALUES
-(1, 'John', 'Doe', '123445', 1, NULL, '698980', NULL, NULL);
-
 INSERT INTO `visitor` (`name`, `surname`, `am`, `property`, `phone`, `mail`,password)
 VALUES
 ('Alice', 'Smith', '123456', 1, '1234567890', 'alice@example.com',"123456"),
-('Bob', 'Johnson', '789012', 2, '9876543210', 'bob@example.com',"123456");
-
-
+('Bob', 'Johnson', '789012', 2, '9876543210', 'bob@example.com',"123456"),
+("Manolis","Pantelakis","20853",1,"699999999","manospantelak@gmail.com","123456");
 
 -- --------------------------------------------------------
 

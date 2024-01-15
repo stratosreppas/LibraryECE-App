@@ -36,16 +36,17 @@ CREATE TABLE `transaction` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `visitor` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `surname` varchar(255) DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(150) DEFAULT NULL,
+  `surname` varchar(150) DEFAULT NULL,
   `am` varchar(50) DEFAULT NULL,
   `property` int(11) DEFAULT NULL,
   `barcode` varchar(50) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `mail` varchar(50) NOT NULL,
   password varchar(50) NOT NULL,
-  `penalty` date DEFAULT NULL
+  `penalty` date DEFAULT NULL,
+  primary key(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `books`
@@ -66,9 +67,9 @@ ALTER TABLE `books`
 ALTER TABLE `transaction`
   MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76890;
 
-ALTER TABLE `visitor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6894;
-COMMIT;
+-- ALTER TABLE `visitor`
+--   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6894;
+-- COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
@@ -96,6 +97,3 @@ ALTER TABLE `notify`
 
 ALTER TABLE `books`
   ADD COLUMN `image_url` varchar(500) DEFAULT NULL;
-
-ALTER TABLE `visitor`
-  ADD COLUMN `password` VARCHAR(255) DEFAULT NULL;

@@ -5,7 +5,12 @@ import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  final String email;
+
+  // Assign a default value to the 'email' field in the constructor
+  HomePage({Key? key, String email = ""})
+      : email = email,
+        super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -13,9 +18,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+  late final String firstName;
+  late final String lastName;
 
   @override
   Widget build(BuildContext context) {
+    Map<String, String>? arguments =
+        ModalRoute.of(context)?.settings.arguments as Map<String, String>?;
+
+    // Extract the email value from the map
+    String email = arguments?['email'] ?? "";
+    print(email);
     return SafeArea(
         child: AppTemplate(
             body: SingleChildScrollView(

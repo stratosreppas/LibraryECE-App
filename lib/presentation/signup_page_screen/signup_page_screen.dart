@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/widgets/custom_text_form_field.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SignupPageScreen extends StatefulWidget {
   SignupPageScreen({Key? key}) : super(key: key);
@@ -13,10 +15,10 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
   late final TextEditingController emailFieldController;
   late final TextEditingController passwordFieldController;
   late final TextEditingController repeatPasswordFieldController;
-  late final TextEditingController textFirstNameController;
-  late final TextEditingController textLastNameController;
-  late final TextEditingController textPhoneNumberController;
-  late final TextEditingController textRegistrationIDController;
+  late final TextEditingController firstNameController;
+  late final TextEditingController lastNameController;
+  late final TextEditingController phoneNumberController;
+  late final TextEditingController registrationIDController;
 
   late final FocusNode emailFocusNode;
   late final FocusNode passwordFocusNode;
@@ -27,7 +29,7 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
   late final FocusNode registrationIDFocusNode;
 
   String? selectedRole;
-  List<String> list = <String>[
+  List<String> roleList = <String>[
     'Προπτυχιακός/ή',
     'Μεταπτυχιακός/ή',
     "Υποψήφιος/α Διδάκτωρ",
@@ -51,10 +53,10 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
     emailFieldController = TextEditingController();
     passwordFieldController = TextEditingController();
     repeatPasswordFieldController = TextEditingController();
-    textFirstNameController = TextEditingController();
-    textLastNameController = TextEditingController();
-    textPhoneNumberController = TextEditingController();
-    textRegistrationIDController = TextEditingController();
+    firstNameController = TextEditingController();
+    lastNameController = TextEditingController();
+    phoneNumberController = TextEditingController();
+    registrationIDController = TextEditingController();
 
     emailFocusNode = FocusNode();
     passwordFocusNode = FocusNode();
@@ -69,10 +71,10 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
   void dispose() {
     emailFieldController.dispose();
     passwordFieldController.dispose();
-    textFirstNameController.dispose();
-    textLastNameController.dispose();
-    textPhoneNumberController.dispose();
-    textRegistrationIDController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    phoneNumberController.dispose();
+    registrationIDController.dispose();
 
     emailFocusNode.dispose();
     passwordFocusNode.dispose();
@@ -124,12 +126,23 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                       child: Container(
                           child: Column(children: [
                         CustomTextFormField(
-                            width: 210.h,
+                            width: 260.h,
                             controller: emailFieldController,
                             focusNode: emailFocusNode,
                             hintText: "E-mail",
                             textInputType: TextInputType.emailAddress,
                             textInputAction: TextInputAction.next,
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your e-mail';
+                              } else if (!value.contains('@')) {
+                                return 'Please enter a valid e-mail address';
+                              }
+                              return null;
+                            },
+                            textStyle: TextStyle(fontSize: 16.h),
+                            cursorColor: appTheme.blueGray100,
+                            showCursor: true,
                             suffix: GestureDetector(
                               onTap: () {
                                 emailFieldController.clear();
@@ -143,13 +156,22 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                           padding: EdgeInsets.only(top: 20.v),
                         ),
                         CustomTextFormField(
-                            width: 210.h,
+                            width: 260.h,
                             controller: passwordFieldController,
                             focusNode: passwordFocusNode,
                             hintText: "Password",
                             textInputAction: TextInputAction.next,
                             obscureText: obscureText,
                             textInputType: TextInputType.visiblePassword,
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a password';
+                              }
+                              return null;
+                            },
+                            textStyle: TextStyle(fontSize: 16.h),
+                            cursorColor: appTheme.blueGray100,
+                            showCursor: true,
                             suffix: GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -167,13 +189,25 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                           padding: EdgeInsets.only(top: 20.v),
                         ),
                         CustomTextFormField(
-                            width: 210.h,
+                            width: 260.h,
                             controller: repeatPasswordFieldController,
                             focusNode: repeatPasswordFocusNode,
                             hintText: "Repeat Password",
                             textInputAction: TextInputAction.next,
                             obscureText: obscureTextRepeat,
                             textInputType: TextInputType.visiblePassword,
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please repeat your password';
+                              } else if (value !=
+                                  passwordFieldController.text) {
+                                return 'Passwords do not match';
+                              }
+                              return null;
+                            },
+                            textStyle: TextStyle(fontSize: 16.h),
+                            cursorColor: appTheme.blueGray100,
+                            showCursor: true,
                             suffix: GestureDetector(
                               onTap: () {
                                 setState(() {
@@ -191,14 +225,23 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                           padding: EdgeInsets.only(top: 20.v),
                         ),
                         CustomTextFormField(
-                            width: 210.h,
-                            controller: textFirstNameController,
+                            width: 260.h,
+                            controller: firstNameController,
                             focusNode: firstNameFocusNode,
                             hintText: "First Name",
                             textInputType: TextInputType.name,
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your first name';
+                              }
+                              return null;
+                            },
+                            textStyle: TextStyle(fontSize: 16.h),
+                            cursorColor: appTheme.blueGray100,
+                            showCursor: true,
                             suffix: GestureDetector(
                               onTap: () {
-                                textFirstNameController.clear();
+                                firstNameController.clear();
                               },
                               child: Icon(
                                 Icons.clear,
@@ -209,14 +252,23 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                           padding: EdgeInsets.only(top: 20.v),
                         ),
                         CustomTextFormField(
-                            width: 210.h,
-                            controller: textLastNameController,
+                            width: 260.h,
+                            controller: lastNameController,
                             focusNode: lastNameFocusNode,
                             hintText: "Last Name",
                             textInputType: TextInputType.name,
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your last name';
+                              }
+                              return null;
+                            },
+                            textStyle: TextStyle(fontSize: 16.h),
+                            cursorColor: appTheme.blueGray100,
+                            showCursor: true,
                             suffix: GestureDetector(
                               onTap: () {
-                                textLastNameController.clear();
+                                lastNameController.clear();
                               },
                               child: Icon(
                                 Icons.clear,
@@ -227,14 +279,25 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                           padding: EdgeInsets.only(top: 20.v),
                         ),
                         CustomTextFormField(
-                            width: 210.h,
-                            controller: textPhoneNumberController,
+                            width: 260.h,
+                            controller: phoneNumberController,
                             focusNode: phoneNumberFocusNode,
                             hintText: "Phone Number",
                             textInputType: TextInputType.phone,
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your phone number';
+                              } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                                return 'Please enter a valid phone number';
+                              }
+                              return null;
+                            },
+                            textStyle: TextStyle(fontSize: 16.h),
+                            cursorColor: appTheme.blueGray100,
+                            showCursor: true,
                             suffix: GestureDetector(
                               onTap: () {
-                                textPhoneNumberController.clear();
+                                phoneNumberController.clear();
                               },
                               child: Icon(
                                 Icons.clear,
@@ -245,14 +308,25 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                           padding: EdgeInsets.only(top: 20.v),
                         ),
                         CustomTextFormField(
-                            width: 210.h,
-                            controller: textRegistrationIDController,
+                            width: 260.h,
+                            controller: registrationIDController,
                             focusNode: registrationIDFocusNode,
                             hintText: "Registration ID",
                             textInputType: TextInputType.text,
+                            validator: (String? value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your registration id';
+                              } else if (!RegExp(r'\d{5}').hasMatch(value)) {
+                                return 'Please enter a valid registration id';
+                              }
+                              return null;
+                            },
+                            textStyle: TextStyle(fontSize: 16.h),
+                            cursorColor: appTheme.blueGray100,
+                            showCursor: true,
                             suffix: GestureDetector(
                               onTap: () {
-                                textRegistrationIDController.clear();
+                                registrationIDController.clear();
                               },
                               child: Icon(
                                 Icons.clear,
@@ -297,7 +371,7 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
                                     selectedRole = newValue;
                                   });
                                 },
-                                items: list.map((valueItem) {
+                                items: roleList.map((valueItem) {
                                   return DropdownMenuItem(
                                     value: valueItem,
                                     child: Center(child: Text(valueItem)),
@@ -345,7 +419,53 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
     ));
   }
 
-  onTapStateLayer(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.loginPageScreen);
+  onTapStateLayer(BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
+      if (selectedRole == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Please select a role',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 14.h),
+            ),
+            backgroundColor: Color.fromARGB(255, 180, 14, 3),
+          ),
+        );
+      } else {
+        final response = await http.post(
+          Uri.parse('http://10.3.24.47:4000/signup'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'mail': emailFieldController.text,
+            'password': passwordFieldController.text,
+            'first_name': firstNameController.text,
+            'last_name': lastNameController.text,
+            'phone': phoneNumberController.text,
+            'registration_id': registrationIDController.text,
+            'role': selectedRole ?? ''
+          }),
+        );
+        final responseData = json.decode(response.body);
+
+        if (response.statusCode == 200 && responseData['status'] == 'success') {
+          // Successful signup
+          String successMessage = responseData['message'];
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              successMessage,
+              textAlign: TextAlign.center,
+            ),
+            backgroundColor: Color.fromARGB(255, 16, 124, 6),
+            elevation: 8,
+            padding: EdgeInsets.all(8.h),
+            dismissDirection: DismissDirection.down,
+          ));
+          Navigator.pushReplacementNamed(context, AppRoutes.loginPageScreen);
+        }
+      }
+    }
   }
 }

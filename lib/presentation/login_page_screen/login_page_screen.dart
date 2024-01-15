@@ -88,6 +88,8 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
                           validator: (String? value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your e-mail';
+                            } else if (!value.contains('@')) {
+                              return 'Please enter a valid e-mail address';
                             }
                             return null;
                           },
@@ -233,7 +235,11 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
           padding: EdgeInsets.all(8.h),
           dismissDirection: DismissDirection.down,
         ));
-        Navigator.pushNamed(context, AppRoutes.homePage);
+        Navigator.pushReplacementNamed(
+          context,
+          AppRoutes.homePage,
+          arguments: {'email': emailController.text},
+        );
       } else {
         // Handle unsuccessful login (show an error message, etc.)
         String errorMessage = responseData['message'] ?? 'Unknown error';

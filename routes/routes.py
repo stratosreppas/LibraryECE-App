@@ -29,6 +29,40 @@ def user_login():
             return jsonify({"status": "failure", "message": "Incorrect credentials. \nPlease ensure your username and password are correct."})
     except Exception as e:
         return jsonify({'error': f'Database error: {str(e)}'})
+    
+@app.route('/signup', methods=['POST'])
+def user_signup():
+    try:
+        data = request.json
+        mail = data.get('mail')
+        password = data.get('password')
+        first_name=data.get('first_name')
+        last_name=data.get('last_name')
+        phone=data.get('phone')
+        registration_id=data.get('registration_id')
+        role=data.get('role')
+        if role=="Προπτυχιακός/ή": 
+            role=1
+        elif role=="Μεταπτυχιακός/ή":
+            role=2
+        elif role=="Υποψήφιος/α Διδάκτωρ":
+            role=3
+        elif role=="Καθηγητής/τρια":
+            role=4
+        elif role=="Κατατακτήριος/α":
+            role=5
+        else: role=6
+        cursor = db.connection.cursor()
+        cursor.execute(f"INSERT INTO visitor (name, surname, am, property, phone, mail,password) VALUES ('{first_name}','{last_name}','{registration_id}','{role}','{phone}','{mail}','{password}')")
+        db.connection.commit()
+        cursor.close()
+
+        return jsonify({'status': 'success', 'message': 'Signed up successfully'})
+    
+    except Exception as e:
+        # Handle exceptions (e.g., print the error, log it, etc.)
+        print(f"Error: {e}")
+        return jsonify({'status': 'error', 'message': 'Failed to sign up user'}), 500
 
 @app.route('/api/first_book_image', methods = ['GET'])
 def get_first_book_image():
