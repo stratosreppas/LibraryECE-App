@@ -28,11 +28,46 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
     "Αγγλικά",
   ];
 
+  String searchText = '';
+
+  String languages = 'NaN';
+  String categories = 'NaN';
+  String authors = 'NaN';
+  String publishers = 'NaN';
+  String years = 'NaN';
+
+
   final List<GlobalKey<CheckBoxDropDownWidgetState>> checkBoxKeys =
-      List.generate(5, (index) => GlobalKey<CheckBoxDropDownWidgetState>());
+  List.generate(5, (index) => GlobalKey<CheckBoxDropDownWidgetState>());
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Access the 'languages' parameter from the arguments
+    final Map<String, dynamic> args =
+    ModalRoute
+        .of(context)!
+        .settings
+        .arguments as Map<String, dynamic>;
+    print(args);
+
+    if (args.containsKey('searchText')) {
+      // Get the value associated with the 'languages' key
+      searchText = args['searchText'];
+    }
+
+    // Check if the 'languages' key is present in the arguments
+    if (args.containsKey('languages')) {
+      // Get the value associated with the 'languages' key
+      languages = args['languages'];
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
         child: Scaffold(
             body: Container(
@@ -72,30 +107,45 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
                       key: checkBoxKeys[0],
                       header: "Κατηγορίες",
                       contents: categoriesList,
+                      onSelectedValuesChanged: (selectedValues) {
+                        categories = selectedValues;
+                      },
                     ),
                     SizedBox(height: 20.v),
                     CheckBoxDropDownWidget(
                       key: checkBoxKeys[1],
                       header: "Συγγραφείς",
                       contents: authorsList,
+                      onSelectedValuesChanged: (selectedValues) {
+                        authors = selectedValues;
+                      },
                     ),
                     SizedBox(height: 20.v),
                     CheckBoxDropDownWidget(
                       key: checkBoxKeys[2],
                       header: "Εκδόσεις",
                       contents: publisherList,
+                      onSelectedValuesChanged: (selectedValues) {
+                        publishers = selectedValues;
+                      },
                     ),
                     SizedBox(height: 20.v),
                     CheckBoxDropDownWidget(
                       key: checkBoxKeys[3],
                       header: "Χρονολογία Έκδοσης",
                       contents: publicationYearList,
+                      onSelectedValuesChanged: (selectedValues) {
+                        years = selectedValues;
+                      },
                     ),
                     SizedBox(height: 20.v),
                     CheckBoxDropDownWidget(
                       key: checkBoxKeys[4],
                       header: "Γλώσσα",
                       contents: languageList,
+                      onSelectedValuesChanged: (selectedValues) {
+                       languages = selectedValues;
+                      },
                     )
                   ]),
                 )),
@@ -127,62 +177,9 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
                   buttonStyle: CustomButtonStyles.fillPrimaryTL19,
                   buttonTextStyle: CustomTextStyles.titleSmallOnPrimary_1,
                   onPressed: () {
-                    fetchData();
+                    onTapf(context, languages, authors, publishers, years, categories);
                   })
             ]));
-  }
-
-  Future<void> fetchData() async {
-    try {
-      print('hi');
-      final response = await http
-          .get(Uri.parse('http://10.3.24.70:5000/api/all_books/el-en'));
-
-      print('Response status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
-
-      if (response.statusCode == 200) {
-        final List<dynamic> dataList = json.decode(response.body);
-
-        // Assuming dataList is a list of maps, handle each book's data
-        if (dataList.isNotEmpty) {
-          List<Book> books = dataList.map((map) {
-            return Book(
-              title: map['title'] ?? '',
-              author: map['author'] ?? '',
-              imageurl: map['image_url'] ?? '',
-              isbn: map['isbn'] ?? '',
-              subtitle: map['subtitle'] ?? '',
-              publisher: map['publisher'] ?? '',
-              year: map['year'] ?? '',
-              language: map['language'] ?? '',
-              category: map['category'] ?? '',
-              edition: map['edition'] ?? '',
-              dewey: map['dewey'] ?? '',
-              copies: map['copies'] ?? '',
-            );
-          }).toList();
-
-          // Now you have a list of Book instances, you can use or display them as needed
-          books.forEach((book) {
-            print('Book Title: ${book.title}');
-            print('Book Author: ${book.author}');
-            print('Book Image URL: ${book.imageurl}');
-          });
-
-          if (mounted) {
-            onTapf(context, books); // Pass the context and books to onTapf
-          }
-        } else {
-          print('Δεν βρέθηκαν βιβλία με τα συγκεκριμένα κριτήρια.');
-        }
-      } else {
-        print('Σόρρυ, υπάρχει κάποιο θέμα με τη βάση.');
-      }
-    } catch (error) {
-      // Handle any errors that occur during the fetch
-      print('Error: $error');
-    }
   }
 
   /// Navigates back to the previous screen.
@@ -199,9 +196,9 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
   }
 
   /// Navigates to the resultPageScreen when the action is triggered.
-  onTapf(BuildContext context, List<Book> books) {
-    Navigator.pushNamed(context, AppRoutes.resultPageScreen, arguments: {
-      'books': books, // Pass books as a parameter to the next screen
+  onTapf(BuildContext context, String languages, String authors, String publishers, String years, String categories) {
+    Navigator.pushNamed(context, AppRoutes.resultPageScreen, arguments: { 'searchText': searchText, // Pass searchText as a parameter to the next screen
+      'languages': languages, 'authors': authors, 'publishers': publishers, 'years': years, 'categories': categories, // Pass books as a parameter to the next screen
     });
   }
 }

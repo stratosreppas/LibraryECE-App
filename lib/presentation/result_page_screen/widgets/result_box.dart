@@ -108,6 +108,17 @@ class ResultBox extends StatelessWidget {
                     ),
                   ),
                 ),
+                SizedBox(
+                  width: 185.h,
+                  child: Text(
+                    (book.edition != '') ? '${book.edition}\'  Έκδοση' : "1'  Έκδοση",
+                    maxLines: null,
+                    overflow: TextOverflow.ellipsis,
+                    style: CustomTextStyles.bodySmallRobotoOnPrimary.copyWith(
+                      height: 2.00,
+                    ),
+                  ),
+                ),
                 SizedBox(height: 41.v),
                 _buildAvailableCopies2(context, book.copies),
               ],

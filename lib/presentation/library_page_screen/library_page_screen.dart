@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
 import 'package:stratos_s_application3/core/utils/navigation_utils.dart';
+import 'package:stratos_s_application3/widgets/custom_search_bar.dart';
 
 // ignore_for_file: must_be_immutable
 class LibraryPageScreen extends StatelessWidget {
   LibraryPageScreen({Key? key}) : super(key: key);
 
   TextEditingController searchController = TextEditingController();
+
 
   List<String> semesterDropDown = [
     "1ο Εξάμηνο",
@@ -57,55 +59,8 @@ class LibraryPageScreen extends StatelessWidget {
                   SizedBox(height: 21.v),
                   Padding(
                       padding: EdgeInsets.symmetric(horizontal: 5.h),
-                      child: SearchBar(
-                        backgroundColor:
-                            MaterialStateProperty.resolveWith<Color?>(
-                          (Set<MaterialState> states) {
-                            // Return the color for the default state
-                            return theme.primaryColor;
-                          },
-                        ),
-                        controller: searchController,
-                        hintText: " Αναζητήστε εδώ",
-                        hintStyle:
-                            MaterialStateProperty.resolveWith<TextStyle?>(
-                          (Set<MaterialState> states) {
-                            // Return the style for the default state
-                            return TextStyle(
-                              color: appTheme.blueGray100,
-                              fontSize: 15.h,
-                            ); // Customize with your color
-                          },
-                        ),
-                        trailing: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                // Navigate when the trailing icon is tapped
-                                Navigator.pushNamed(
-                                    context, AppRoutes.resultPageScreen);
-                              },
-                              child: Icon(
-                                Icons.search_outlined,
-                                color: appTheme.blueGray100,
-                              ),
-                            ),
-                          ),
-                        ],
-                        onSubmitted: (String string) {
-                          Navigator.pushNamed(
-                              context, AppRoutes.resultPageScreen);
-                        },
-                        textStyle:
-                            MaterialStateProperty.resolveWith<TextStyle?>(
-                          (Set<MaterialState> states) {
-                            // Return the style for the default state
-                            return TextStyle(
-                                color: appTheme
-                                    .blueGray100); // Customize with your color
-                          },
-                        ),
+                      child: CustomSearchBar(
+                        searchController: TextEditingController(),
                       )),
                   SizedBox(height: 100.v),
                   Expanded(
@@ -173,32 +128,5 @@ class LibraryPageScreen extends StatelessWidget {
                 slideLeftTo(context, BookPageOneScreen());
               });
             }));
-  }
-
-  /// Navigates to the bookPageFiveScreen when the action is triggered.
-  goTo(BuildContext context, Widget destination) {
-    Navigator.push(
-      context,
-      PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) {
-          return destination; // Replace with the actual screen you want to navigate to
-        },
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          const begin = Offset(1.0, 0.0);
-          const end = Offset.zero;
-          const curve = Curves.easeInOut;
-
-          var tween =
-              Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-          var offsetAnimation = animation.drive(tween);
-
-          return SlideTransition(
-            position: offsetAnimation,
-            child: child,
-          );
-        },
-      ),
-    );
   }
 }
