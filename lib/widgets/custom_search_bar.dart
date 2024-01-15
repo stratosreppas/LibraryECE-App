@@ -55,7 +55,7 @@ class CustomSearchBar extends StatelessWidget {
       ],
       onSubmitted: (String string) {
         Navigator.pushNamed(
-            context, AppRoutes.resultPageScreen);
+            context, AppRoutes.resultPageScreen, arguments: {'searchText': string});
       },
       textStyle:
       MaterialStateProperty.resolveWith<TextStyle?>(

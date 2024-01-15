@@ -35,8 +35,13 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
 
   List<Book> books = [];
 
-  String searchText = '';
-  String languages = '';
+  String searchText = 'NaN';
+  String languages = 'NaN';
+  String categories = 'NaN';
+  String authors = 'NaN';
+  String publishers = 'NaN';
+  String years = 'NaN';
+
 
 
   @override
@@ -124,10 +129,11 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
   Future<List<Book>> fetchData() async {
     try {
       //print('hi');
-      final response = await http.get(Uri.parse('http://192.168.1.187:5000/api/all_books/el-en'));
+      final response = await http.get(Uri.parse('http://192.168.1.187:5000/api/all_books?' +
+          'searchText=$searchText&categories=$categories&authors=$authors&publishers=$publishers&years=$years&languages=$languages'));
 
-      //print('Response status code: ${response.statusCode}');
-      //print('Response body: ${response.body}');
+      print('Response status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final List<dynamic> dataList = json.decode(response.body);
