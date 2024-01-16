@@ -21,6 +21,7 @@ import 'package:stratos_s_application3/presentation/result_page_screen/result_pa
 import 'package:stratos_s_application3/presentation/filters_page_screen/filters_page_screen.dart';
 import 'package:stratos_s_application3/presentation/app_navigation_screen/app_navigation_screen.dart';
 import 'package:stratos_s_application3/presentation/notifications_page/notifications_page.dart';
+import 'package:stratos_s_application3/routes/classes/Book.dart';
 
 class AppRoutes {
   static const String bootPageScreen = '/boot_page_screen';

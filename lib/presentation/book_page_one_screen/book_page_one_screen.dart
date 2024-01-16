@@ -2,16 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/widgets/custom_outlined_button.dart';
 import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
+import 'package:stratos_s_application3/routes/classes/Book.dart';
 
 
 // ignore_for_file: must_be_immutable
-class BookPageOneScreen extends StatelessWidget {
+class BookPageOneScreen extends StatefulWidget {
 
   BookPageOneScreen({Key? key}) : super(key: key);
+
+  @override
+  State<BookPageOneScreen> createState() => _BookPageOneScreenState();
+}
+
+class _BookPageOneScreenState extends State<BookPageOneScreen> {
+
+  Book book = Book();
+  String? email;
 
   TextEditingController authorsController = TextEditingController();
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Access the 'languages' parameter from the arguments
+    final Map<String, dynamic> args =
+    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    print(args);
+
+    if (args.containsKey('book')) {
+      // Get the value associated with the 'languages' key
+      book = args['book'];
+    }
+
+    if (args.containsKey('email')) {
+      // Get the value associated with the 'languages' key
+      email = args['email'];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,17 +74,23 @@ class BookPageOneScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         SizedBox(height: 13.v),
-                        _buildExtendableRich1(context),
+                        _buildExtendableRich2(context, 'Τίτλος', book.title),
                         SizedBox(height: 12.v),
-                        _buildExtendableRich2(context),
+                        _buildExtendableRich2(context, 'Υπότιτλος', book.subtitle),
                         SizedBox(height: 12.v),
-                        _buildExtendableRich2(context),
+                        _buildExtendableRich2(context, 'Έκδοση', book.edition),
                         SizedBox(height: 12.v),
-                        _buildExtendableRich2(context),
+                        _buildExtendableRich2(context, 'ISBN', book.isbn),
                         SizedBox(height: 12.v),
-                        _buildExtendableRich2(context),
+                        _buildExtendableRich2(context, 'Συγγραφέας', book.author),
                         SizedBox(height: 12.v),
-                        _buildExtendableRich2(context),
+                        _buildExtendableRich2(context, 'Κατηγορία', book.category),
+                        SizedBox(height: 12.v),
+                        _buildExtendableRich2(context, 'Εκδότης', book.publisher),
+                        SizedBox(height: 12.v),
+                        _buildExtendableRich2(context, 'Έτος έκδοσης', book.year.toString()),
+                        SizedBox(height: 12.v),
+                        _buildExtendableRich2(context, 'Γλώσσα', book.language),
                       ],
                     ),
                   ),
@@ -88,7 +124,7 @@ class BookPageOneScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomImageView(
-                  imagePath: ImageConstant.imgImage2169x121,
+                  imagePath: book.imageurl,
                   height: 169.v,
                   width: 121.h,
                   radius: BorderRadius.circular(10.h)),
@@ -97,8 +133,9 @@ class BookPageOneScreen extends StatelessWidget {
                   child: Column(children: [
                     CustomOutlinedButton(
                         width: 166.h,
-                        text: "Διαθέσιμα Αντίτυπα: 3",
+                        text: "Διαθέσιμα Αντίτυπα: " + book.copies.toString(),
                         margin: EdgeInsets.only(right: 5.h),
+                        isDisabled: book.copies>0 ? false : true,
                         alignment: Alignment.centerRight),
                     SizedBox(height: 71.v),
                     SizedBox(
@@ -173,7 +210,7 @@ class BookPageOneScreen extends StatelessWidget {
   }
 
   /// Section Widget
-  Widget _buildExtendableRich1(BuildContext context) {
+  Widget _buildExtendableRich(BuildContext context, String title, String text) {
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 16.h),
         decoration: AppDecoration.outlineBlack9001
@@ -190,12 +227,12 @@ class BookPageOneScreen extends StatelessWidget {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Τίτλος", style: theme.textTheme.titleSmall),
+                        Text(title, style: theme.textTheme.titleSmall),
                         SizedBox(height: 6.v),
                         SizedBox(
                             width: 272.h,
                             child: Text(
-                                "ΕΙΣΑΓΩΓΗ ΣΤΑ ΣΥΣΤΗΜΑΤΑ ΗΛΕΚΤΡΙΚΗΣ ΕΝΕΡΓΕΙΑΣ",
+                                text,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: theme.textTheme.bodyMedium!
@@ -205,7 +242,7 @@ class BookPageOneScreen extends StatelessWidget {
   }
 
   /// Common widget
-  Widget _buildExtendableRich2(BuildContext context) {
+  Widget _buildExtendableRich2(BuildContext context, String title, String text) {
     return Container(
         width: 308.h,
         padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 11.v),
@@ -217,12 +254,11 @@ class BookPageOneScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(height: 2.v),
-              Text("Εκδόσεις", style: theme.textTheme.titleSmall),
+              Text(title, style: theme.textTheme.titleSmall),
               SizedBox(height: 7.v),
-              Text("Συμμετρία", style: theme.textTheme.bodyMedium)
+              Text(text, style: theme.textTheme.bodyMedium)
             ]));
   }
-
 
   /// Navigates to the locationPageScreen when the action is triggered.
   onTapImgImage(BuildContext context) {

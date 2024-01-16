@@ -97,12 +97,18 @@ def user_transaction_history():
         id=data.get('id')
         print(id)
         cursor = db.connection.cursor()
-        cursor.execute(f"select books.id,books.title,transaction.borrow_date,transaction.return_date,books.image_url from visitor join transaction on visitor.id = transaction.visitor_id join books on transaction.book_id=books.id where visitor.id='{id}' and transaction.return_date IS NOT NULL;")
+        cursor.execute(f"select books.id,books.title, subtitle, isbn, image_url, author, category, edition, dewey, language, year, publisher, "
+                       f"transaction.book_id, transaction.borrow_date,transaction.return_date,books.image_url from visitor join transaction on visitor.id = transaction.visitor_id join books on transaction.book_id=books.id where visitor.id='{id}' and transaction.return_date IS NOT NULL;")
         transaction_history = cursor.fetchall()
+
+        if transaction_history:
+            columns = [desc[0] for desc in cursor.description]
+            results = [dict(zip(columns, row)) for row in transaction_history]
+
         cursor.close()
 
         if transaction_history:
-            return jsonify({'status':'success','transaction_history':transaction_history})
+            return jsonify(results)
         else: return jsonify({'status': 'failure', 'message': "Failed to find user's transaction history"}), 404
 
     except Exception as e:
@@ -161,7 +167,7 @@ def get_all_books():
         cursor = db.connection.cursor()
 
         query = "SELECT isbn, title, subtitle, author, publisher, year, category, edition, dewey, " \
-                "language, image_url, COUNT(*) as copies " \
+                "language, image_url, CAST(SUM(CASE WHEN category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies " \
                 "FROM books WHERE (language IN ({}) OR %s = 'NaN') " \
                 "AND (author IN ({}) OR %s = 'NaN') " \
                 "AND (publisher IN ({}) OR %s = 'NaN') " \
@@ -175,7 +181,7 @@ def get_all_books():
                 "OR year LIKE %s) " \
                 "GROUP BY isbn, title, subtitle, author, publisher, year, category, edition, " \
                 "dewey, language, image_url " \
-                "LIMIT 10;"
+                "LIMIT 40;"
 
         # Use placeholders for the IN clauses
         query = query.format(languages_sql, authors_sql, publishers_sql, categories_sql, years_sql)
@@ -216,7 +222,7 @@ def get_all_transactions():
         cursor = db.connection.cursor()
 
         query = "SELECT books.isbn, books.title, books.subtitle, books.author, books.publisher, books.year, " \
-                "books.category, books.edition, books.dewey, books.language, books.image_url, " \
+                "books.category, books.edition, books.dewey, books.language, books.image_url, CAST(SUM(CASE WHEN books.category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies, " \
                 "transaction.book_id, transaction.borrow_date, transaction.must_return_date " \
                 "FROM books " \
                 "JOIN transaction ON books.id = transaction.book_id " \
@@ -253,7 +259,7 @@ def get_all_selected_books():
         query = "SELECT books.isbn, title, subtitle, author, publisher, year, category, " \
                 "edition, dewey, language, image_url, count(*) as copies " \
                 "FROM books JOIN favorites ON books.isbn = favorites.isbn " \
-                "WHERE favorites.id = %s GROUP BY books.isbn,title,subtitle,author,publisher,year,category,edition,dewey,language,image_url;"
+                "WHERE favorites.id = %s GROUP BY books.isbn,title,subtitle,author,publisher,year,category,edition,dewey,language,image_url LIMIT 6;"
 
         params = (visitor_id,)
 
@@ -306,7 +312,24 @@ def get_user():
     except Exception as e:
         return jsonify({'error': f'Database error: {str(e)}'})
 
+@app.route('/fav', methods=['POST'])
+def fav():
+    try:
+        data = request.json
+        isbn = data.get('isbn')
+        email = data.get('email')
+        cursor = db.connection.cursor()
+        cursor.execute(f"INSERT INTO favorites (id, isbn) " \
+                       f"SELECT id, '{isbn}' FROM visitor WHERE email = '{email}';")
+        db.connection.commit()
+        cursor.close()
 
+        return jsonify({'status': 'success', 'message': 'Added to favorites successfully'})
+
+    except Exception as e:
+        # Handle exceptions (e.g., print the error, log it, etc.)
+        print(f"Error: {e}")
+        return jsonify({'status': 'error', 'message': f'Database error: {str(e)}'}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

@@ -54,7 +54,7 @@ class CustomOutlinedButton extends BaseButton {
         margin: margin,
         decoration: decoration,
         child: OutlinedButton(
-          style: buttonStyle,
+          style: ButtonStyle(backgroundColor: MaterialStateProperty.all( isDisabled ?? false ? appTheme.red900.withOpacity(0.8) : appTheme.green900),),
           onPressed: isDisabled ?? false ? null : onPressed ?? () {},
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +63,7 @@ class CustomOutlinedButton extends BaseButton {
               leftIcon ?? const SizedBox.shrink(),
               Text(
                 text,
-                style: buttonTextStyle ?? CustomTextStyles.labelLargeGreen90001,
+                style: CustomTextStyles.titleSmallOnPrimary_1.copyWith(color: appTheme.blueGray100),
               ),
               rightIcon ?? const SizedBox.shrink(),
             ],

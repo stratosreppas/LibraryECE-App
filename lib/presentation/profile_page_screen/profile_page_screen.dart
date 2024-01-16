@@ -7,10 +7,11 @@ import 'package:stratos_s_application3/presentation/app_template/app_template.da
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:stratos_s_application3/routes/classes/Transaction.dart';
+import 'package:stratos_s_application3/routes/classes/Book.dart';
 
 class ProfilePageScreen extends StatefulWidget {
   ProfilePageScreen({Key? key}) : super(key: key);
-
   @override
   _ProfilePageScreenState createState() => _ProfilePageScreenState();
 }
@@ -23,7 +24,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
   String? phone;
   String? role;
   String? am;
-  List<dynamic> transactionHistory = [];
+  List<Transaction> transactionHistory = [];
 
   @override
   void initState() {
@@ -32,20 +33,12 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
     getUserTransactionHistory();
   }
 
-  String formatDate(String dateString) {
-    final inputFormat = DateFormat('E, dd MMM yyyy HH:mm:ss Z');
-    final outputFormat = DateFormat('dd/MM/yyyy');
-
-    final date = inputFormat.parse(dateString);
-    return outputFormat.format(date);
-  }
-
   Future<void> getEmailAndUserData() async {
     await getEmailFromPreferences(); // Wait for email to be fetched
 
     try {
       final response = await http.post(
-        Uri.parse('http://10.3.24.7:5000/profile'),
+        Uri.parse('http://192.168.1.187:5000/profile'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -93,7 +86,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://10.3.24.7:5000/transactions_history'),
+        Uri.parse('http://192.168.1.187:5000/transactions_history'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -101,14 +94,42 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
           'id': id ?? 0,
         }),
       );
-
       final responseData = json.decode(response.body);
+      print(responseData);
+      if (response.statusCode == 200) {
 
-      if (response.statusCode == 200 && responseData['status'] == 'success') {
+        final List<dynamic> dataList = responseData;
+
+          if (dataList.isNotEmpty) {
+            transactionHistory = dataList.map((map) {
+              return Transaction(
+                title: map['title'] ?? '',
+                author: map['author'] ?? '',
+                imageurl: map['image_url'] ?? '',
+                isbn: map['isbn'] ?? '',
+                subtitle: map['subtitle'] ?? '',
+                publisher: map['publisher'] ?? '',
+                year: map['year'] ?? '',
+                language: map['language'] ?? '',
+                category: map['category'] ?? '',
+                edition: map['edition'] ?? '',
+                dewey: map['dewey'] ?? '',
+                copies: map['copies'] ?? 0,
+                book_id: map['book_id'] ?? 0,
+                borrow_date: map['borrow_date'] ?? '',
+                must_return_date: map['must_return_date'] ?? '',
+                return_date: map['return_date'] ?? '',
+              );
+            }).toList();
+          }
+
+        if(mounted){
         setState(() {
-          transactionHistory = responseData['transaction_history'];
+          transactionHistory;
           print(transactionHistory);
         });
+        }
+
       } else if (responseData['status'] == "failure" ||
           responseData['status'] == "error") {
         // Handle error
@@ -221,16 +242,11 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
               },
               itemCount: transactionHistory.length,
               itemBuilder: (context, index) {
-                List<dynamic> loanItem = transactionHistory[index];
                 return LoanComponentItemWidget(
-                  onTap: () {
-                    onTapthLoan(context);
+                  transaction: transactionHistory[index],
+                  onTapImgImage: () {
+                    onTapthLoan(context, transactionHistory[index]);
                   },
-                  bookID: loanItem[0],
-                  title: loanItem[1],
-                  loanDate: formatDate(loanItem[2]),
-                  returnDate: formatDate(loanItem[3]),
-                  imagePath: loanItem[4],
                 );
               },
             ),
@@ -251,7 +267,10 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
   }
 
   /// Navigates to the bookPageThreeScreen when the action is triggered.
-  onTapthLoan(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.bookPageThreeScreen);
+  onTapthLoan(BuildContext context, Book book) {
+    Navigator.pushNamed(context, AppRoutes.bookPageOneScreen, arguments: {
+      'book': book,
+      'email': email,
+    });
   }
 }
