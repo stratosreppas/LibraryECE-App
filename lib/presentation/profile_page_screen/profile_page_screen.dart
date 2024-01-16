@@ -45,7 +45,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://10.3.24.48:4000/profile'),
+        Uri.parse('http://10.3.24.48:5000/profile'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

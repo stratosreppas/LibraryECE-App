@@ -70,6 +70,7 @@ def user_data():
     try:
         data = request.json
         email = data.get('email')
+        print(email)
         cursor = db.connection.cursor()
         cursor.execute(f"SELECT name,surname,am,property,phone,id from visitor where email='{email}'")
         user_data = cursor.fetchone()
