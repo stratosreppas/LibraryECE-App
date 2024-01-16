@@ -16,10 +16,17 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
           // Logo on the left
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Image.asset(
-              ImageConstant.imgImage1,
-              width: 40, // Adjust the size as needed
-              height: 40,
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white, // Set the background color to white
+              ),
+              padding: EdgeInsets.all(2), // Adjust padding as needed
+              child: Image.asset(
+                ImageConstant.imgImage1,
+                width: 40, // Adjust the size as needed
+                height: 40,
+              ),
             ),
           ),
           // Title with Lexend font and d9d9d9 color
