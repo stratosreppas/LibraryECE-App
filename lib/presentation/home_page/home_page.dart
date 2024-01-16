@@ -25,10 +25,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Map<String, String>? arguments =
         ModalRoute.of(context)?.settings.arguments as Map<String, String>?;
-
-    // Extract the email value from the map
     String email = arguments?['email'] ?? "";
-    print(email);
+    print("Home Page: $email");
     return SafeArea(
         child: AppTemplate(
             body: SingleChildScrollView(

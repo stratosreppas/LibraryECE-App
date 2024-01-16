@@ -1,9 +1,5 @@
-import 'package:stratos_s_application3/presentation/book_page_one_screen/book_page_one_screen.dart';
-import 'package:stratos_s_application3/presentation/library_page_screen/widgets/checkbox_with_button_dropdown_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
-import 'package:stratos_s_application3/core/utils/navigation_utils.dart';
 
 class CustomSearchBar extends StatelessWidget {
 

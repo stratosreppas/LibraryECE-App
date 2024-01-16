@@ -7,7 +7,7 @@ app = Flask(__name__)
 # MySQL Connection Configuration
 app.config['MYSQL_HOST'] = 'localhost'
 app.config["MYSQL_USER"] = 'root'
-app.config["MYSQL_PASSWORD"] = ''
+app.config["MYSQL_PASSWORD"] = 'password'
 app.config["MYSQL_DB"] = 'ecel'
 
 db = MySQL(app)
@@ -16,12 +16,14 @@ db = MySQL(app)
 def user_login():
     try:
         data = request.json
-        mail = data.get('mail')
+        email = data.get('email')
         password = data.get('password')
         cursor = db.connection.cursor()
-        cursor.execute(f"SELECT COUNT(*) FROM visitor WHERE mail='{mail}' and password='{password}'")
+        cursor.execute(f"SELECT COUNT(*) FROM visitor WHERE email='{email}' and password='{password}'")
         user_data = cursor.fetchone()
         cursor.close()
+
+        print(user_data[0])
 
         if user_data[0]==1:
             return jsonify({"status": "success", "message": "Successful Login"})
@@ -63,6 +65,50 @@ def user_signup():
         # Handle exceptions (e.g., print the error, log it, etc.)
         print(f"Error: {e}")
         return jsonify({'status': 'error', 'message': 'Failed to sign up user'}), 500
+
+
+@app.route('/profile', methods=['POST'])
+def user_data():
+    try:
+        data = request.json
+        email = data.get('email')
+        cursor = db.connection.cursor()
+        cursor.execute(f"SELECT name,surname,am,property,phone,id from visitor where email='{email}'")
+        user_data = cursor.fetchone()
+        cursor.close()
+
+        if user_data:
+            return jsonify({
+                'status': 'success',
+                'user_data': user_data
+            })
+        else:
+            return jsonify({'status': 'error', 'message': 'Failed to find user data'}), 404
+    
+    except Exception as e:
+        # Handle exceptions (e.g., print the error, log it, etc.)
+        print(f"Error: {e}")
+        return jsonify({'status': 'error', 'message': 'Failed to find user data'}), 500
+
+
+@app.route('/transactions_history',methods=['POST'])
+def user_transaction_history():
+    try:
+        data=request.json
+        id=data.get('id')
+        cursor = db.connection.cursor()
+        cursor.execute(f"select books.id,books.title,transaction.borrow_date,transaction.return_date,books.image_url from visitor join transaction on visitor.id = transaction.visitor_id join books on transaction.book_id=books.id where visitor.id='{id}';")
+        transaction_history = cursor.fetchall()
+        cursor.close()
+
+        if transaction_history:
+            return jsonify({'status':'success','transaction_history':transaction_history})
+        else: return jsonify({'status': 'failure', 'message': "Failed to find user's transaction history"}), 404
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'status': 'error', 'message': "Failed to find user's transaction history"}), 500
+
 
 @app.route('/api/first_book_image', methods = ['GET'])
 def get_first_book_image():
@@ -158,4 +204,4 @@ def get_all_books():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=4000, debug=True)

@@ -3,6 +3,7 @@ import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/widgets/custom_text_form_field.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPageScreen extends StatefulWidget {
   LoginPageScreen({Key? key}) : super(key: key);
@@ -210,12 +211,12 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
     if (_formKey.currentState!.validate()) {
       // Process data.
       final response = await http.post(
-        Uri.parse('http://10.3.24.47:4000/login'),
+        Uri.parse('http://10.3.24.48:4000/login'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'mail': emailController.text,
+          'email': emailController.text,
           'password': passwordController.text,
         }),
       );
@@ -225,6 +226,10 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
       if (response.statusCode == 200 && responseData['status'] == 'success') {
         // Successful login
         String successMessage = responseData['message'];
+
+        // Save email to shared preferences
+        saveEmailToPreferences(emailController.text);
+
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
             successMessage,
@@ -235,6 +240,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
           padding: EdgeInsets.all(8.h),
           dismissDirection: DismissDirection.down,
         ));
+
         Navigator.pushReplacementNamed(
           context,
           AppRoutes.homePage,
@@ -242,7 +248,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
         );
       } else {
         // Handle unsuccessful login (show an error message, etc.)
-        String errorMessage = responseData['message'] ?? 'Unknown error';
+        String errorMessage = responseData['error'] ?? responseData['message'];
         print("Error: $errorMessage");
         // Show a snackbar or display the error message to the user
         ScaffoldMessenger.of(context).showSnackBar(
@@ -259,6 +265,12 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
         );
       }
     }
+  }
+
+  /// Save email to shared preferences
+  void saveEmailToPreferences(String email) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('email', email);
   }
 
   /// Navigates to the signupPageScreen when the action is triggered.

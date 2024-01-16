@@ -1,6 +1,5 @@
 import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
 import 'package:stratos_s_application3/widgets/custom_search_bar.dart';
-import '../result_page_screen/widgets/twelve_item_widget.dart';
 import '../result_page_screen/widgets/result_box.dart';
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
@@ -20,7 +19,6 @@ class ResultPageScreen extends StatefulWidget {
 }
 
 class _ResultPageScreenState extends State<ResultPageScreen> {
-
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
   TextEditingController searchController = TextEditingController();
 
@@ -33,15 +31,13 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
   String publishers = 'NaN';
   String years = 'NaN';
 
-
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     // Access the 'languages' parameter from the arguments
     final Map<String, dynamic> args =
-    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     print(args);
     // Check if the 'languages' key is present in the arguments
     if (args.containsKey('languages')) {
@@ -106,8 +102,7 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                   // write a text here
                   children: [
                     SizedBox(width: 16.h),
-                    Text(
-                      'Αποτελέσματα για: ' + searchText),
+                    Text('Αποτελέσματα για: ' + searchText),
                   ],
                 ),
                 SizedBox(height: 16.v),
@@ -115,8 +110,7 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                   // write a text here
                   children: [
                     SizedBox(width: 16.h),
-                    Text(
-                      'Αναζήτηση με βάση τα φίλτρα: ' + languages),
+                    Text('Αναζήτηση με βάση τα φίλτρα: ' + languages),
                   ],
                 ),
                 for (Book book in books)
@@ -140,8 +134,9 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
   Future<List<Book>> fetchData() async {
     try {
       //print('hi');
-      final response = await http.get(Uri.parse('http://192.168.1.187:5000/api/all_books?' +
-          'searchText=$searchText&categories=$categories&authors=$authors&publishers=$publishers&years=$years&languages=$languages'));
+      final response = await http.get(Uri.parse(
+          'http://10.3.24.47:4000/api/all_books?' +
+              'searchText=$searchText&categories=$categories&authors=$authors&publishers=$publishers&years=$years&languages=$languages'));
 
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
@@ -209,10 +204,9 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
 
   /// Navigates to the filtersPageScreen when the action is triggered.
   onTapFloatingActionButton(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.filtersPageScreen, arguments: { 'searchText': searchText,
+    Navigator.pushNamed(context, AppRoutes.filtersPageScreen, arguments: {
+      'searchText': searchText,
       'languages': languages, // Pass books as a parameter to the next screen
     });
   }
 }
-
-

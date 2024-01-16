@@ -23,7 +23,8 @@ CREATE TABLE books (
   category varchar(11) DEFAULT 'Διαθέσιμο',
   barcode varchar(50) DEFAULT NULL,
   dewey varchar(20) DEFAULT NULL,
-  publisher varchar(100) DEFAULT NULL
+  publisher varchar(100) DEFAULT NULL,
+  image_url varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `transaction` (
@@ -43,7 +44,7 @@ CREATE TABLE `visitor` (
   `property` int(11) DEFAULT NULL,
   `barcode` varchar(50) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
-  `mail` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
   password varchar(50) NOT NULL,
   `penalty` date DEFAULT NULL,
   primary key(id)
@@ -55,8 +56,8 @@ ALTER TABLE `books`
 ALTER TABLE `transaction`
   ADD PRIMARY KEY (`transaction_id`);
 
-ALTER TABLE `visitor`
-  ADD PRIMARY KEY (`id`);
+-- ALTER TABLE `visitor`
+--   ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `books`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9623;
@@ -94,6 +95,3 @@ ALTER TABLE `favorites`
 ALTER TABLE `notify`
   ADD CONSTRAINT `fk_notify_isbn` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_notify_user_id` FOREIGN KEY (`id`) REFERENCES `visitor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE `books`
-  ADD COLUMN `image_url` varchar(500) DEFAULT NULL;

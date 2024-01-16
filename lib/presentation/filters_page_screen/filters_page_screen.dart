@@ -3,10 +3,6 @@ import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/presentation/filters_page_screen/widgets/checkbox_dropdown_widget.dart';
 import 'package:stratos_s_application3/widgets/custom_elevated_button.dart';
 
-import 'package:stratos_s_application3/routes/classes/Book.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 class FiltersPageScreen extends StatefulWidget {
   FiltersPageScreen({Key? key}) : super(key: key);
 
@@ -36,9 +32,8 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
   String publishers = 'NaN';
   String years = 'NaN';
 
-
   final List<GlobalKey<CheckBoxDropDownWidgetState>> checkBoxKeys =
-  List.generate(5, (index) => GlobalKey<CheckBoxDropDownWidgetState>());
+      List.generate(5, (index) => GlobalKey<CheckBoxDropDownWidgetState>());
 
   @override
   void didChangeDependencies() {
@@ -46,10 +41,7 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
 
     // Access the 'languages' parameter from the arguments
     final Map<String, dynamic> args =
-    ModalRoute
-        .of(context)!
-        .settings
-        .arguments as Map<String, dynamic>;
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     print(args);
 
     if (args.containsKey('searchText')) {
@@ -64,10 +56,8 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
         child: Scaffold(
             body: Container(
@@ -144,7 +134,7 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
                       header: "Γλώσσα",
                       contents: languageList,
                       onSelectedValuesChanged: (selectedValues) {
-                       languages = selectedValues;
+                        languages = selectedValues;
                       },
                     )
                   ]),
@@ -177,7 +167,8 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
                   buttonStyle: CustomButtonStyles.fillPrimaryTL19,
                   buttonTextStyle: CustomTextStyles.titleSmallOnPrimary_1,
                   onPressed: () {
-                    onTapf(context, languages, authors, publishers, years, categories);
+                    onTapf(context, languages, authors, publishers, years,
+                        categories);
                   })
             ]));
   }
@@ -196,9 +187,16 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
   }
 
   /// Navigates to the resultPageScreen when the action is triggered.
-  onTapf(BuildContext context, String languages, String authors, String publishers, String years, String categories) {
-    Navigator.pushNamed(context, AppRoutes.resultPageScreen, arguments: { 'searchText': searchText, // Pass searchText as a parameter to the next screen
-      'languages': languages, 'authors': authors, 'publishers': publishers, 'years': years, 'categories': categories, // Pass books as a parameter to the next screen
+  onTapf(BuildContext context, String languages, String authors,
+      String publishers, String years, String categories) {
+    Navigator.pushNamed(context, AppRoutes.resultPageScreen, arguments: {
+      'searchText':
+          searchText, // Pass searchText as a parameter to the next screen
+      'languages': languages,
+      'authors': authors,
+      'publishers': publishers,
+      'years': years,
+      'categories': categories, // Pass books as a parameter to the next screen
     });
   }
 }
