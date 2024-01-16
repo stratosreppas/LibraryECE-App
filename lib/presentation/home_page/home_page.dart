@@ -1,6 +1,4 @@
 import 'package:stratos_s_application3/presentation/home_page/widgets/penalty_box.dart';
-
-import '../home_page/widgets/penalty_box.dart';
 import '../home_page/widgets/book_item_widget.dart';
 import '../home_page/widgets/userprofile_item_widget.dart';
 import 'package:stratos_s_application3/routes/classes/Transaction.dart';
@@ -12,48 +10,48 @@ import 'package:stratos_s_application3/presentation/app_template/app_template.da
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  final String email;
-
-  // Assign a default value to the 'email' field in the constructor
-  HomePage({Key? key, String email = ""})
-      : email = email,
-        super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
-  late String email;
+  late String? email;
   late final User user;
-  late final List<Transaction> activeTransactions;
-  late final List<Book> selectedBooks;
+  List<Transaction> activeTransactions = [];
+  List<Book> selectedBooks = [];
+
+  Future<void> getEmailFromPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userEmail = prefs.getString('email');
+    setState(() {
+      email = userEmail;
+      print("Home Page: $email");
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getEmailFromPreferences();
+  }
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-
-    final Map<String, dynamic> args =
-    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    print(args);
-
-    if (args.containsKey('email')) {
-      email = args['email'];
-    }
-
-    print('Email: $email');
 
     try {
       this.user = await fetchUserData();
       if (mounted) {
         setState(() {});
       }
-    print('hi'+ user.name);
+      print('hi' + user.name);
       this.activeTransactions = await fetchTransactionData();
       if (mounted) {
         setState(() {});
@@ -68,13 +66,8 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-    Map<String, String>? arguments =
-        ModalRoute.of(context)?.settings.arguments as Map<String, String>?;
-    String email = arguments?['email'] ?? "";
-    print("Home Page: $email");
     return SafeArea(
         child: AppTemplate(
             body: SingleChildScrollView(
@@ -152,7 +145,10 @@ class _HomePageState extends State<HomePage> {
                               height: 80.adaptSize,
                               width: 80.adaptSize,
                               child: CircularProgressIndicator(
-                                  value: (7-calculateDays(activeTransactions[0].must_return_date))/7,
+                                  value: (7 -
+                                          calculateDays(activeTransactions[0]
+                                              .must_return_date)) /
+                                      7,
                                   backgroundColor: appTheme.gray60001,
                                   color: appTheme.green900,
                                   strokeWidth: 6.h))),
@@ -162,7 +158,10 @@ class _HomePageState extends State<HomePage> {
                               height: 100.adaptSize,
                               width: 100.adaptSize,
                               child: CircularProgressIndicator(
-                                  value: (7-calculateDays(activeTransactions[1].must_return_date))/7,
+                                  value: (7 -
+                                          calculateDays(activeTransactions[1]
+                                              .must_return_date)) /
+                                      7,
                                   backgroundColor: appTheme.gray500,
                                   color: appTheme.lime800,
                                   strokeWidth: 6.h))),
@@ -172,7 +171,10 @@ class _HomePageState extends State<HomePage> {
                               height: 120.adaptSize,
                               width: 120.adaptSize,
                               child: CircularProgressIndicator(
-                                  value: (7-calculateDays(activeTransactions[2].must_return_date))/7,
+                                  value: (7 -
+                                          calculateDays(activeTransactions[2]
+                                              .must_return_date)) /
+                                      7,
                                   backgroundColor: appTheme.blueGray100,
                                   color: theme.colorScheme.onPrimaryContainer,
                                   strokeWidth: 6.h)))
@@ -189,7 +191,11 @@ class _HomePageState extends State<HomePage> {
                                   borderRadius:
                                       BorderRadiusStyle.roundedBorder10),
                           child: Center(
-                            child: Text(calculateDays(activeTransactions[0].must_return_date).toString() + " days",
+                            child: Text(
+                                calculateDays(activeTransactions[0]
+                                            .must_return_date)
+                                        .toString() +
+                                    " days",
                                 style: CustomTextStyles.bodyMediumOnPrimary),
                           )),
                       SizedBox(height: 5.v),
@@ -200,7 +206,11 @@ class _HomePageState extends State<HomePage> {
                           decoration: AppDecoration.fillLime.copyWith(
                               borderRadius: BorderRadiusStyle.roundedBorder10),
                           child: Center(
-                            child: Text(calculateDays(activeTransactions[1].must_return_date).toString() + " days",
+                            child: Text(
+                                calculateDays(activeTransactions[1]
+                                            .must_return_date)
+                                        .toString() +
+                                    " days",
                                 style: CustomTextStyles.bodyMediumOnPrimary),
                           )),
                       SizedBox(height: 5.v),
@@ -211,7 +221,11 @@ class _HomePageState extends State<HomePage> {
                           decoration: AppDecoration.fillLightGreen.copyWith(
                               borderRadius: BorderRadiusStyle.roundedBorder10),
                           child: Center(
-                            child: Text(calculateDays(activeTransactions[2].must_return_date).toString() + " days",
+                            child: Text(
+                                calculateDays(activeTransactions[2]
+                                            .must_return_date)
+                                        .toString() +
+                                    " days",
                                 style: CustomTextStyles.bodyMediumOnPrimary),
                           ))
                     ]))
@@ -262,7 +276,6 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                 )
-
               ]))
         ]));
   }
@@ -309,18 +322,20 @@ class _HomePageState extends State<HomePage> {
                       },
                       itemCount: selectedBooks.length,
                       itemBuilder: (context, index) {
-                        return BookItemWidget(book: selectedBooks[index], onTapImgOperatingSystemImage: () {
-                          onTapImgOperatingSystemImage(context);
-                        });
+                        return BookItemWidget(
+                            book: selectedBooks[index],
+                            onTapImgOperatingSystemImage: () {
+                              onTapImgOperatingSystemImage(context);
+                            });
                       })),
               SizedBox(height: 1.v)
             ]));
   }
 
   Future<User> fetchUserData() async {
-
+    await getEmailFromPreferences();
     User user = User(
-      id : 0,
+      id: 0,
       name: '',
       surname: '',
       email: '',
@@ -332,8 +347,8 @@ class _HomePageState extends State<HomePage> {
 
     try {
       //print('hi');
-      final response = await http.get(Uri.parse('http://192.168.1.187:5000/api/home/user?' +
-          'email=$email'));
+      final response = await http.get(
+          Uri.parse('http://10.3.24.48:5000/api/home/user?' + 'email=$email'));
 
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
@@ -342,9 +357,8 @@ class _HomePageState extends State<HomePage> {
         final Map<String, dynamic> userData = json.decode(response.body);
         print(userData);
         if (userData.isNotEmpty) {
-
           user = User(
-            id : userData['id'] ?? 0,
+            id: userData['id'] ?? 0,
             name: userData['name'] ?? '',
             surname: userData['surname'] ?? '',
             email: userData['email'] ?? '',
@@ -377,8 +391,8 @@ class _HomePageState extends State<HomePage> {
     try {
       print('hi');
       int id = user.id;
-      final response = await http.get(Uri.parse('http://192.168.1.187:5000/api/home/transactions?' +
-          'id=$id'));
+      final response = await http.get(Uri.parse(
+          'http://10.3.24.48:5000/api/home/transactions?' + 'id=$id'));
 
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
@@ -434,8 +448,8 @@ class _HomePageState extends State<HomePage> {
     try {
       //print('hi');
       int id = user.id;
-      final response = await http.get(Uri.parse('http://192.168.1.187:5000/api/home/books?' +
-          'id=$id'));
+      final response = await http
+          .get(Uri.parse('http://10.3.24.48:5000/api/home/books?' + 'id=$id'));
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
 
@@ -469,7 +483,8 @@ class _HomePageState extends State<HomePage> {
             return books;
           }
         } else {
-          print('Δεν βρέθηκαν βιβλία με τα συγκεκριμένα κριτήρια για αυτόν το χρήστη.');
+          print(
+              'Δεν βρέθηκαν βιβλία με τα συγκεκριμένα κριτήρια για αυτόν το χρήστη.');
         }
       } else {
         print('Σόρρυ, υπάρχει κάποιο θέμα με τη βάση.');
@@ -494,9 +509,10 @@ class _HomePageState extends State<HomePage> {
 
   /// Navigates to the profilePageScreen when the action is triggered.
   onTapTxtWidget(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.profilePageScreen, arguments: {
-      'email': widget.email,
-    });
+    Navigator.pushNamed(
+      context,
+      AppRoutes.profilePageScreen,
+    );
   }
 
   /// Navigates to the favouritesPageScreen when the action is triggered.
@@ -515,9 +531,7 @@ DateTime convertToDate(String input) {
 }
 
 int calculateDays(String dateStr) {
-  DateTime Date = convertToDate(dateStr);
+  DateTime date = convertToDate(dateStr);
   DateTime now = DateTime.now();
-  return Date
-      .difference(now)
-      .inDays + 1;
+  return date.difference(now).inDays + 1;
 }

@@ -93,7 +93,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://10.3.24.48:4000/transactions_history'),
+        Uri.parse('http://10.3.24.48:5000/transactions_history'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -109,9 +109,10 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
           transactionHistory = responseData['transaction_history'];
           print(transactionHistory);
         });
-      } else if (responseData['status'] == "failure" || responseData['error']) {
+      } else if (responseData['status'] == "failure" ||
+          responseData['status'] == "error") {
         // Handle error
-        print("$responseData['message']");
+        print(responseData['message']);
       }
     } catch (error) {
       // Handle network or other errors

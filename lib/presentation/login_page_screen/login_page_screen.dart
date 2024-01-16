@@ -211,7 +211,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
     if (_formKey.currentState!.validate()) {
       // Process data.
       final response = await http.post(
-        Uri.parse('http://10.3.24.48:4000/login'),
+        Uri.parse('http://10.3.24.48:5000/login'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -244,7 +244,6 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
         Navigator.pushReplacementNamed(
           context,
           AppRoutes.homePage,
-          arguments: {'email': emailController.text},
         );
       } else {
         // Handle unsuccessful login (show an error message, etc.)

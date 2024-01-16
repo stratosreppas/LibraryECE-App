@@ -23,8 +23,6 @@ def user_login():
         user_data = cursor.fetchone()
         cursor.close()
 
-        print(user_data[0])
-
         if user_data[0]==1:
             return jsonify({"status": "success", "message": "Successful Login"})
         else:
@@ -96,8 +94,9 @@ def user_transaction_history():
     try:
         data=request.json
         id=data.get('id')
+        print(id)
         cursor = db.connection.cursor()
-        cursor.execute(f"select books.id,books.title,transaction.borrow_date,transaction.return_date,books.image_url from visitor join transaction on visitor.id = transaction.visitor_id join books on transaction.book_id=books.id where visitor.id='{id}';")
+        cursor.execute(f"select books.id,books.title,transaction.borrow_date,transaction.return_date,books.image_url from visitor join transaction on visitor.id = transaction.visitor_id join books on transaction.book_id=books.id where visitor.id='{id}' and transaction.return_date IS NOT NULL;")
         transaction_history = cursor.fetchall()
         cursor.close()
 
@@ -209,6 +208,7 @@ def get_all_transactions():
     try:
 
         visitor_id = int(request.args.get('id', ''))
+        print(visitor_id)
 
         print('hi')
 
@@ -252,7 +252,7 @@ def get_all_selected_books():
         query = "SELECT books.isbn, title, subtitle, author, publisher, year, category, " \
                 "edition, dewey, language, image_url, count(*) as copies " \
                 "FROM books JOIN favorites ON books.isbn = favorites.isbn " \
-                "WHERE favorites.id = %s GROUP BY books.isbn;"
+                "WHERE favorites.id = %s GROUP BY books.isbn,title,subtitle,author,publisher,year,category,edition,dewey,language,image_url;"
 
         params = (visitor_id,)
 
@@ -279,6 +279,7 @@ def get_user():
     try:
 
         email = request.args.get('email', '')
+        print(email)
 
         # ...
 
@@ -307,4 +308,4 @@ def get_user():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=4000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
