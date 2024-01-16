@@ -61,6 +61,9 @@ int calculateDays(String dateStr) {
 
 String toDate(String dateStr) {
   DateTime Date = convertToDate(dateStr);
+  if (calculateDays(dateStr) == 0) {
+    return "   -   ";
+  }
   switch (Date.month) {
     case 1:
       return Date.day.toString() + " Jan";
@@ -87,6 +90,6 @@ String toDate(String dateStr) {
     case 12:
       return Date.day.toString() + " Dec";
     default:
-      return "-";
+      return "   -   ";
   }
 }

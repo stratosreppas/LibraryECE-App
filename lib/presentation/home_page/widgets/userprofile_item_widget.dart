@@ -6,64 +6,92 @@ import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class UserprofileItemWidget extends StatelessWidget {
-
   final Transaction transaction;
   final VoidCallback? onTapImgImage;
+  final Color? loanColor; // Added color parameter
 
   UserprofileItemWidget({
     Key? key,
     required this.transaction,
     this.onTapImgImage,
+    this.loanColor, // Added color parameter
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(1.h, 6.v, 5.h, 6.v),
-      decoration: AppDecoration.outlineOnPrimaryContainer.copyWith(
-          borderRadius: BorderRadius.circular(10.h)), // Added rounded corners
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.h),
+        color: appTheme.blueGray100,
+        border: Border(
+          left: BorderSide(
+            color: loanColor ?? appTheme.lightGreen900,
+            width: 5.h,
+          ),
+        ),
+      ), // Added rounded corners
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CustomImageView(
-            imagePath: transaction.imageurl ?? ImageConstant.imgBook,
+          Container(
             height: 60.v,
             width: 45.h,
-            radius: BorderRadius.circular(
-              10.h,
-            ),
             margin: EdgeInsets.only(left: 1.h),
-            onTap: () {
-              onTapImgImage!.call();
-            },
-          ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.h),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.8),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
+            child: CustomImageView(
+              imagePath: transaction.imageurl ?? ImageConstant.imgBook,
+              height: 60.v,
+              width: 45.h,
+              radius: BorderRadius.circular(10.h),
+              onTap: () {
+                onTapImgImage!.call();
+              },
+            ),
+          )
+,
           Padding(
             padding: EdgeInsets.only(
-              left: 3.h,
+              left: 5.h,
               top: 6.v,
               bottom: 6.v,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 108.h,
-                  child: Text(
-                    transaction.title ?? "",
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: CustomTextStyles.bodySmall12,
+            child: GestureDetector(
+              onTap: () {
+                onTapImgImage!.call();
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 108.h,
+                    child: Text(
+                      transaction.title ?? "",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: CustomTextStyles.bodySmall12,
+                    ),
                   ),
-                ),
-                SizedBox(height: 1.v),
-                Opacity(
-                  opacity: 0.4,
-                  child: Text(
-                    transaction.book_id.toString() ?? "",
-                    style: CustomTextStyles.bodyMediumInterBlack900,
+                  SizedBox(height: 1.v),
+                  Opacity(
+                    opacity: 0.4,
+                    child: Text(
+                      transaction.book_id.toString() ?? "",
+                      style: CustomTextStyles.bodyMediumInterBlack900,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Spacer(),

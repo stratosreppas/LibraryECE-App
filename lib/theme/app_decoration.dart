@@ -107,6 +107,7 @@ class AppDecoration {
           ),
         ),
       );
+
   static BoxDecoration get outlinePrimary => BoxDecoration(
         color: theme.colorScheme.primaryContainer,
         border: Border.all(
