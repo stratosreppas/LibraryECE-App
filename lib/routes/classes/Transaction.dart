@@ -2,7 +2,7 @@ import 'Book.dart';
 
 class Transaction extends Book{
 
-  final String book_id;
+  final int book_id;
   final String borrow_date;
   final String must_return_date;
   final String return_date;

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:stratos_s_application3/routes/classes/Book.dart';
 
 class BookItemWidget extends StatelessWidget {
+  final Book book;
+
   const BookItemWidget({
     Key? key,
     required this.onTapImgOperatingSystemImage,
+    required this.book,
   }) : super(key: key);
 
   final VoidCallback onTapImgOperatingSystemImage;
@@ -19,7 +23,7 @@ class BookItemWidget extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         children: [
           CustomImageView(
-            imagePath: ImageConstant.imgRectangle21115x75,
+            imagePath: book.imageurl,
             height: 115.v,
             width: 75.h,
             radius: BorderRadius.circular(3.h),
@@ -46,7 +50,7 @@ class BookItemWidget extends StatelessWidget {
                   SizedBox(
                     width: 47.h,
                     child: Text(
-                      "ΛΕΙΤΟΥΡΓΙΚΑ ΣΥΣΤΗΜΑΤΑ",
+                      book.title ?? "",
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.center,

@@ -7,6 +7,7 @@ import 'package:stratos_s_application3/presentation/profile_page_screen/profile_
 import 'package:stratos_s_application3/core/utils/navigation_utils.dart';
 
 class CustomBottomBar extends StatefulWidget {
+
   CustomBottomBar({this.onChanged, int initialIndex = 0})
       : assert(initialIndex >= 0),
         selectedIndex = initialIndex;

@@ -8929,7 +8929,7 @@ VALUES
 -- --------------------------------------------------------
 
 -- Populate favorites
-INSERT INTO `favorites` (`isbn`, `id`)
+INSERT INTO `favorites` (`isbn`, `email`)
 VALUES
 ('978-960-7182-89-0', 1),  -- Visitor 1 likes book with ISBN 978-960-7182-89-0
 ('978-960-456-118-6', 2);  -- Visitor 2 likes book with ISBN 978-960-456-118-6
