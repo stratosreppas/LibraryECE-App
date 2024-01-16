@@ -4,6 +4,7 @@ import 'core/app_export.dart';
 
 var globalMessengerKey = GlobalKey<ScaffoldMessengerState>();
 void main() {
+  ErrorWidget.builder = (FlutterErrorDetails details) => Container();
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
