@@ -4,6 +4,7 @@ import 'package:stratos_s_application3/routes/classes/Book.dart';
 
 class BookItemWidget extends StatelessWidget {
   final Book book;
+  final VoidCallback onTapImgOperatingSystemImage;
 
   const BookItemWidget({
     Key? key,
@@ -11,14 +12,21 @@ class BookItemWidget extends StatelessWidget {
     required this.book,
   }) : super(key: key);
 
-  final VoidCallback onTapImgOperatingSystemImage;
-
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 115.v,
       width: 75.h,
-      decoration: AppDecoration.outlineBlack,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(1, 5), // changes position of shadow
+          ),
+        ],
+      ),
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -26,7 +34,7 @@ class BookItemWidget extends StatelessWidget {
             imagePath: book.imageurl,
             height: 115.v,
             width: 75.h,
-            radius: BorderRadius.circular(3.h),
+            radius: BorderRadius.circular(10.h),
             alignment: Alignment.center,
             onTap: onTapImgOperatingSystemImage,
           ),
