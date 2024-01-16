@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/presentation/settings_page_screen/widgets/radio_button_dropdown_widget.dart';
 import 'package:stratos_s_application3/presentation/settings_page_screen/widgets/switch_dropdown_widget.dart';
@@ -141,6 +142,14 @@ class SettingsPageScreen extends StatelessWidget {
 
   /// Navigates to the logoutPageScreen when the action is triggered.
   onTapLogout(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.loginPageScreen);
+    _clearUserData();
+    Navigator.pushNamedAndRemoveUntil(
+        context, AppRoutes.loginPageScreen, (route) => false);
+  }
+
+  // Method to clear user data in SharedPreferences
+  void _clearUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
   }
 }

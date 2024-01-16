@@ -25,14 +25,18 @@ class RichtooltipgridItemWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            labelText,
-            style: theme.textTheme.titleSmall,
+          Center(
+            child: Text(
+              labelText,
+              style: theme.textTheme.titleSmall,
+            ),
           ),
           SizedBox(height: 2.v),
-          Text(
-            valueText,
-            style: theme.textTheme.bodyMedium,
+          Center(
+            child: Text(
+              valueText,
+              style: theme.textTheme.bodyMedium,
+            ),
           ),
         ],
       ),

@@ -8927,9 +8927,13 @@ VALUES
   (1, 3, 9321, '2022-01-01', '2022-01-07', '2022-01-06'),
   (2, 3, 9322, '2022-01-02', '2022-01-09', '2022-01-07'),
   (3, 3, 9323, '2022-01-03', '2022-01-10', '2022-01-08'),
-  (4,3,9324,CURDATE(),CURDATE() + INTERVAL 7 DAY,NULL),
-  (5,3,9327,CURDATE(),CURDATE() + INTERVAL 7 DAY,NULL),
-  (6,3,9326,CURDATE(),CURDATE() + INTERVAL 7 DAY,NULL);
+  (4, 3, 9345, '2022-01-03', '2022-01-10', '2022-01-08'),
+  (5,3,9324,'2024-01-14','2024-01-21',NULL),
+  (6,3,9327,CURDATE(),CURDATE() + INTERVAL 7 DAY,NULL),
+  (7,3,9326,CURDATE(),CURDATE() + INTERVAL 7 DAY,NULL);
+  
+INSERT INTO transaction (transaction_id, visitor_id, book_id, borrow_date, must_return_date, return_date)
+VALUES (8, 1, 9330, '2024-01-14', '2024-01-21', null);
 
 -- --------------------------------------------------------
 

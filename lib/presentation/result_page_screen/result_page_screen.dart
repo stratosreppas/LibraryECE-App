@@ -135,7 +135,7 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
     try {
       //print('hi');
       final response = await http.get(Uri.parse(
-          'http://10.3.24.48:5000/api/all_books?' +
+          'http://10.3.24.7:5000/api/all_books?' +
               'searchText=$searchText&categories=$categories&authors=$authors&publishers=$publishers&years=$years&languages=$languages'));
 
       print('Response status code: ${response.statusCode}');

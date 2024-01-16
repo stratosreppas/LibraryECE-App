@@ -45,7 +45,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://10.3.24.48:5000/profile'),
+        Uri.parse('http://10.3.24.7:5000/profile'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -93,7 +93,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://10.3.24.48:5000/transactions_history'),
+        Uri.parse('http://10.3.24.7:5000/transactions_history'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -212,6 +212,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
           ),
           Container(
             height: 260.v,
+            color: theme.primaryColor,
             child: ListView.separated(
               physics: ScrollPhysics(),
               shrinkWrap: true,

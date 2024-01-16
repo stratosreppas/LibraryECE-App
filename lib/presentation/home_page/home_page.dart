@@ -133,30 +133,39 @@ class _HomePageState extends State<HomePage> {
                                   radius: BorderRadius.vertical(
                                       bottom: Radius.circular(5.h)),
                                   alignment: Alignment.center))),
-                        Align(
+                      Align(
                           alignment: Alignment.center,
-                          child:
-                          SizedBox(
+                          child: SizedBox(
                               height: 80.adaptSize,
                               width: 80.adaptSize,
                               child: TweenAnimationBuilder(
                                 tween: Tween(
                                   begin: 0.0,
-                                  end: activeTransactions.length > 2 ? (7 - calculateDays(activeTransactions[2].must_return_date)) / 7.0 : 0.0,
-                                ),                                duration: Duration(seconds: 1), // Set the duration of the animation
+                                  end: activeTransactions.length > 2
+                                      ? (7 -
+                                              calculateDays(
+                                                  activeTransactions[2]
+                                                      .must_return_date)) /
+                                          7.0
+                                      : 0.0,
+                                ),
+                                duration: Duration(
+                                    seconds:
+                                        1), // Set the duration of the animation
                                 builder: (context, double value, child) {
                                   return CircularProgressIndicator(
                                     strokeCap: StrokeCap.round,
                                     value: value,
-                                    backgroundColor: activeTransactions.length > 2 ? appTheme.gray60001 : appTheme.green900,
+                                    backgroundColor:
+                                        activeTransactions.length > 2
+                                            ? appTheme.gray60001
+                                            : appTheme.green900,
                                     color: appTheme.green900,
                                     strokeWidth: 6,
                                   );
                                 },
-                              )
-
-                          )),
-                        Align(
+                              ))),
+                      Align(
                           alignment: Alignment.center,
                           child: SizedBox(
                               height: 100.adaptSize,
@@ -164,22 +173,31 @@ class _HomePageState extends State<HomePage> {
                               child: TweenAnimationBuilder(
                                 tween: Tween(
                                   begin: 0.0,
-                                  end: activeTransactions.length > 1 ? (7 - calculateDays(activeTransactions[1].must_return_date)) / 7.0 : 0.0,
+                                  end: activeTransactions.length > 1
+                                      ? (7 -
+                                              calculateDays(
+                                                  activeTransactions[1]
+                                                      .must_return_date)) /
+                                          7.0
+                                      : 0.0,
                                 ),
-                                duration: Duration(seconds: 1), // Set the duration of the animation
+                                duration: Duration(
+                                    seconds:
+                                        1), // Set the duration of the animation
                                 builder: (context, double value, child) {
                                   return CircularProgressIndicator(
                                     strokeCap: StrokeCap.round,
                                     value: value,
-                                    backgroundColor: activeTransactions.length > 1 ? appTheme.gray500 : appTheme.lime800,
+                                    backgroundColor:
+                                        activeTransactions.length > 1
+                                            ? appTheme.gray500
+                                            : appTheme.lime800,
                                     color: appTheme.lime800,
                                     strokeWidth: 6,
                                   );
                                 },
-                              )
-                          )
-                      ),
-                        Align(
+                              ))),
+                      Align(
                           alignment: Alignment.center,
                           child: SizedBox(
                               height: 120.adaptSize,
@@ -187,25 +205,35 @@ class _HomePageState extends State<HomePage> {
                               child: TweenAnimationBuilder(
                                 tween: Tween(
                                   begin: 0.0,
-                                  end: activeTransactions.length > 0 ? (7 - calculateDays(activeTransactions[0].must_return_date)) / 7.0 : 0.0,
-                                ),                                duration: Duration(seconds: 1), // Set the duration of the animation
+                                  end: activeTransactions.length > 0
+                                      ? (7 -
+                                              calculateDays(
+                                                  activeTransactions[0]
+                                                      .must_return_date)) /
+                                          7.0
+                                      : 0.0,
+                                ),
+                                duration: Duration(
+                                    seconds:
+                                        1), // Set the duration of the animation
                                 builder: (context, double value, child) {
                                   return CircularProgressIndicator(
                                     strokeCap: StrokeCap.round,
                                     value: value,
-                                    backgroundColor: activeTransactions.length > 0 ? appTheme.blueGray100 : theme.colorScheme.onPrimaryContainer,
+                                    backgroundColor: activeTransactions.length >
+                                            0
+                                        ? appTheme.blueGray100
+                                        : theme.colorScheme.onPrimaryContainer,
                                     color: theme.colorScheme.onPrimaryContainer,
                                     strokeWidth: 6,
                                   );
                                 },
-                              )
-                          )
-                      )
+                              )))
                     ])),
                 Padding(
                     padding: EdgeInsets.only(left: 8.h, top: 65.v),
                     child: Column(children: [
-                        Container(
+                      Container(
                           width: 56.h,
                           padding: EdgeInsets.symmetric(
                               horizontal: 6.h, vertical: 1.v),
@@ -214,26 +242,30 @@ class _HomePageState extends State<HomePage> {
                                   borderRadius:
                                       BorderRadiusStyle.roundedBorder10),
                           child: Center(
-                            child: Text( activeTransactions.length > 0 ?
-                            calculateDays(activeTransactions[0]
-                                .must_return_date)
-                                .toString() +
-                                " days" : "- days",
+                            child: Text(
+                                activeTransactions.length > 0
+                                    ? calculateDays(activeTransactions[0]
+                                                .must_return_date)
+                                            .toString() +
+                                        " days"
+                                    : "- days",
                                 style: CustomTextStyles.bodyMediumOnPrimary),
                           )),
                       SizedBox(height: 5.v),
-                        Container(
+                      Container(
                           width: 56.h,
                           padding: EdgeInsets.symmetric(
                               horizontal: 6.h, vertical: 1.v),
                           decoration: AppDecoration.fillLime.copyWith(
                               borderRadius: BorderRadiusStyle.roundedBorder10),
                           child: Center(
-                            child: Text( activeTransactions.length > 1 ?
-                                calculateDays(activeTransactions[1]
-                                            .must_return_date)
-                                        .toString() +
-                                    " days" : "- days",
+                            child: Text(
+                                activeTransactions.length > 1
+                                    ? calculateDays(activeTransactions[1]
+                                                .must_return_date)
+                                            .toString() +
+                                        " days"
+                                    : "- days",
                                 style: CustomTextStyles.bodyMediumOnPrimary),
                           )),
                       SizedBox(height: 5.v),
@@ -244,11 +276,13 @@ class _HomePageState extends State<HomePage> {
                           decoration: AppDecoration.fillLightGreen.copyWith(
                               borderRadius: BorderRadiusStyle.roundedBorder10),
                           child: Center(
-                            child: Text( activeTransactions.length > 2 ?
-                            calculateDays(activeTransactions[2]
-                                .must_return_date)
-                                .toString() +
-                                " days" : "- days",
+                            child: Text(
+                                activeTransactions.length > 2
+                                    ? calculateDays(activeTransactions[2]
+                                                .must_return_date)
+                                            .toString() +
+                                        " days"
+                                    : "- days",
                                 style: CustomTextStyles.bodyMediumOnPrimary),
                           ))
                     ]))
@@ -291,36 +325,34 @@ class _HomePageState extends State<HomePage> {
                   },
                   itemCount: 3,
                   itemBuilder: (context, index) {
-                    if(index>=activeTransactions.length){
+                    if (index >= activeTransactions.length) {
                       return Container(
-                        height: 70.v,
-                        padding: EdgeInsets.fromLTRB(1.h, 6.v, 5.h, 6.v),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.h),
-                          color: appTheme.blueGray100,
-                        ),
-                          alignment: Alignment.center, // Center both horizontally and vertically
+                          height: 70.v,
+                          padding: EdgeInsets.fromLTRB(1.h, 6.v, 5.h, 6.v),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.h),
+                            color: appTheme.blueGray100,
+                          ),
+                          alignment: Alignment
+                              .center, // Center both horizontally and vertically
 
                           child: Text(
-                          "Δεν υπάρχει ενεργός δανεισμός",
-                          style: CustomTextStyles.bodyMediumInterBlack900,
-                          textAlign: TextAlign.center,
-                        )
-                        );
-                    }
-
-                    else{
-                    return UserprofileItemWidget(
-                    transaction: activeTransactions[index],
-                    loanColor: index == 0
-                    ? theme.colorScheme.onPrimaryContainer
-                        : index == 1
-                    ? appTheme.lime800
-                        : appTheme.lightGreen900,
-                    onTapImgImage: () {
-                    onTapImgImage(context);
-                    },
-                    );
+                            "Δεν υπάρχει ενεργός δανεισμός",
+                            style: CustomTextStyles.bodyMediumInterBlack900,
+                            textAlign: TextAlign.center,
+                          ));
+                    } else {
+                      return UserprofileItemWidget(
+                        transaction: activeTransactions[index],
+                        loanColor: index == 0
+                            ? theme.colorScheme.onPrimaryContainer
+                            : index == 1
+                                ? appTheme.lime800
+                                : appTheme.lightGreen900,
+                        onTapImgImage: () {
+                          onTapImgImage(context);
+                        },
+                      );
                     }
                   },
                 )
@@ -387,7 +419,7 @@ class _HomePageState extends State<HomePage> {
     try {
       //print('hi');
       final response = await http.get(
-          Uri.parse('http://192.168.1.187:5000/api/home/user?' + 'email=$email'));
+          Uri.parse('http://10.3.24.7:5000/api/home/user?' + 'email=$email'));
 
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
@@ -430,8 +462,8 @@ class _HomePageState extends State<HomePage> {
     try {
       print('hi');
       int id = user.id;
-      final response = await http.get(Uri.parse(
-          'http://192.168.1.187:5000/api/home/transactions?' + 'id=$id'));
+      final response = await http.get(
+          Uri.parse('http://10.3.24.7:5000/api/home/transactions?' + 'id=$id'));
 
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
@@ -488,7 +520,7 @@ class _HomePageState extends State<HomePage> {
       //print('hi');
       int id = user.id;
       final response = await http
-          .get(Uri.parse('http://192.168.1.187:5000/api/home/books?' + 'id=$id'));
+          .get(Uri.parse('http://10.3.24.7:5000/api/home/books?' + 'id=$id'));
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
 

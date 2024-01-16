@@ -28,12 +28,13 @@ CREATE TABLE books (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `transaction` (
-  `transaction_id` int(11) NOT NULL,
+  transaction_id int(11) NOT NULL,
   `visitor_id` int(11) DEFAULT NULL,
   `book_id` int(11) DEFAULT NULL,
   `borrow_date` date DEFAULT NULL,
   `must_return_date` date DEFAULT NULL,
-  `return_date` date DEFAULT NULL
+  `return_date` date DEFAULT NULL,
+  primary key(transaction_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `visitor` (
@@ -53,8 +54,8 @@ CREATE TABLE `visitor` (
 ALTER TABLE `books`
   ADD PRIMARY KEY (`id`);
 
-ALTER TABLE `transaction`
-  ADD PRIMARY KEY (`transaction_id`);
+-- ALTER TABLE `transaction`
+--   ADD PRIMARY KEY (`transaction_id`);
 
 -- ALTER TABLE `visitor`
 --   ADD PRIMARY KEY (`id`);

@@ -211,7 +211,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
     if (_formKey.currentState!.validate()) {
       // Process data.
       final response = await http.post(
-        Uri.parse('http://10.3.24.48:5000/login'),
+        Uri.parse('http://10.3.24.7:5000/login'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -241,10 +241,8 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
           dismissDirection: DismissDirection.down,
         ));
 
-        Navigator.pushReplacementNamed(
-          context,
-          AppRoutes.homePage,
-        );
+        Navigator.pushNamedAndRemoveUntil(
+            context, AppRoutes.homePage, (route) => false);
       } else {
         // Handle unsuccessful login (show an error message, etc.)
         String errorMessage = responseData['error'] ?? responseData['message'];
