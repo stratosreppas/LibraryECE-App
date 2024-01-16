@@ -8912,7 +8912,7 @@ INSERT INTO `books` (`id`, `title`, `subtitle`, `author`, `isbn`, `year`, `langu
 
 -- --------------------------------------------------------
 
-INSERT INTO `visitor` (`name`, `surname`, `am`, `property`, `phone`, `mail`,password)
+INSERT INTO `visitor` (`name`, `surname`, `am`, `property`, `phone`, `email`,password)
 VALUES
 ('Alice', 'Smith', '123456', 1, '1234567890', 'alice@example.com',"123456"),
 ('Bob', 'Johnson', '789012', 2, '9876543210', 'bob@example.com',"123456"),
@@ -8921,7 +8921,7 @@ VALUES
 -- --------------------------------------------------------
 
 -- Populate favorites
-INSERT INTO `favorites` (`isbn`, `id`)
+INSERT INTO `favorites` (`isbn`, `email`)
 VALUES
 ('978-960-7182-89-0', 1),  -- Visitor 1 likes book with ISBN 978-960-7182-89-0
 ('978-960-456-118-6', 2);  -- Visitor 2 likes book with ISBN 978-960-456-118-6

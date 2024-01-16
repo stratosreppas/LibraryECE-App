@@ -43,7 +43,7 @@ CREATE TABLE `visitor` (
   `property` int(11) DEFAULT NULL,
   `barcode` varchar(50) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
-  `mail` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
   password varchar(50) NOT NULL,
   `penalty` date DEFAULT NULL,
   primary key(id)

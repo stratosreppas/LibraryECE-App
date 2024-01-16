@@ -16,10 +16,10 @@ db = MySQL(app)
 def user_login():
     try:
         data = request.json
-        mail = data.get('mail')
+        email = data.get('email')
         password = data.get('password')
         cursor = db.connection.cursor()
-        cursor.execute(f"SELECT COUNT(*) FROM visitor WHERE mail='{mail}' and password='{password}'")
+        cursor.execute(f"SELECT COUNT(*) FROM visitor WHERE email='{email}' and password='{password}'")
         user_data = cursor.fetchone()
         cursor.close()
 
@@ -155,6 +155,109 @@ def get_all_books():
             return jsonify({'error': 'No data found'})
     except Exception as e:
         return jsonify({'error': f'Database error: {str(e)}'})
+
+
+@app.route('/api/home/transactions',
+           methods=['GET'])
+def get_all_transactions():
+    try:
+
+        visitor_id = int(request.args.get('id', ''))
+
+        print('hi')
+
+        cursor = db.connection.cursor()
+
+        query = "SELECT books.isbn, books.title, books.subtitle, books.author, books.publisher, books.year, " \
+                "books.category, books.edition, books.dewey, books.language, books.image_url, " \
+                "transaction.book_id, transaction.borrow_date, transaction.must_return_date " \
+                "FROM books " \
+                "JOIN transaction ON books.id = transaction.book_id " \
+                "WHERE transaction.visitor_id = %s AND transaction.return_date IS NULL;"
+
+        params = (visitor_id,)
+
+        cursor.execute(query, params)
+
+        data = cursor.fetchall()
+        print(data)
+        if data:
+
+            columns = [desc[0] for desc in cursor.description]
+            results = [dict(zip(columns, row)) for row in data]
+
+            cursor.close()
+
+            return jsonify(results)
+        else:
+            return jsonify({'error': 'No data found'})
+    except Exception as e:
+        return jsonify({'error': f'Database error: {str(e)}'})
+
+@app.route('/api/home/books',
+           methods=['GET'])
+def get_all_selected_books():
+    try:
+
+        visitor_id = request.args.get('id', '')
+
+        cursor = db.connection.cursor()
+
+        query = "SELECT books.isbn, title, subtitle, author, publisher, year, category, " \
+                "edition, dewey, language, image_url, count(*) as copies " \
+                "FROM books JOIN favorites ON books.isbn = favorites.isbn " \
+                "WHERE favorites.id = %s GROUP BY books.isbn;"
+
+        params = (visitor_id,)
+
+        cursor.execute(query, params)
+
+        data = cursor.fetchall()
+        print(data)
+        if data:
+
+            columns = [desc[0] for desc in cursor.description]
+            results = [dict(zip(columns, row)) for row in data]
+
+            cursor.close()
+
+            return jsonify(results)
+        else:
+            return jsonify({'error': 'No data found'})
+    except Exception as e:
+        return jsonify({'error': f'Database error: {str(e)}'})
+
+@app.route('/api/home/user',
+           methods=['GET'])
+def get_user():
+    try:
+
+        email = request.args.get('email', '')
+
+        # ...
+
+        cursor = db.connection.cursor()
+
+        query = "SELECT id, name, surname, am, property, phone, email, penalty FROM visitor WHERE email = %s;"
+        params = (email,)
+
+        cursor.execute(query, params)
+
+        data = cursor.fetchone()
+
+        if data:
+            columns = [desc[0] for desc in cursor.description]
+            results = dict(zip(columns, data))
+
+            cursor.close()
+
+            return jsonify(results)
+        else:
+            cursor.close()
+            return jsonify({'error': 'No data found'})
+    except Exception as e:
+        return jsonify({'error': f'Database error: {str(e)}'})
+
 
 
 if __name__ == '__main__':

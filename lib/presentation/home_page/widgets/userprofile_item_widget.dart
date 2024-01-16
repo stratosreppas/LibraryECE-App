@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:stratos_s_application3/routes/classes/Transaction.dart';
+import 'package:intl/intl.dart';
+
 
 // ignore: must_be_immutable
 class UserprofileItemWidget extends StatelessWidget {
+
+  final Transaction transaction;
+  final VoidCallback? onTapImgImage;
+
   UserprofileItemWidget({
     Key? key,
+    required this.transaction,
     this.onTapImgImage,
-  }) : super(
-          key: key,
-        );
-
-  VoidCallback? onTapImgImage;
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +26,7 @@ class UserprofileItemWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CustomImageView(
-            imagePath: ImageConstant.imgRectangle21,
+            imagePath: transaction.imageurl ?? ImageConstant.imgBook,
             height: 60.v,
             width: 45.h,
             radius: BorderRadius.circular(
@@ -45,7 +49,7 @@ class UserprofileItemWidget extends StatelessWidget {
                 SizedBox(
                   width: 108.h,
                   child: Text(
-                    "ΕΙΣΑΓΩΓΗ ΣΤΙΣ ΤΗΛΕΠΙΚΟΙΝΩΝΙΕΣ",
+                    transaction.title ?? "",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: CustomTextStyles.bodySmall12,
@@ -55,7 +59,7 @@ class UserprofileItemWidget extends StatelessWidget {
                 Opacity(
                   opacity: 0.4,
                   child: Text(
-                    "2345",
+                    transaction.book_id.toString() ?? "",
                     style: CustomTextStyles.bodyMediumInterBlack900,
                   ),
                 ),
@@ -80,7 +84,7 @@ class UserprofileItemWidget extends StatelessWidget {
                 SizedBox(
                   width: 25.h,
                   child: Text(
-                    "23\nNov",
+                    toDate(transaction.must_return_date) ?? "",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
@@ -123,5 +127,52 @@ class UserprofileItemWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+DateTime convertToDate(String input) {
+  try {
+    var d = DateFormat('EEE, dd MMM yyyy HH:mm:ss z', 'en_US').parse(input);
+    return d;
+  } catch (e) {
+    return DateTime.now();
+  }
+}
+
+int calculateDays(String dateStr) {
+  DateTime Date = convertToDate(dateStr);
+  DateTime now = DateTime.now();
+  return Date.difference(now).inDays;
+}
+
+String toDate(String dateStr) {
+  DateTime Date = convertToDate(dateStr);
+  switch(Date.month){
+    case 1:
+      return Date.day.toString() + " Jan";
+    case 2:
+      return Date.day.toString() + " Feb";
+    case 3:
+      return Date.day.toString() + " Mar";
+    case 4:
+      return Date.day.toString() + " Apr";
+    case 5:
+      return Date.day.toString() + " May";
+    case 6:
+      return Date.day.toString() + " Jun";
+    case 7:
+      return Date.day.toString() + " Jul";
+    case 8:
+      return Date.day.toString() + " Aug";
+    case 9:
+      return Date.day.toString() + " Sep";
+    case 10:
+      return Date.day.toString() + " Oct";
+    case 11:
+      return Date.day.toString() + " Nov";
+    case 12:
+      return Date.day.toString() + " Dec";
+    default:
+      return "Invalid Month";
   }
 }
