@@ -93,6 +93,9 @@ class CustomTextStyles {
   static get labelLargeRed900 => theme.textTheme.labelLarge!.copyWith(
         color: appTheme.red900,
       );
+  static get labelLargeRed90001=> theme.textTheme.labelLarge!.copyWith(
+    color: appTheme.red90001,
+  );
   static get labelLargeSemiBold => theme.textTheme.labelLarge!.copyWith(
         fontWeight: FontWeight.w600,
       );

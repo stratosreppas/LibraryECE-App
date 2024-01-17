@@ -350,7 +350,7 @@ class _HomePageState extends State<HomePage> {
                                 ? appTheme.lime800
                                 : appTheme.lightGreen900,
                         onTapImgImage: () {
-                          onTapImgImage(context);
+                          onTapImgImage(context, activeTransactions[index]);
                         },
                         onTapRenewButton: () {
                           renewTransaction(activeTransactions[index]);
@@ -409,7 +409,7 @@ class _HomePageState extends State<HomePage> {
                         return BookItemWidget(
                             book: selectedBooks[index],
                             onTapImgOperatingSystemImage: () {
-                              onTapImgOperatingSystemImage(context);
+                              onTapImgOperatingSystemImage(context, selectedBooks[index]);
                             });
                       })),
               SizedBox(height: 1.v)
@@ -423,7 +423,7 @@ class _HomePageState extends State<HomePage> {
     try {
       //print('hi');
       final response = await http.get(
-          Uri.parse('http://10.3.24.7:5000/api/home/user?' + 'email=$email'));
+          Uri.parse('http://192.168.1.187:5000/api/home/user?' + 'email=$email'));
 
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
@@ -467,7 +467,7 @@ class _HomePageState extends State<HomePage> {
       print('hi');
       int id = user.id;
       final response = await http.get(
-          Uri.parse('http://10.3.24.7:5000/api/home/transactions?' + 'id=$id'));
+          Uri.parse('http://192.168.1.187:5000/api/home/transactions?' + 'id=$id'));
 
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
@@ -524,8 +524,9 @@ class _HomePageState extends State<HomePage> {
     try {
       //print('hi');
       int id = user.id;
+      print(id);
       final response = await http
-          .get(Uri.parse('http://10.3.24.7:5000/api/home/books?' + 'id=$id'));
+          .get(Uri.parse('http://192.168.1.187:5000/api/home/books?' + 'id=$id'));
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
 
@@ -546,7 +547,7 @@ class _HomePageState extends State<HomePage> {
               category: map['category'] ?? '',
               edition: map['edition'] ?? '',
               dewey: map['dewey'] ?? '',
-              copies: map['copies'] ?? '',
+              copies: map['copies'] ?? -1,
             );
           }).toList();
 
@@ -622,13 +623,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// Navigates to the bookPageThreeScreen when the action is triggered.
-  onTapImgOperatingSystemImage(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.bookPageOneScreen);
+  onTapImgOperatingSystemImage(BuildContext context, Book book) {
+    Navigator.pushNamed(context, AppRoutes.bookPageOneScreen, arguments: {'book': book} );
   }
 
   /// Navigates to the bookPageFourScreen when the action is triggered.
-  onTapImgImage(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.bookPageOneScreen);
+  onTapImgImage(BuildContext context, Book book) {
+    Navigator.pushNamed(context, AppRoutes.bookPageOneScreen, arguments: {'book': book});
   }
 
   /// Navigates to the profilePageScreen when the action is triggered.

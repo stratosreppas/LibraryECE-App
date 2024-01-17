@@ -15,17 +15,17 @@ class Book {
 
 
   Book({
-    required this.title,
-    required this.isbn,
-    required this.imageurl,
-    required this.author,
-    required this.publisher,
-    required this.year,
-    required this.language,
-    required this.category,
-    required this.edition,
-    required this.dewey,
-    required this.subtitle,
-    required this.copies,
+  this.title = '',
+  this.subtitle = '',
+  this.isbn = '',
+  this.imageurl = '',
+  this.author = '',
+  this.publisher = '',
+  this.year = '',
+  this.language = '',
+  this.category = '',
+  this.edition = '',
+  this.dewey = '',
+  this.copies = 0,
   });
 }

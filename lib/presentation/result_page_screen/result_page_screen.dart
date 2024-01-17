@@ -7,6 +7,7 @@ import 'package:stratos_s_application3/widgets/custom_floating_button.dart';
 import 'package:stratos_s_application3/routes/classes/Book.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ResultPageScreen extends StatefulWidget {
   ResultPageScreen({Key? key})
@@ -24,6 +25,8 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
 
   List<Book> books = [];
 
+  late String? email;
+
   String searchText = 'NaN';
   String languages = 'NaN';
   String categories = 'NaN';
@@ -31,10 +34,24 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
   String publishers = 'NaN';
   String years = 'NaN';
 
+  Future<void> getEmailFromPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userEmail = prefs.getString('email');
+    setState(() {
+      email = userEmail;
+      print("Home Page: $email");
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getEmailFromPreferences();
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
     // Access the 'languages' parameter from the arguments
     final Map<String, dynamic> args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
@@ -117,7 +134,14 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                   Column(
                     children: [
                       SizedBox(height: 16.v),
-                      ResultBox(book: book),
+                      ResultBox(book: book, email: email, onTapImgImage: () {
+                        Navigator.pushNamed(
+                            context, AppRoutes.bookPageOneScreen,
+                            arguments: {
+                              'book': book,
+                              'email': email,
+                            });
+                      }),
                     ],
                   ),
                 SizedBox(height: 16.v),
@@ -135,7 +159,7 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
     try {
       //print('hi');
       final response = await http.get(Uri.parse(
-          'http://10.3.24.7:5000/api/all_books?' +
+          'http://192.168.1.187:5000/api/all_books?' +
               'searchText=$searchText&categories=$categories&authors=$authors&publishers=$publishers&years=$years&languages=$languages'));
 
       print('Response status code: ${response.statusCode}');

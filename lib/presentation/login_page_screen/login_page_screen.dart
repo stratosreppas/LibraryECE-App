@@ -211,7 +211,7 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
     if (_formKey.currentState!.validate()) {
       // Process data.
       final response = await http.post(
-        Uri.parse('http://10.3.24.7:5000/login'),
+        Uri.parse('http://192.168.1.187:5000/login'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
