@@ -109,6 +109,28 @@ def user_transaction_history():
         print(f"Error: {e}")
         return jsonify({'status': 'error', 'message': "Failed to find user's transaction history"}), 500
 
+@app.route('/renew', methods=['POST','GET'])
+def loan_renew():
+    try:
+        data = request.json
+        transaction_id=data['transaction_id']
+        cursor = db.connection.cursor()
+        cursor.execute(f"SELECT renew FROM transaction where transaction_id='{transaction_id}'")
+        is_enabled=cursor.fetchone()
+        if is_enabled[0]==0: 
+            cursor.close()
+            return jsonify({'status':'disabled'})
+        cursor.execute(f"UPDATE transaction SET must_return_date=CURDATE() + INTERVAL 7 DAY, renew=false WHERE transaction_id='{transaction_id}';")
+        db.connection.commit()
+        cursor.close()
+
+        return jsonify({'status': 'success', 'message': 'Loan successfully renewed'})
+    
+    except Exception as e:
+        # Handle exceptions (e.g., print the error, log it, etc.)
+        print(f"Error: {e}")
+        return jsonify({'status': 'error', 'message': 'Failed to renew transaction'}), 500
+
 
 @app.route('/api/first_book_image', methods = ['GET'])
 def get_first_book_image():
@@ -217,7 +239,7 @@ def get_all_transactions():
 
         query = "SELECT books.isbn, books.title, books.subtitle, books.author, books.publisher, books.year, " \
                 "books.category, books.edition, books.dewey, books.language, books.image_url, " \
-                "transaction.book_id, transaction.borrow_date, transaction.must_return_date " \
+                "transaction.transaction_id,transaction.book_id, transaction.borrow_date, transaction.must_return_date, transaction.renew " \
                 "FROM books " \
                 "JOIN transaction ON books.id = transaction.book_id " \
                 "WHERE transaction.visitor_id = %s AND transaction.return_date IS NULL;"

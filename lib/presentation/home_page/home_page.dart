@@ -352,6 +352,10 @@ class _HomePageState extends State<HomePage> {
                         onTapImgImage: () {
                           onTapImgImage(context);
                         },
+                        onTapRenewButton: () {
+                          renewTransaction(activeTransactions[index]);
+                        },
+                        isButtonEnabled: activeTransactions[index].renew,
                       );
                     }
                   },
@@ -474,23 +478,24 @@ class _HomePageState extends State<HomePage> {
         if (dataList.isNotEmpty) {
           List<Transaction> transactions = dataList.map((map) {
             return Transaction(
-              title: map['title'] ?? '',
-              author: map['author'] ?? '',
-              imageurl: map['image_url'] ?? '',
-              isbn: map['isbn'] ?? '',
-              subtitle: map['subtitle'] ?? '',
-              publisher: map['publisher'] ?? '',
-              year: map['year'] ?? '',
-              language: map['language'] ?? '',
-              category: map['category'] ?? '',
-              edition: map['edition'] ?? '',
-              dewey: map['dewey'] ?? '',
-              copies: map['copies'] ?? 0,
-              book_id: map['book_id'] ?? '',
-              borrow_date: map['borrow_date'] ?? '',
-              must_return_date: map['must_return_date'] ?? '',
-              return_date: map['return_date'] ?? '',
-            );
+                transactionID: map['transaction_id'],
+                title: map['title'] ?? '',
+                author: map['author'] ?? '',
+                imageurl: map['image_url'] ?? '',
+                isbn: map['isbn'] ?? '',
+                subtitle: map['subtitle'] ?? '',
+                publisher: map['publisher'] ?? '',
+                year: map['year'] ?? '',
+                language: map['language'] ?? '',
+                category: map['category'] ?? '',
+                edition: map['edition'] ?? '',
+                dewey: map['dewey'] ?? '',
+                copies: map['copies'] ?? 0,
+                book_id: map['book_id'] ?? '',
+                borrow_date: map['borrow_date'] ?? '',
+                must_return_date: map['must_return_date'] ?? '',
+                return_date: map['return_date'] ?? '',
+                renew: map['renew']);
           }).toList();
 
           transactions.forEach((book) {
@@ -566,6 +571,54 @@ class _HomePageState extends State<HomePage> {
 
     // Return an empty list in case of an error or no data
     return [];
+  }
+
+  Future<void> renewTransaction(Transaction transaction) async {
+    try {
+      // Your API endpoint for renewing a transaction
+      final response = await http.post(
+        Uri.parse('http://10.3.24.7:5000/renew'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+            <String, int>{'transaction_id': transaction.transactionID}),
+      );
+      final responseData = json.decode(response.body);
+      // Check the response status
+      if (response.statusCode == 200 && responseData['status'] == "success") {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            responseData['message'],
+            textAlign: TextAlign.center,
+          ),
+          backgroundColor: Color.fromARGB(255, 16, 124, 6),
+          elevation: 8,
+          padding: EdgeInsets.all(8.h),
+          duration: Duration(milliseconds: 900),
+          dismissDirection: DismissDirection.down,
+        ));
+      } else if (responseData['status'] == "disabled") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Center(
+                child: Text(
+              'Loan has already been renewed once',
+              style: TextStyle(fontSize: 14.h),
+            )),
+            duration: Duration(milliseconds: 900),
+            backgroundColor: appTheme.red900,
+            dismissDirection: DismissDirection.down,
+          ),
+        );
+      } else {
+        // Handle the error case
+        print("$responseData['message']: $responseData['error']");
+      }
+    } catch (error) {
+      // Handle any other errors that might occur during the request
+      print('Error renewing loan: $error');
+    }
   }
 
   /// Navigates to the bookPageThreeScreen when the action is triggered.

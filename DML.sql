@@ -1,4 +1,6 @@
 DROP DATABASE ecel;
+-- DELETE FROM transaction;
+-- DROP TABLE transaction;
 CREATE DATABASE ecel;
 USE ecel;
 
@@ -34,6 +36,7 @@ CREATE TABLE `transaction` (
   `borrow_date` date DEFAULT NULL,
   `must_return_date` date DEFAULT NULL,
   `return_date` date DEFAULT NULL,
+  renew bool DEFAULT true,
   primary key(transaction_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

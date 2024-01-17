@@ -3,19 +3,29 @@ import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/routes/classes/Transaction.dart';
 import 'package:intl/intl.dart';
 
-
 // ignore: must_be_immutable
-class UserprofileItemWidget extends StatelessWidget {
+class UserprofileItemWidget extends StatefulWidget {
   final Transaction transaction;
   final VoidCallback? onTapImgImage;
-  final Color? loanColor; // Added color parameter
+  final VoidCallback? onTapRenewButton;
+  final Color? loanColor;
+  late final int? isButtonEnabled;
 
-  UserprofileItemWidget({
-    Key? key,
-    required this.transaction,
-    this.onTapImgImage,
-    this.loanColor, // Added color parameter
-  }) : super(key: key);
+  UserprofileItemWidget(
+      {Key? key,
+      required this.transaction,
+      this.onTapImgImage,
+      this.onTapRenewButton,
+      this.loanColor,
+      this.isButtonEnabled})
+      : super(key: key);
+
+  @override
+  State<UserprofileItemWidget> createState() => _UserprofileItemWidgetState();
+}
+
+class _UserprofileItemWidgetState extends State<UserprofileItemWidget> {
+  Color? backgroundColor = appTheme.green900;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +36,7 @@ class UserprofileItemWidget extends StatelessWidget {
         color: appTheme.blueGray100,
         border: Border(
           left: BorderSide(
-            color: loanColor ?? appTheme.lightGreen900,
+            color: widget.loanColor ?? appTheme.lightGreen900,
             width: 5.h,
           ),
         ),
@@ -50,16 +60,15 @@ class UserprofileItemWidget extends StatelessWidget {
               ],
             ),
             child: CustomImageView(
-              imagePath: transaction.imageurl ?? ImageConstant.imgBook,
+              imagePath: widget.transaction.imageurl ?? ImageConstant.imgBook,
               height: 60.v,
               width: 45.h,
               radius: BorderRadius.circular(10.h),
               onTap: () {
-                onTapImgImage!.call();
+                widget.onTapImgImage!.call();
               },
             ),
-          )
-,
+          ),
           Padding(
             padding: EdgeInsets.only(
               left: 5.h,
@@ -68,7 +77,7 @@ class UserprofileItemWidget extends StatelessWidget {
             ),
             child: GestureDetector(
               onTap: () {
-                onTapImgImage!.call();
+                widget.onTapImgImage!.call();
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +85,7 @@ class UserprofileItemWidget extends StatelessWidget {
                   SizedBox(
                     width: 108.h,
                     child: Text(
-                      transaction.title ?? "",
+                      widget.transaction.title ?? "",
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: CustomTextStyles.bodySmall12,
@@ -86,7 +95,7 @@ class UserprofileItemWidget extends StatelessWidget {
                   Opacity(
                     opacity: 0.4,
                     child: Text(
-                      transaction.book_id.toString() ?? "",
+                      widget.transaction.book_id.toString() ?? "",
                       style: CustomTextStyles.bodyMediumInterBlack900,
                     ),
                   ),
@@ -112,7 +121,7 @@ class UserprofileItemWidget extends StatelessWidget {
                 SizedBox(
                   width: 25.h,
                   child: Text(
-                    toDate(transaction.must_return_date) ?? "",
+                    toDate(widget.transaction.must_return_date) ?? "",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
@@ -135,18 +144,42 @@ class UserprofileItemWidget extends StatelessWidget {
                   style: CustomTextStyles.interBlack900,
                 ),
                 SizedBox(height: 4.v),
-                Container(
-                  height: 27.adaptSize,
-                  width: 27.adaptSize,
-                  padding: EdgeInsets.all(4.h),
-                  decoration: AppDecoration.fillLightGreen.copyWith(
-                    borderRadius: BorderRadiusStyle.circleBorder15,
+                ElevatedButton(
+                  onPressed: () {
+                    if (widget.isButtonEnabled == 1) {
+                      // Call the onTapRenewButton callback
+                      widget.onTapRenewButton?.call();
+                      setState(() {
+                        backgroundColor = appTheme.red900;
+                      });
+                    } else {
+                      backgroundColor = appTheme.red900;
+                      // Show a message when the button is not enabled (replace 'Button Not Enabled Message' with your actual message)
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Center(
+                              child: Text(
+                            'Loan has already been renewed once',
+                            style: TextStyle(fontSize: 14.h),
+                          )),
+                          duration: Duration(milliseconds: 900),
+                          backgroundColor: appTheme.red900,
+                          dismissDirection: DismissDirection.down,
+                        ),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.all(10),
+                    shape: CircleBorder(),
+                    backgroundColor: widget.isButtonEnabled == 1
+                        ? backgroundColor
+                        : appTheme.red900,
                   ),
-                  child: CustomImageView(
-                    imagePath: ImageConstant.imgReboot,
-                    height: 19.v,
-                    width: 18.h,
-                    alignment: Alignment.center,
+                  child: Icon(
+                    Icons.refresh,
+                    size: 16,
+                    color: Colors.black,
                   ),
                 ),
               ],
@@ -175,7 +208,7 @@ int calculateDays(String dateStr) {
 
 String toDate(String dateStr) {
   DateTime Date = convertToDate(dateStr);
-  switch(Date.month){
+  switch (Date.month) {
     case 1:
       return Date.day.toString() + " Jan";
     case 2:
