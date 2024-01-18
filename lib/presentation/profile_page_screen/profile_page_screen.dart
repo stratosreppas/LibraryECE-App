@@ -1,4 +1,5 @@
-import 'package:intl/intl.dart';
+import 'package:stratos_s_application3/constraints.dart';
+
 import '../profile_page_screen/widgets/loancomponent_item_widget.dart';
 import '../profile_page_screen/widgets/richtooltipgrid_item_widget.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.1.187:5000/profile'),
+        Uri.parse('${AppConstants.apiUrl}/profile'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -69,7 +70,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
             role = "Φοιτητής/τρια άλλης σχολής";
           phone = userData[4];
           id = userData[5];
-          print("Profile Page: $firstName,$lastName,$am,$role,$phone,$id");
+          //print("Profile Page: $firstName,$lastName,$am,$role,$phone,$id");
         });
       } else if (responseData['status'] == "error") {
         // Handle error
@@ -86,7 +87,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.1.187:5000/transactions_history'),
+        Uri.parse('${AppConstants.apiUrl}/transactions_history'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -97,10 +98,10 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
       final responseData = json.decode(response.body);
       print(responseData);
       if (response.statusCode == 200) {
-
         final List<dynamic> dataList = responseData;
 
-          if (dataList.isNotEmpty) {
+        if (dataList.isNotEmpty) {
+          setState(() {
             transactionHistory = dataList.map((map) {
               return Transaction(
                 title: map['title'] ?? '',
@@ -121,15 +122,8 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                 return_date: map['return_date'] ?? '',
               );
             }).toList();
-          }
-
-        if(mounted){
-        setState(() {
-          transactionHistory;
-          print(transactionHistory);
-        });
+          });
         }
-
       } else if (responseData['status'] == "failure" ||
           responseData['status'] == "error") {
         // Handle error

@@ -1,9 +1,12 @@
+import 'dart:async';
+import 'package:stratos_s_application3/constraints.dart';
 import 'package:stratos_s_application3/presentation/home_page/widgets/penalty_box.dart';
 import '../home_page/widgets/book_item_widget.dart';
 import '../home_page/widgets/userprofile_item_widget.dart';
 import 'package:stratos_s_application3/routes/classes/Transaction.dart';
 import 'package:stratos_s_application3/routes/classes/Book.dart';
 import 'package:stratos_s_application3/routes/classes/User.dart';
+import 'package:stratos_s_application3/routes/classes/Notification.dart';
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
@@ -24,6 +27,7 @@ class _HomePageState extends State<HomePage> {
 
   late String? email;
   late final User user;
+  late UserNotification notification;
   List<Transaction> activeTransactions = [];
   List<Book> selectedBooks = [];
 
@@ -34,6 +38,94 @@ class _HomePageState extends State<HomePage> {
       email = userEmail;
       print("Home Page: $email");
     });
+  }
+
+  String formatDate(String dateString) {
+    final inputFormat = DateFormat('E, dd MMM yyyy HH:mm:ss Z');
+    final outputFormat = DateFormat('dd/MM/yyyy');
+
+    final date = inputFormat.parse(dateString);
+    return outputFormat.format(date);
+  }
+
+  Future<void> pushNotification(int notificationID) async {
+    try {
+      final response = await http.post(
+        Uri.parse('${AppConstants.apiUrl}/get_notification'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, int>{
+          'notification_id': notificationID,
+          'user_id': user.id,
+        }),
+      );
+      final responseData = json.decode(response.body);
+      if (response.statusCode == 200 && responseData['status'] == 'success') {
+        List<dynamic> notificationData = responseData['data'];
+
+        if (notificationData.isNotEmpty) {
+          // Create a Notification object from the first element of notificationData
+          notification = UserNotification(
+            notificationID: notificationID,
+            title: notificationData[0],
+            date: formatDate(notificationData[1].toString()),
+            content: notificationData[2],
+          );
+        }
+        // Print the values for debugging purposes
+        print("Notification ID: ${notification.notificationID}");
+        print("Title: ${notification.title}");
+        print("Date: ${notification.date}");
+        print("Content: ${notification.content}");
+      } else if (responseData['status'] == 'failure') {
+        print(responseData['message']);
+      }
+    } catch (e) {
+      // Handle any exceptions that may occur while sending the push notification
+      print('Error sending push notification: $e');
+    }
+  }
+
+  Future<void> checkNewNotification() async {
+    try {
+      final response = await http.post(
+        Uri.parse('${AppConstants.apiUrl}/notification_check'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, int>{
+          'user_id': user.id,
+        }),
+      );
+
+      final responseData = json.decode(response.body);
+
+      if (response.statusCode == 200 && responseData['status'] == 'success') {
+        int notificationID = responseData['data'];
+        print(notificationID);
+        await pushNotification(notificationID);
+      } else if (responseData['status'] == 'failure' ||
+          responseData['status'] == 'error') {
+        print(responseData['message']);
+      }
+    } catch (e) {
+      // Handle exceptions
+      print('Error: $e');
+    }
+  }
+
+  void startTimer() {
+    const Duration duration = const Duration(seconds: 10);
+    Timer.periodic(duration, (Timer timer) {
+      checkNewNotification();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
   }
 
   @override
@@ -409,7 +501,8 @@ class _HomePageState extends State<HomePage> {
                         return BookItemWidget(
                             book: selectedBooks[index],
                             onTapImgOperatingSystemImage: () {
-                              onTapImgOperatingSystemImage(context, selectedBooks[index]);
+                              onTapImgOperatingSystemImage(
+                                  context, selectedBooks[index]);
                             });
                       })),
               SizedBox(height: 1.v)
@@ -423,14 +516,14 @@ class _HomePageState extends State<HomePage> {
     try {
       //print('hi');
       final response = await http.get(
-          Uri.parse('http://192.168.1.187:5000/api/home/user?' + 'email=$email'));
+          Uri.parse('${AppConstants.apiUrl}/api/home/user?' + 'email=$email'));
 
-      print('Response status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      //print('Response status code: ${response.statusCode}');
+      //print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> userData = json.decode(response.body);
-        print(userData);
+        //print(userData);
         if (userData.isNotEmpty) {
           user = User(
             id: userData['id'] ?? 0,
@@ -443,7 +536,7 @@ class _HomePageState extends State<HomePage> {
             property: userData['property'] ?? '',
           );
 
-          print('hello' + user.name);
+          //print('hello' + user.name);
           if (mounted) {
             print("Succesfully fetched user data.");
             return user;
@@ -464,13 +557,13 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<Transaction>> fetchTransactionData() async {
     try {
-      print('hi');
+      //print('hi');
       int id = user.id;
-      final response = await http.get(
-          Uri.parse('http://192.168.1.187:5000/api/home/transactions?' + 'id=$id'));
+      final response = await http.get(Uri.parse(
+          '${AppConstants.apiUrl}/api/home/transactions?' + 'id=$id'));
 
-      print('Response status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      //print('Response status code: ${response.statusCode}');
+      //print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final List<dynamic> dataList = json.decode(response.body);
@@ -498,10 +591,10 @@ class _HomePageState extends State<HomePage> {
                 renew: map['renew']);
           }).toList();
 
-          transactions.forEach((book) {
-            print('Book Title: ${book.title}');
-            print('Book ID: ${book.book_id}');
-          });
+          // transactions.forEach((book) {
+          //   print('Book Title: ${book.title}');
+          //   print('Book ID: ${book.book_id}');
+          // });
 
           if (mounted) {
             return transactions;
@@ -524,11 +617,11 @@ class _HomePageState extends State<HomePage> {
     try {
       //print('hi');
       int id = user.id;
-      print(id);
+      //print(id);
       final response = await http
-          .get(Uri.parse('http://192.168.1.187:5000/api/home/books?' + 'id=$id'));
-      print('Response status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
+          .get(Uri.parse('${AppConstants.apiUrl}/api/home/books?' + 'id=$id'));
+      //print('Response status code: ${response.statusCode}');
+      //print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final List<dynamic> dataList = json.decode(response.body);
@@ -551,10 +644,10 @@ class _HomePageState extends State<HomePage> {
             );
           }).toList();
 
-          books.forEach((book) {
-            print('Book Title: ${book.title}');
-            print('Book Author: ${book.author}');
-          });
+          // books.forEach((book) {
+          //   print('Book Title: ${book.title}');
+          //   print('Book Author: ${book.author}');
+          // });
 
           if (mounted) {
             return books;
@@ -578,7 +671,7 @@ class _HomePageState extends State<HomePage> {
     try {
       // Your API endpoint for renewing a transaction
       final response = await http.post(
-        Uri.parse('http://10.3.24.7:5000/renew'),
+        Uri.parse('${AppConstants.apiUrl}/renew'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -624,12 +717,14 @@ class _HomePageState extends State<HomePage> {
 
   /// Navigates to the bookPageThreeScreen when the action is triggered.
   onTapImgOperatingSystemImage(BuildContext context, Book book) {
-    Navigator.pushNamed(context, AppRoutes.bookPageOneScreen, arguments: {'book': book} );
+    Navigator.pushNamed(context, AppRoutes.bookPageOneScreen,
+        arguments: {'book': book});
   }
 
   /// Navigates to the bookPageFourScreen when the action is triggered.
   onTapImgImage(BuildContext context, Book book) {
-    Navigator.pushNamed(context, AppRoutes.bookPageOneScreen, arguments: {'book': book});
+    Navigator.pushNamed(context, AppRoutes.bookPageOneScreen,
+        arguments: {'book': book});
   }
 
   /// Navigates to the profilePageScreen when the action is triggered.

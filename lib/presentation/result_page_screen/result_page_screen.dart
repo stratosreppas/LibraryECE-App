@@ -134,14 +134,17 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                   Column(
                     children: [
                       SizedBox(height: 16.v),
-                      ResultBox(book: book, email: email, onTapImgImage: () {
-                        Navigator.pushNamed(
-                            context, AppRoutes.bookPageOneScreen,
-                            arguments: {
-                              'book': book,
-                              'email': email,
-                            });
-                      }),
+                      ResultBox(
+                          book: book,
+                          email: email,
+                          onTapImgImage: () {
+                            Navigator.pushNamed(
+                                context, AppRoutes.bookPageOneScreen,
+                                arguments: {
+                                  'book': book,
+                                  'email': email,
+                                });
+                          }),
                     ],
                   ),
                 SizedBox(height: 16.v),
@@ -159,7 +162,7 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
     try {
       //print('hi');
       final response = await http.get(Uri.parse(
-          'http://192.168.1.187:5000/api/all_books?' +
+          'http://10.3.24.81:5000/api/all_books?' +
               'searchText=$searchText&categories=$categories&authors=$authors&publishers=$publishers&years=$years&languages=$languages'));
 
       print('Response status code: ${response.statusCode}');

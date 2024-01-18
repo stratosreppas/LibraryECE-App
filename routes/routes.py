@@ -1,6 +1,6 @@
-from flask import Flask, jsonify, request, session
+from flask import Flask,request,jsonify
 from flask_mysqldb import MySQL
-import mysql.connector
+from flask_apscheduler import APScheduler
 
 app = Flask(__name__)
 
@@ -136,6 +136,50 @@ def loan_renew():
         # Handle exceptions (e.g., print the error, log it, etc.)
         print(f"Error: {e}")
         return jsonify({'status': 'error', 'message': 'Failed to renew transaction'}), 500
+    
+
+@app.route('/notification_check', methods=['POST','GET'])
+def new_notification():
+    try:
+        data=request.json
+        user_id=data["user_id"]
+        print(user_id)
+        cursor = db.connection.cursor()
+        cursor.execute(f"SELECT notification_id FROM notify_me WHERE user_id='{user_id}' ORDER BY created_at DESC LIMIT 1;")
+        notification_id = cursor.fetchone()
+        cursor.close()
+
+        if(notification_id):
+            print(notification_id[0])
+            return jsonify({'status':'success','data':notification_id[0]})
+        else: 
+            return jsonify({'status':'failure','message':"No new notification found"})
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'status': 'error', 'message': 'Failed to check for new notification'}), 500
+
+
+@app.route('/get_notification', methods=['POST','GET'])
+def get_notification():
+    try:
+        data=request.json
+        notification_id=data["notification_id"]
+        user_id=data['user_id']
+        print(notification_id)
+        print(user_id)
+        cursor = db.connection.cursor()
+        cursor.execute(f"select title,notification_date,content from notifications where user_id='{user_id}' and id='{notification_id}';")
+        notification = cursor.fetchone()
+        cursor.close()
+
+        if(notification):
+            print(notification)
+            return jsonify({'status':'success','data':notification})
+        else: 
+            return jsonify({'status':'failure','message':"The notification was not found"})
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'status': 'error', 'message': "Failed to fetch notification's data"}), 500
 
 
 @app.route('/api/first_book_image', methods = ['GET'])
@@ -243,12 +287,7 @@ def get_all_transactions():
 
         cursor = db.connection.cursor()
 
-        query = "SELECT books.isbn, books.title, books.subtitle, books.author, books.publisher, books.year, " \
-                "books.category, books.edition, books.dewey, books.language, books.image_url, CAST(SUM(CASE WHEN books.category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies, " \
-                "transaction.transaction_id,transaction.book_id, transaction.borrow_date, transaction.must_return_date, transaction.renew " \
-                "FROM books " \
-                "JOIN transaction ON books.id = transaction.book_id " \
-                "WHERE transaction.visitor_id = %s AND transaction.return_date IS NULL;"
+        query = "SELECT books.isbn,books.title,books.subtitle,books.author,books.publisher,books.year,books.category,books.edition,books.dewey,books.language,books.image_url,CAST(SUM(CASE WHEN books.category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies,transaction.transaction_id,transaction.book_id,transaction.borrow_date,transaction.must_return_date,transaction.renew FROM books JOIN transaction ON books.id = transaction.book_id WHERE transaction.visitor_id = %s AND transaction.return_date IS NULL GROUP BY books.isbn,books.title,books.subtitle,books.author,books.publisher,books.year,books.category,books.edition,books.dewey,books.language,books.image_url,transaction.transaction_id,transaction.book_id,transaction.borrow_date,transaction.must_return_date,transaction.renew;"
 
         params = (visitor_id,)
 

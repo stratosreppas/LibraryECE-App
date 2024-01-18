@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stratos_s_application3/constraints.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/widgets/custom_text_form_field.dart';
 import 'package:http/http.dart' as http;
@@ -434,7 +435,7 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
         );
       } else {
         final response = await http.post(
-          Uri.parse('http://192.168.1.187:5000/signup'),
+          Uri.parse('${AppConstants.apiUrl}/signup'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },

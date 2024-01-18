@@ -8935,6 +8935,8 @@ VALUES
 INSERT INTO transaction (transaction_id, visitor_id, book_id, borrow_date, must_return_date, return_date)
 VALUES (8, 1, 9330, '2024-01-14', '2024-01-21', null);
 
+INSERT INTO notifications (user_id,title,notification_date,content) VALUES (3,"Test Title",CURRENT_DATE(),"Test Content");
+
 -- --------------------------------------------------------
 
 -- Populate favorites

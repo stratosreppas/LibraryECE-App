@@ -1,6 +1,8 @@
 DROP DATABASE ecel;
 -- DELETE FROM transaction;
 -- DROP TABLE transaction;
+-- DELETE FROM notifications;
+-- DELETE FROM notify_me;
 CREATE DATABASE ecel;
 USE ecel;
 
@@ -41,7 +43,7 @@ CREATE TABLE `transaction` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `visitor` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+	id int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(150) DEFAULT NULL,
   `surname` varchar(150) DEFAULT NULL,
   `am` varchar(50) DEFAULT NULL,
@@ -86,11 +88,33 @@ CREATE TABLE favorites (
   PRIMARY KEY (id, isbn)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE notify (
-  id int(11) NOT NULL,
-  isbn varchar(50) NOT NULL,
-  PRIMARY KEY (id, isbn)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE notify_me (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    notification_id int NOT NULL,
+    user_id int NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE notifications (
+    id int NOT NULL AUTO_INCREMENT,
+    user_id int(11) NOT NULL,
+    title varchar(200) NOT NULL,
+    notification_date date NOT NULL,
+    content varchar(1000) NOT NULL,
+    opened bool DEFAULT FALSE,
+    PRIMARY KEY(id),
+    CONSTRAINT `fk_user_id` FOREIGN KEY (user_id) REFERENCES visitor (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+DELIMITER //
+CREATE TRIGGER new_notification_trigger
+AFTER INSERT
+ON notifications FOR EACH ROW
+BEGIN
+    INSERT INTO notify_me (notification_id,user_id) VALUES (NEW.id,NEW.user_id);
+END;
+//
+DELIMITER ;
 
 ALTER TABLE `favorites`
   ADD CONSTRAINT `fk_favorites_isbn` FOREIGN KEY (isbn) REFERENCES `books` (isbn) ON DELETE CASCADE ON UPDATE CASCADE,

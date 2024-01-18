@@ -3,8 +3,12 @@ import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
 import 'package:stratos_s_application3/presentation/notifications_page/widgets/notification_widget.dart';
 
-class NotificationsPage extends StatelessWidget {
-  // Define a list of notifications with different values
+class NotificationsPage extends StatefulWidget {
+  @override
+  _NotificationsPageState createState() => _NotificationsPageState();
+}
+
+class _NotificationsPageState extends State<NotificationsPage> {
   final List<Map<String, String>> notificationsData = [
     {
       'header': "Χριστουγεννιάτικο Ωράριο Λειτουργίας Βιβλιοθήκης ΣΗΜΜΥ",
@@ -29,7 +33,6 @@ class NotificationsPage extends StatelessWidget {
           child: ListView.builder(
             itemCount: notificationsData.length,
             itemBuilder: (context, index) {
-              // Build NotificationWidget based on data from the list
               return NotificationWidget(
                 header: notificationsData[index]['header'] ?? '',
                 date: notificationsData[index]['date'] ?? '',

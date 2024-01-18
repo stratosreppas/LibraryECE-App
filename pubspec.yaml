@@ -13,6 +13,8 @@ dependencies:
   url_launcher: ^6.2.2
   http: ^0.13.4
   shared_preferences: ^2.2.2
+  web_socket_channel: ^2.4.0
+  flutter_local_notifications: ^16.3.0
 dev_dependencies: 
   flutter_test: 
     sdk: flutter
