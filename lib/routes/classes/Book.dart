@@ -12,6 +12,8 @@ class Book {
   final String edition;
   final String dewey;
   final int copies;
+  bool isFav;
+  bool isNotified;
 
 
   Book({
@@ -27,5 +29,7 @@ class Book {
   this.edition = '',
   this.dewey = '',
   this.copies = 0,
+  this.isFav = false,
+  this.isNotified = false,
   });
 }

@@ -8,6 +8,7 @@ import 'package:stratos_s_application3/routes/classes/Book.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stratos_s_application3/constraints.dart';
 
 class ResultPageScreen extends StatefulWidget {
   ResultPageScreen({Key? key})
@@ -127,7 +128,7 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                   // write a text here
                   children: [
                     SizedBox(width: 16.h),
-                    Text('Αναζήτηση με βάση τα φίλτρα: ' + languages),
+                    Text('Αναζήτηση με βάση τα φίλτρα: ' + publishers),
                   ],
                 ),
                 for (Book book in books)
@@ -162,7 +163,7 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
     try {
       //print('hi');
       final response = await http.get(Uri.parse(
-          'http://10.3.24.81:5000/api/all_books?' +
+          '${AppConstants.apiUrl}/api/all_books?' +
               'searchText=$searchText&categories=$categories&authors=$authors&publishers=$publishers&years=$years&languages=$languages'));
 
       print('Response status code: ${response.statusCode}');
@@ -186,6 +187,7 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
               edition: map['edition'] ?? '',
               dewey: map['dewey'] ?? '',
               copies: map['copies'] ?? '',
+              isFav: map['isFav'] != null ? map['isFav'] == 1 : false,
             );
           }).toList();
 

@@ -12,6 +12,8 @@ dependencies:
   enhanced_enum: ^0.2.4
   url_launcher: ^6.2.2
   http: ^0.13.4
+  like_button: ^2.0.2
+  arcore_flutter_plugin: ^0.1.0
   shared_preferences: ^2.2.2
   web_socket_channel: ^2.4.0
   flutter_local_notifications: ^16.3.0
@@ -57,3 +59,4 @@ python:
   dependencies:
     mysql-connector-python: ^8.0.28
     flask: ^2.0.2
+    flask_apscheduler: ^1.12.1

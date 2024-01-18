@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:like_button/like_button.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/widgets/custom_outlined_button.dart';
 import 'package:stratos_s_application3/widgets/custom_icon_button.dart';
 import 'package:stratos_s_application3/routes/classes/Book.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:stratos_s_application3/constraints.dart';
+
 
 class ResultBox extends StatelessWidget {
 
@@ -44,27 +47,29 @@ class ResultBox extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.topRight,
                 children: [
-                  CustomImageView(
-                    imagePath: book.imageurl,
-                    height: 160.v,
-                    width: 116.h,
-                    radius: BorderRadius.circular(
-                      3.h,
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: CustomImageView(
+                      imagePath: book.imageurl,
+                      height: 160.v,
+                      width: 116.h,
+                      radius: BorderRadius.circular(3.h),
+                      alignment: Alignment.center,
                     ),
-                    alignment: Alignment.center,
                   ),
-                  Align(
-                    alignment: Alignment.topRight,
+                  Positioned(
+                    top: 4.v,
+                    right: 4.h,
                     child: Padding(
-                      padding: EdgeInsets.only(
-                        top: 4.v,
-                        right: 4.h,
-                      ),
+                      padding: EdgeInsets.only(bottom: 8.h), // Adjust the bottom padding as needed
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           CustomIconButton(
+                            onTap: () {
+                              onTapLocation(context);
+                            },
                             height: 26.adaptSize,
                             width: 26.adaptSize,
                             padding: EdgeInsets.all(3.h),
@@ -73,15 +78,33 @@ class ResultBox extends StatelessWidget {
                             ),
                           ),
                           SizedBox(width: 5.h),
-                          CustomIconButton(
-                            onTap: () {
-                              onTapFav(context);
-                            },
-                            height: 26.adaptSize,
-                            width: 26.adaptSize,
-                            padding: EdgeInsets.all(4.h),
-                            child: CustomImageView(
-                              imagePath: ImageConstant.imgFavoriteRed90001,
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12.0, right: 8.0),
+                            child: LikeButton(
+                              onTap: (isLiked) async {
+                                onTapFav(context, isLiked);
+                                book.isFav = !book.isFav;
+                                return !isLiked;
+                              },
+
+                              isLiked: book.isFav,
+                              animationDuration: Duration(milliseconds: 500),
+                              size: 14.adaptSize,
+                              circleColor: CircleColor(
+                                start: Color(0xff00ddff),
+                                end: Color(0xff0099cc),
+                              ),
+                              bubblesColor: BubblesColor(
+                                dotPrimaryColor: Color(0xff33b5e5),
+                                dotSecondaryColor: Color(0xff0099cc),
+                              ),
+                              likeBuilder: (bool isLiked) {
+                                return Icon(
+                                  Icons.favorite,
+                                  color: isLiked ? Colors.red : appTheme.blueGray100,
+                                  size: 26.adaptSize,
+                                );
+                              },
                             ),
                           ),
                         ],
@@ -90,6 +113,7 @@ class ResultBox extends StatelessWidget {
                   ),
                 ],
               ),
+
             ),
             Padding(
               padding: EdgeInsets.only(
@@ -155,16 +179,25 @@ class ResultBox extends StatelessWidget {
     );
   }
 
-  onTapFav(BuildContext context) async {
+  onTapLocation(BuildContext context) {
+    Navigator.pushNamed(
+        context, AppRoutes.locationPageScreen,
+        arguments: {
+          'book': book,
+        });
+  }
+
+  onTapFav(BuildContext context, bool isFav) async {
 
       final response = await http.post(
-        Uri.parse('http://192.168.1.187:5000/fav'),
+        Uri.parse('${AppConstants.apiUrl}/fav'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         }, //
         body: jsonEncode(<String, String>{
           'isbn': book.isbn,
           'email': email.toString(),
+          'isFav' : isFav ? 'true' : 'false',
         }),
       );
 
@@ -179,7 +212,8 @@ class ResultBox extends StatelessWidget {
             successMessage,
             textAlign: TextAlign.center,
           ),
-          backgroundColor: Color.fromARGB(255, 16, 124, 6),
+          duration: Duration(milliseconds: 500),
+          backgroundColor: Color.fromARGB(255, 16, 124, 1),
           elevation: 8,
           padding: EdgeInsets.all(8.h),
           dismissDirection: DismissDirection.down,

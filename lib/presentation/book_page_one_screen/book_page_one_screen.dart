@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:like_button/like_button.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/widgets/custom_outlined_button.dart';
 import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
 import 'package:stratos_s_application3/routes/classes/Book.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:stratos_s_application3/constraints.dart';
+
 
 
 // ignore_for_file: must_be_immutable
@@ -165,12 +170,33 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                                                 "Πρόσθεσε στα αγαπημένα",
                                                 style: CustomTextStyles
                                                     .bodySmallRobotoOnPrimary11)),
-                                        CustomImageView(
-                                            imagePath:
-                                            ImageConstant.imgFavorite,
-                                            height: 24.adaptSize,
-                                            width: 24.adaptSize,
-                                            margin: EdgeInsets.only(left: 5.h))
+                              Padding(
+                                  padding: const EdgeInsets.only(bottom: 20.0, right: 15.0, left: 15.0),
+                                        child: LikeButton(
+                                          isLiked: book.isFav,
+                                          onTap: (isLiked) async {
+                                            onTapFav(context, isLiked);
+                                            book.isFav = !book.isFav;
+                                            return !isLiked;
+                                          },
+                                          animationDuration: Duration(milliseconds: 500),
+                                          size: 16.adaptSize,
+                                          circleColor: CircleColor(
+                                            start: Color(0xff00ddff),
+                                            end: Color(0xff0099cc),
+                                          ),
+                                          bubblesColor: BubblesColor(
+                                            dotPrimaryColor: Color(0xff33b5e5),
+                                            dotSecondaryColor: Color(0xff0099cc),
+                                          ),
+                                          likeBuilder: (bool isLiked) {
+                                            return Icon(
+                                              Icons.favorite,
+                                              color: isLiked ? Colors.red : appTheme.blueGray100,
+                                              size: 26.adaptSize,
+                                            );
+                                          },
+                                        )),
                                       ])))
                         ])),
                     SizedBox(height: 14.v),
@@ -200,7 +226,8 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                                                 .bodySmallRobotoOnPrimary11)),
                                     CustomImageView(
                                         imagePath: ImageConstant.imgPlace,
-                                        height: 19.v,
+                                        color: appTheme.blueGray100,
+                                        height: 20.v,
                                         width: 20.h,
                                         margin: EdgeInsets.only(left: 22.h))
                                   ]))
@@ -263,5 +290,57 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
   /// Navigates to the locationPageScreen when the action is triggered.
   onTapImgImage(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.locationPageScreen);
+  }
+
+  onTapFav(BuildContext context, bool isFav) async {
+
+    final response = await http.post(
+      Uri.parse('${AppConstants.apiUrl}/fav'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      }, //
+      body: jsonEncode(<String, String>{
+        'isbn': book.isbn,
+        'email': email.toString(),
+        'isFav' : isFav ? 'true' : 'false',
+      }),
+    );
+
+    final responseData = json.decode(response.body);
+
+    if (response.statusCode == 200 && responseData['status'] == 'success') {
+      // Successful login
+      String successMessage = responseData['message'];
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          successMessage,
+          textAlign: TextAlign.center,
+        ),
+        duration: Duration(milliseconds: 500),
+        backgroundColor: Color.fromARGB(255, 16, 124, 1),
+        elevation: 8,
+        padding: EdgeInsets.all(8.h),
+        dismissDirection: DismissDirection.down,
+      ));
+
+    } else {
+      // Handle unsuccessful login (show an error message, etc.)
+      String errorMessage = responseData['error'] ?? responseData['message'];
+      print("Error: $errorMessage");
+      // Show a snackbar or display the error message to the user
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            errorMessage,
+            textAlign: TextAlign.center,
+          ),
+          backgroundColor: Color.fromARGB(255, 180, 14, 3),
+          elevation: 8,
+          padding: EdgeInsets.all(8.h),
+          dismissDirection: DismissDirection.down,
+        ),
+      );
+    }
   }
 }

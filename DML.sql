@@ -28,7 +28,8 @@ CREATE TABLE books (
   barcode varchar(50) DEFAULT NULL,
   dewey varchar(20) DEFAULT NULL,
   publisher varchar(100) DEFAULT NULL,
-  image_url varchar(500) DEFAULT NULL
+  image_url varchar(500) DEFAULT NULL,
+  semester int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `transaction` (
@@ -55,6 +56,27 @@ CREATE TABLE `visitor` (
   `penalty` date DEFAULT NULL,
   primary key(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE categories (
+  isbn varchar(255) NOT NULL,
+  category varchar(255) NOT NULL,
+  PRIMARY KEY (category, isbn)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- CREATE TABLE authors_books (
+--   isbn varchar(255) NOT NULL,
+--   author_id int(11) NOT NULL,
+--   PRIMARY KEY (author_id, isbn),
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- CREATE TABLE authors (
+--   author_id int(11) NOT NULL AUTO_INCREMENT,
+--   first_name varchar(255) NOT NULL,
+--   middle_name varchar(255) DEFAULT NULL,
+--   last_name varchar(255) NOT NULL,
+--   PRIMARY KEY (author_id),
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 ALTER TABLE `books`
   ADD PRIMARY KEY (`id`);
@@ -123,3 +145,6 @@ ALTER TABLE `favorites`
 ALTER TABLE `notify`
   ADD CONSTRAINT `fk_notify_isbn` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_notify_user_id` FOREIGN KEY (`id`) REFERENCES `visitor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+  ALTER TABLE `categories`
+  ADD CONSTRAINT `fk_categories_isbn` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`) ON DELETE CASCADE ON UPDATE CASCADE;
