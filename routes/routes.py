@@ -7,7 +7,7 @@ app = Flask(__name__)
 # MySQL Connection Configuration
 app.config['MYSQL_HOST'] = 'localhost'
 app.config["MYSQL_USER"] = 'root'
-app.config["MYSQL_PASSWORD"] = 'password'
+app.config["MYSQL_PASSWORD"] = ''
 app.config["MYSQL_DB"] = 'ecel'
 
 db = MySQL(app)
@@ -34,7 +34,7 @@ def user_login():
 def user_signup():
     try:
         data = request.json
-        mail = data.get('mail')
+        email = data.get('email')
         password = data.get('password')
         first_name=data.get('first_name')
         last_name=data.get('last_name')
@@ -53,7 +53,7 @@ def user_signup():
             role=5
         else: role=6
         cursor = db.connection.cursor()
-        cursor.execute(f"INSERT INTO visitor (name, surname, am, property, phone, mail,password) VALUES ('{first_name}','{last_name}','{registration_id}','{role}','{phone}','{mail}','{password}')")
+        cursor.execute(f"INSERT INTO visitor (name, surname, am, property, phone, email,password) VALUES ('{first_name}','{last_name}','{registration_id}','{role}','{phone}','{email}','{password}')")
         db.connection.commit()
         cursor.close()
 
@@ -136,7 +136,7 @@ def loan_renew():
         # Handle exceptions (e.g., print the error, log it, etc.)
         print(f"Error: {e}")
         return jsonify({'status': 'error', 'message': 'Failed to renew transaction'}), 500
-    
+
 
 @app.route('/notification_check', methods=['POST','GET'])
 def new_notification():
@@ -179,7 +179,7 @@ def get_notification():
         if(notification):
             print(notification)
             return jsonify({'status':'success','data':notification})
-        else: 
+        else:
             return jsonify({'status':'failure','message':"The notification was not found"})
     except Exception as e:
         print(f"Error: {e}")
@@ -276,7 +276,8 @@ def get_all_books():
         cursor = db.connection.cursor()
 
         query = "SELECT isbn, title, subtitle, author, publisher, year, category, edition, dewey, " \
-                "language, image_url, CAST(SUM(CASE WHEN category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies " \
+                "language, image_url, CAST(SUM(CASE WHEN category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies, " \
+                "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn) THEN TRUE ELSE FALSE END as isFav " \
                 "FROM books WHERE (language IN ({}) OR %s = 'NaN') " \
                 "AND (author IN ({}) OR %s = 'NaN') " \
                 "AND (publisher IN ({}) OR %s = 'NaN') " \
@@ -330,7 +331,17 @@ def get_all_transactions():
 
         cursor = db.connection.cursor()
 
-        query = "SELECT books.isbn,books.title,books.subtitle,books.author,books.publisher,books.year,books.category,books.edition,books.dewey,books.language,books.image_url,CAST(SUM(CASE WHEN books.category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies,transaction.transaction_id,transaction.book_id,transaction.borrow_date,transaction.must_return_date,transaction.renew FROM books JOIN transaction ON books.id = transaction.book_id WHERE transaction.visitor_id = %s AND transaction.return_date IS NULL GROUP BY books.isbn,books.title,books.subtitle,books.author,books.publisher,books.year,books.category,books.edition,books.dewey,books.language,books.image_url,transaction.transaction_id,transaction.book_id,transaction.borrow_date,transaction.must_return_date,transaction.renew;"
+        query = "SELECT books.isbn, books.title, books.subtitle, books.author, books.publisher, books.year, " \
+                "books.category, books.edition, books.dewey, books.language, books.image_url, " \
+                "CAST(SUM(CASE WHEN books.category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies, " \
+                "transaction.transaction_id,transaction.book_id, transaction.borrow_date, transaction.must_return_date, transaction.renew " \
+                "FROM books " \
+                "JOIN transaction ON books.id = transaction.book_id " \
+                "WHERE transaction.visitor_id = %s AND transaction.return_date IS NULL " \
+                "GROUP BY books.isbn, books.title, books.subtitle, books.author, books.publisher, " \
+                "books.year, books.category, books.edition, books.dewey, books.language, books.image_url, " \
+                "transaction.book_id, transaction.borrow_date, transaction.must_return_date;"
+
 
         params = (visitor_id,)
 
@@ -416,18 +427,24 @@ def get_user():
     except Exception as e:
         return jsonify({'error': f'Database error: {str(e)}'})
 
-@app.route('/fav', methods=['POST'])
+@app.route('/fav', methods=['POST', 'GET'])
 def fav():
     try:
         data = request.json
         isbn = data.get('isbn')
         email = data.get('email')
+        isFav = data.get('isFav')
+        print('isFav:', isFav)
         cursor = db.connection.cursor()
-        cursor.execute(f"INSERT INTO favorites (id, isbn) " \
+        if(isFav == 'true'):
+            cursor.execute(f"DELETE FROM favorites WHERE isbn = '{isbn}' AND id = (SELECT id FROM visitor WHERE email = '{email}');")
+        else:
+            cursor.execute(f"INSERT INTO favorites (id, isbn) " \
                        f"SELECT id, '{isbn}' FROM visitor WHERE email = '{email}';")
         db.connection.commit()
         cursor.close()
-
+        if(isFav == 'true'):
+            return jsonify({'status': 'success', 'message': 'Removed from favorites successfully'})
         return jsonify({'status': 'success', 'message': 'Added to favorites successfully'})
 
     except Exception as e:

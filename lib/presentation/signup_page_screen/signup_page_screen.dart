@@ -440,7 +440,7 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: jsonEncode(<String, String>{
-            'mail': emailFieldController.text,
+            'email': emailFieldController.text,
             'password': passwordFieldController.text,
             'first_name': firstNameController.text,
             'last_name': lastNameController.text,

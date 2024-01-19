@@ -278,19 +278,17 @@ class _HomePageState extends State<HomePage> {
                                                   activeTransactions[2]
                                                       .must_return_date)) /
                                           7.0
-                                      : 0.0,
+                                      : 1.0,
                                 ),
                                 duration: Duration(
-                                    seconds:
-                                        1), // Set the duration of the animation
+                                    milliseconds:
+                                        1000), // Set the duration of the animation
                                 builder: (context, double value, child) {
                                   return CircularProgressIndicator(
                                     strokeCap: StrokeCap.round,
                                     value: value,
                                     backgroundColor:
-                                        activeTransactions.length > 2
-                                            ? appTheme.gray60001
-                                            : appTheme.green900,
+                                            appTheme.gray60001,
                                     color: appTheme.green900,
                                     strokeWidth: 6,
                                   );
@@ -310,19 +308,17 @@ class _HomePageState extends State<HomePage> {
                                                   activeTransactions[1]
                                                       .must_return_date)) /
                                           7.0
-                                      : 0.0,
+                                      : 1.0,
                                 ),
                                 duration: Duration(
-                                    seconds:
-                                        1), // Set the duration of the animation
+                                    milliseconds:
+                                        1200), // Set the duration of the animation
                                 builder: (context, double value, child) {
                                   return CircularProgressIndicator(
                                     strokeCap: StrokeCap.round,
                                     value: value,
                                     backgroundColor:
-                                        activeTransactions.length > 1
-                                            ? appTheme.gray500
-                                            : appTheme.lime800,
+                                            appTheme.gray500,
                                     color: appTheme.lime800,
                                     strokeWidth: 6,
                                   );
@@ -342,19 +338,17 @@ class _HomePageState extends State<HomePage> {
                                                   activeTransactions[0]
                                                       .must_return_date)) /
                                           7.0
-                                      : 0.0,
+                                      : 1.0,
                                 ),
                                 duration: Duration(
-                                    seconds:
-                                        1), // Set the duration of the animation
+                                    milliseconds:
+                                        1400), // Set the duration of the animation
                                 builder: (context, double value, child) {
                                   return CircularProgressIndicator(
                                     strokeCap: StrokeCap.round,
                                     value: value,
-                                    backgroundColor: activeTransactions.length >
-                                            0
-                                        ? appTheme.blueGray100
-                                        : theme.colorScheme.onPrimaryContainer,
+                                    backgroundColor:
+                                        appTheme.blueGray100,
                                     color: theme.colorScheme.onPrimaryContainer,
                                     strokeWidth: 6,
                                   );

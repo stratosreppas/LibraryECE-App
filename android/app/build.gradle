@@ -59,5 +59,14 @@ flutter {
 }
 
 dependencies {
+    // Provides ARCore Session and related resources.
+    implementation 'com.google.ar:core:1.37.0'
+
+    // Provides ArFragment, and other UX resources.
+    implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.17.1'
+
+    // Alternatively, use ArSceneView without the UX dependency.
+    implementation 'com.google.ar.sceneform:core:1.17.1'
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
