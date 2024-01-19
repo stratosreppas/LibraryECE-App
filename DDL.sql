@@ -1,55 +1,5 @@
 use ecel;
 -- --------------------------------------------------------
-
-<<<<<<< HEAD
--- Temporary Image for all books
-UPDATE `books`
-SET `image_url` = 'https://encrypted-tbn3.gstatic.com/images?q=tbn%3AANd9GcQEld1XcPtsdXW4ggQoVm6zcYxfRxoM9F1fp07JtE41g-e7olqk';
-
-INSERT INTO `visitor` (`name`, `surname`, `am`, `property`, `phone`, `email`,password)
-VALUES
-('Alice', 'Smith', '123456', 1, '1234567890', 'alice@example.com',"123456"),
-('Bob', 'Johnson', '789012', 2, '9876543210', 'bob@example.com',"123456"),
-("Manolis","Pantelakis","20853",1,"699999999","manospantelak@gmail.com","123456");
-
-INSERT INTO transaction (transaction_id, visitor_id, book_id, borrow_date, must_return_date, return_date)
-VALUES 
-  (1, 3, 9321, '2022-01-01', '2022-01-07', '2022-01-06'),
-  (2, 3, 9322, '2022-01-02', '2022-01-09', '2022-01-07'),
-  (3, 3, 9323, '2022-01-03', '2022-01-10', '2022-01-08'),
-  (4, 3, 9345, '2022-01-03', '2022-01-10', '2022-01-08'),
-  (5,3,9324,'2024-01-12','2024-01-19',NULL),
-  (6,3,9327,'2024-01-14','2024-01-21',NULL),
-  (7,3,9326,CURDATE(),CURDATE() + INTERVAL 7 DAY,NULL);
-  
-INSERT INTO transaction (transaction_id, visitor_id, book_id, borrow_date, must_return_date, return_date)
-VALUES (8, 1, 9330, '2024-01-14', '2024-01-21', null);
-
-INSERT INTO notifications (user_id,title,notification_date,content) 
-VALUES
-(3,"Χριστουγεννιάτικο Ωράριο Λειτουργίας Βιβλιοθήκης ΣΗΜΜΥ",CURRENT_DATE,"Η βιβλιοθήκη κατά τη διάρκεια των διακοπών των Χριστουγέννων θα είναι ανοιχτή 27-29/12/2023 και 3-5/1/2024 και ώρες 09.00-15.00."),
-(3,"Λειτουργία της βιβλιοθήκης ΗΜΜΥ 15-17\/11","2023-10-10","Η βιβλιοθήκη της ΣΗΜΜΥ τις ημέρες Τετάρτη 15/11 και Πέμπτη 16/11 θα υπολειτουργεί εως τις 15:00 και την Παρασκευή 17/11 θα παραμείνει κλειστή, μετά από απόφαση του φοιτητικού συλλόγου.");
-
-INSERT INTO notifications (user_id,title,notification_date,content) 
-VALUES
-(3,"Επιστροφή Βιβλίου","2023-11-25","Παρακαλούμε να προχωρήσετε σε επιστροφή του βιβλίου άμεσα");
-
-INSERT INTO notifications (user_id,title,notification_date,content) 
-VALUES
-(1,"Επιστροφή Βιβλίου","2023-12-30","Παρακαλούμε να προχωρήσετε σε επιστροφή του βιβλίου άμεσα");
--- --------------------------------------------------------
-
--- Populate favorites
-INSERT INTO `favorites` (isbn, id)
-VALUES
-('960-254-678-6', 1), 
-('978-960-466-171-8', 1); 
-
--- --------------------------------------------------------
-=======
-
->>>>>>> 923a8f0d19473d418913767b03830fe2b639f8af
-
 -- Some books without null isbn:
 -- --------------------------------------------------------
 INSERT INTO `books` (`id`, `title`, `subtitle`, `author`, `isbn`, `year`, `language`, `edition`, `category`, `barcode`, `dewey`, `publisher`) VALUES
@@ -150,7 +100,6 @@ INSERT INTO `books` (`id`, `title`, `subtitle`, `author`, `isbn`, `year`, `langu
 
 UPDATE books SET semester = 2;
 
-
 -- Temporary Image for all books
 UPDATE `books`
 SET `image_url` = 'https://encrypted-tbn3.gstatic.com/images?q=tbn%3AANd9GcQEld1XcPtsdXW4ggQoVm6zcYxfRxoM9F1fp07JtE41g-e7olqk';
@@ -174,7 +123,21 @@ VALUES
 INSERT INTO transaction (transaction_id, visitor_id, book_id, borrow_date, must_return_date, return_date)
 VALUES (8, 1, 9330, '2024-01-14', '2024-01-21', null);
 
-INSERT INTO notifications (user_id,title,notification_date,content) VALUES (3,"Test Title",CURRENT_DATE(),"Test Content");
+INSERT INTO notifications (user_id,title,notification_date,content) 
+VALUES
+(3,"Χριστουγεννιάτικο Ωράριο Λειτουργίας Βιβλιοθήκης ΣΗΜΜΥ",CURRENT_DATE,"Η βιβλιοθήκη κατά τη διάρκεια των διακοπών των Χριστουγέννων θα είναι ανοιχτή 27-29/12/2023 και 3-5/1/2024 και ώρες 09.00-15.00.");
+
+INSERT INTO notifications (user_id,title,notification_date,content) 
+VALUES
+(3,"Λειτουργία της βιβλιοθήκης ΗΜΜΥ 15-17\/11","2023-10-10","Η βιβλιοθήκη της ΣΗΜΜΥ τις ημέρες Τετάρτη 15/11 και Πέμπτη 16/11 θα υπολειτουργεί εως τις 15:00 και την Παρασκευή 17/11 θα παραμείνει κλειστή, μετά από απόφαση του φοιτητικού συλλόγου.");
+
+INSERT INTO notifications (user_id,title,notification_date,content) 
+VALUES
+(3,"Επιστροφή Βιβλίου","2023-11-25","Παρακαλούμε να προχωρήσετε σε επιστροφή του βιβλίου άμεσα");
+
+INSERT INTO notifications (user_id,title,notification_date,content) 
+VALUES
+(1,"Επιστροφή Βιβλίου","2023-12-30","Παρακαλούμε να προχωρήσετε σε επιστροφή του βιβλίου άμεσα");
 
 -- --------------------------------------------------------
 
@@ -184,13 +147,6 @@ VALUES
 ('978-960-466-171-8', 3); 
 
 -- --------------------------------------------------------
-
--- Populate notify
-INSERT INTO `notify` (`isbn`, `id`)
-VALUES
-('978-960-466-171-8', 2),  -- Visitor 1 wants to be notified about book with ISBN 978960330734-1
-('471680354', 2);  -- Visitor 2 wants to be notified about book with ISBN 9786185495510
-
 
 -- Insert dummy data into the categories table
 INSERT INTO categories (isbn, category) VALUES
@@ -215,7 +171,3 @@ INSERT INTO categories (isbn, category) VALUES
 ('960-266-045-7', 'Ηλεκτρικές Μετρήσεις - Ηλεκτρονικές'),
 ('978-960-266-045-4', 'Ηλεκτρικές Μετρήσεις - Ηλεκτρονικές'),
 ('960-7219-82-1', 'Μικροηλεκτρονική');
-
-
-UPDATE books SET semester = 2;
-

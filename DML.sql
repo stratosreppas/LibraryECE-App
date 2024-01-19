@@ -1,4 +1,4 @@
-DROP DATABASE ecel;
+-- DROP DATABASE ecel;
 -- DELETE FROM transaction;
 -- DROP TABLE transaction;
 -- DELETE FROM notifications;
@@ -6,17 +6,8 @@ DROP DATABASE ecel;
 CREATE DATABASE ecel;
 USE ecel;
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
 CREATE TABLE books (
-  id int(11) NOT NULL ,
+  id int NOT NULL ,
   title varchar(255) DEFAULT NULL,
   subtitle varchar(255) DEFAULT NULL,
   author varchar(255) DEFAULT NULL,
@@ -29,32 +20,38 @@ CREATE TABLE books (
   dewey varchar(20) DEFAULT NULL,
   publisher varchar(100) DEFAULT NULL,
   image_url varchar(500) DEFAULT NULL,
-  semester int(10) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE `transaction` (
-  transaction_id int(11) NOT NULL,
-  `visitor_id` int(11) DEFAULT NULL,
-  `book_id` int(11) DEFAULT NULL,
-  `borrow_date` date DEFAULT NULL,
-  `must_return_date` date DEFAULT NULL,
-  `return_date` date DEFAULT NULL,
-  renew bool DEFAULT true,
-  primary key(transaction_id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE `visitor` (
-	id int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(150) DEFAULT NULL,
-  `surname` varchar(150) DEFAULT NULL,
-  `am` varchar(50) DEFAULT NULL,
-  `property` int(11) DEFAULT NULL,
-  `barcode` varchar(50) DEFAULT NULL,
-  `phone` varchar(20) DEFAULT NULL,
-  `email` varchar(50) NOT NULL,
-  password varchar(50) NOT NULL,
-  `penalty` date DEFAULT NULL,
+  semester int DEFAULT NULL,
   primary key(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `books`
+  ADD INDEX `idx_isbn` (`isbn`);
+
+CREATE TABLE visitor (
+	id int NOT NULL AUTO_INCREMENT,
+    name varchar(150) DEFAULT NULL,
+    surname varchar(150) DEFAULT NULL,
+    am varchar(50) DEFAULT NULL,
+	property int DEFAULT NULL,
+	barcode varchar(50) DEFAULT NULL,
+	phone varchar(20) DEFAULT NULL,
+	email varchar(50) NOT NULL,
+	password varchar(50) NOT NULL,
+	penalty date DEFAULT NULL,
+	primary key(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE transaction (
+  transaction_id int NOT NULL auto_increment,
+  visitor_id int DEFAULT NULL,
+  book_id int DEFAULT NULL,
+  borrow_date date DEFAULT NULL,
+  must_return_date date DEFAULT NULL,
+  return_date date DEFAULT NULL,
+  renew bool DEFAULT true,
+  primary key(transaction_id),
+  CONSTRAINT fk_transaction_visitor_id FOREIGN KEY (visitor_id) REFERENCES visitor(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fk_transaction_book_id FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE categories (
@@ -78,8 +75,8 @@ CREATE TABLE categories (
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
-ALTER TABLE `books`
-  ADD PRIMARY KEY (`id`);
+-- ALTER TABLE `books`
+--   ADD PRIMARY KEY (`id`);
 
 -- ALTER TABLE `transaction`
 --   ADD PRIMARY KEY (`transaction_id`);
@@ -87,22 +84,17 @@ ALTER TABLE `books`
 -- ALTER TABLE `visitor`
 --   ADD PRIMARY KEY (`id`);
 
-ALTER TABLE `books`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9623;
+-- ALTER TABLE `books`
+--   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9623;
 
-ALTER TABLE `books`
-  ADD INDEX `idx_isbn` (`isbn`);
 
-ALTER TABLE `transaction`
-  MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76890;
+
+-- ALTER TABLE `transaction`
+--   MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76890;
 
 -- ALTER TABLE `visitor`
 --   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6894;
 -- COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
 CREATE TABLE favorites (
   isbn varchar(50) NOT NULL,
@@ -119,7 +111,7 @@ CREATE TABLE notify_me (
 
 CREATE TABLE notifications (
     id int NOT NULL AUTO_INCREMENT,
-    user_id int(11) NOT NULL,
+    user_id int NOT NULL,
     title varchar(200) NOT NULL,
     notification_date date NOT NULL,
     content varchar(1000) NOT NULL,
@@ -141,10 +133,6 @@ DELIMITER ;
 ALTER TABLE `favorites`
   ADD CONSTRAINT `fk_favorites_isbn` FOREIGN KEY (isbn) REFERENCES `books` (isbn) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_favorites_user_id` FOREIGN KEY (`id`) REFERENCES `visitor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE `notify`
-  ADD CONSTRAINT `fk_notify_isbn` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_notify_user_id` FOREIGN KEY (`id`) REFERENCES `visitor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
   ALTER TABLE `categories`
   ADD CONSTRAINT `fk_categories_isbn` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`) ON DELETE CASCADE ON UPDATE CASCADE;
