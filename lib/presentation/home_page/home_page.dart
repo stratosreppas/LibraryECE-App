@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:stratos_s_application3/constraints.dart';
 import 'package:stratos_s_application3/presentation/home_page/widgets/penalty_box.dart';
+import 'package:stratos_s_application3/routes/classes/notification_controller.dart';
 import '../home_page/widgets/book_item_widget.dart';
 import '../home_page/widgets/userprofile_item_widget.dart';
 import 'package:stratos_s_application3/routes/classes/Transaction.dart';
@@ -17,19 +19,36 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
-
   late String? email;
   late final User user;
   late UserNotification notification;
   List<Transaction> activeTransactions = [];
   List<Book> selectedBooks = [];
+
+  void notificationsInitialazation() async {
+    await AwesomeNotifications().initialize(null, [
+      NotificationChannel(
+        channelGroupKey: "basic_channel_group",
+        channelKey: "basic_channel",
+        channelName: "Basic Notification",
+        channelDescription: "Basin Notification Channel",
+      )
+    ], channelGroups: [
+      NotificationChannelGroup(
+          channelGroupKey: "basic_channel_group",
+          channelGroupName: "Basic Group")
+    ]);
+    bool isAllowedToSendNotification =
+        await AwesomeNotifications().isNotificationAllowed();
+    if (!isAllowedToSendNotification) {
+      AwesomeNotifications().requestPermissionToSendNotifications();
+    }
+  }
 
   Future<void> getEmailFromPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -78,6 +97,16 @@ class _HomePageState extends State<HomePage> {
         print("Title: ${notification.title}");
         print("Date: ${notification.date}");
         print("Content: ${notification.content}");
+
+        AwesomeNotifications().createNotification(
+            content: NotificationContent(
+                id: 1,
+                channelKey: "basic_channel",
+                title: notification.title,
+                body: notification.content,
+                actionType: ActionType.Default,
+                backgroundColor: theme.primaryColor,
+                color: appTheme.blueGray100));
       } else if (responseData['status'] == 'failure') {
         print(responseData['message']);
       }
@@ -125,6 +154,15 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    notificationsInitialazation();
+    AwesomeNotifications().setListeners(
+        onActionReceivedMethod: NotificationController.onActionReceivedMethod,
+        onNotificationCreatedMethod:
+            NotificationController.onNotificationCreatedMethod,
+        onNotificationDisplayedMethod:
+            NotificationController.onNotificationDisplayedMethod,
+        onDismissActionReceivedMethod:
+            NotificationController.onDismissActionReceivedMethod);
     startTimer();
   }
 
@@ -154,6 +192,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    NotificationController.setAppContext(context);
     return SafeArea(
         child: AppTemplate(
             body: SingleChildScrollView(
@@ -511,6 +550,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<User> fetchUserData() async {
     await getEmailFromPreferences();
+
     User user = User();
 
     try {

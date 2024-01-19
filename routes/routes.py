@@ -108,7 +108,7 @@ def user_transaction_history():
         cursor.close()
 
         if transaction_history:
-            return jsonify(results)
+            return jsonify({'status':"success",'data':results})
         else: return jsonify({'status': 'failure', 'message': "Failed to find user's transaction history"}), 404
 
     except Exception as e:
@@ -143,18 +143,22 @@ def new_notification():
     try:
         data=request.json
         user_id=data["user_id"]
-        print(user_id)
+        #print(user_id)
         cursor = db.connection.cursor()
-        cursor.execute(f"SELECT notification_id FROM notify_me WHERE user_id='{user_id}' ORDER BY created_at DESC LIMIT 1;")
+        cursor.execute(f"SELECT notification_id FROM notify_me WHERE user_id='{user_id}' ORDER BY created_at ASC LIMIT 1;")
         notification_id = cursor.fetchone()
-        cursor.close()
 
         if(notification_id):
             print(notification_id[0])
+            cursor.execute(f"DELETE FROM notify_me WHERE notification_id='{notification_id[0]}';")
+            db.connection.commit()
+            cursor.close()
             return jsonify({'status':'success','data':notification_id[0]})
-        else: 
+        else:
+            cursor.close() 
             return jsonify({'status':'failure','message':"No new notification found"})
     except Exception as e:
+        cursor.close()
         print(f"Error: {e}")
         return jsonify({'status': 'error', 'message': 'Failed to check for new notification'}), 500
 
@@ -180,6 +184,45 @@ def get_notification():
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({'status': 'error', 'message': "Failed to fetch notification's data"}), 500
+    
+@app.route('/update_notification', methods=['POST','GET'])
+def update_notification():
+    try:
+        data=request.json
+        notification_id=data["notification_id"]
+        print(notification_id)
+        cursor = db.connection.cursor()
+        cursor.execute(f"UPDATE notifications SET opened=1 where id='{notification_id}';")
+        db.connection.commit()
+        cursor.close()
+
+        return jsonify({'status':'success','message':"Successfully updated notification's read state."})
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'status': 'error', 'message': 'Failed to update notification'}), 500
+
+@app.route('/notifications_history', methods=['POST','GET'])
+def user_notifications_history():
+    try:
+        data=request.json
+        email=data['email']
+        print(email)
+        cursor = db.connection.cursor()
+        cursor.execute(f"SELECT notifications.id,title,notification_date,content,opened FROM notifications join visitor on visitor.id= notifications.user_id where email='{email}' ORDER BY notification_date DESC;")
+        notifications= cursor.fetchall()
+
+        if(notifications):
+            print(notifications)
+            columns = [desc[0] for desc in cursor.description]
+            notifications = [dict(zip(columns, row)) for row in notifications]
+            cursor.close()
+            return jsonify({'status':'success','data':notifications})
+        else:
+            cursor.close() 
+            return jsonify({'status':'failure','message':"There is not any notification history"})
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'status': 'error', 'message': "Failed to fetch notifications history"}), 500
 
 
 @app.route('/api/first_book_image', methods = ['GET'])

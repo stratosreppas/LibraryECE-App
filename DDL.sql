@@ -8935,25 +8935,27 @@ VALUES
 INSERT INTO transaction (transaction_id, visitor_id, book_id, borrow_date, must_return_date, return_date)
 VALUES (8, 1, 9330, '2024-01-14', '2024-01-21', null);
 
-INSERT INTO notifications (user_id,title,notification_date,content) VALUES (3,"Test Title",CURRENT_DATE(),"Test Content");
+INSERT INTO notifications (user_id,title,notification_date,content) 
+VALUES
+(3,"Χριστουγεννιάτικο Ωράριο Λειτουργίας Βιβλιοθήκης ΣΗΜΜΥ",CURRENT_DATE,"Η βιβλιοθήκη κατά τη διάρκεια των διακοπών των Χριστουγέννων θα είναι ανοιχτή 27-29/12/2023 και 3-5/1/2024 και ώρες 09.00-15.00."),
+(3,"Λειτουργία της βιβλιοθήκης ΗΜΜΥ 15-17\/11","2023-10-10","Η βιβλιοθήκη της ΣΗΜΜΥ τις ημέρες Τετάρτη 15/11 και Πέμπτη 16/11 θα υπολειτουργεί εως τις 15:00 και την Παρασκευή 17/11 θα παραμείνει κλειστή, μετά από απόφαση του φοιτητικού συλλόγου.");
 
+INSERT INTO notifications (user_id,title,notification_date,content) 
+VALUES
+(3,"Επιστροφή Βιβλίου","2023-11-25","Παρακαλούμε να προχωρήσετε σε επιστροφή του βιβλίου άμεσα");
+
+INSERT INTO notifications (user_id,title,notification_date,content) 
+VALUES
+(1,"Επιστροφή Βιβλίου","2023-12-30","Παρακαλούμε να προχωρήσετε σε επιστροφή του βιβλίου άμεσα");
 -- --------------------------------------------------------
 
 -- Populate favorites
 INSERT INTO `favorites` (isbn, id)
 VALUES
-('960-254-678-6', 3), 
-('978-960-466-171-8', 3); 
+('960-254-678-6', 1), 
+('978-960-466-171-8', 1); 
 
 -- --------------------------------------------------------
-
--- Populate notify
-INSERT INTO `notify` (`isbn`, `id`)
-VALUES
-('978960330734-1', 1),
-('978-960-7182-89-0', 2),  -- Visitor 1 wants to be notified about book with ISBN 978960330734-1
-('9786185495510', 2);  -- Visitor 2 wants to be notified about book with ISBN 9786185495510
-
 
 -- Some books without null isbn:
 -- --------------------------------------------------------

@@ -15,26 +15,37 @@ class PenaltyBox extends StatelessWidget {
       margin: EdgeInsets.only(right: 8.h, top: 1.v),
       padding: EdgeInsets.symmetric(horizontal: 6.h, vertical: 6.v),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: isPenaltyNegative ? appTheme.lightGreen900 : appTheme.red90001.withOpacity(0.8)
-      ),
+          borderRadius: BorderRadius.circular(10),
+          color: isPenaltyNegative
+              ? appTheme.lightGreen900
+              : appTheme.red90001.withOpacity(0.8)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5.h),
-            child: Text(
-              "Ποινή",
-              style: CustomTextStyles.bodyLargeInterOnPrimary,
+          Container(
+            width: 70.h,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5.h),
+              child: Center(
+                child: Text(
+                  "Ποινή",
+                  style: CustomTextStyles.bodyLargeInterOnPrimary,
+                ),
+              ),
             ),
           ),
           SizedBox(height: 11.v),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5.h),
-            child: Text(
-              toDate(penalty) ?? "   -   ",
-              style: CustomTextStyles.bodyLargeInterOnPrimary,
+          Container(
+            width: 70.h,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5.h),
+              child: Center(
+                child: Text(
+                  toDate(penalty) ?? "-",
+                  style: CustomTextStyles.bodyLargeInterOnPrimary,
+                ),
+              ),
             ),
           ),
           SizedBox(height: 10.v),

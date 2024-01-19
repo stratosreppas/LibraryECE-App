@@ -3,11 +3,12 @@ class UserNotification {
   final String title;
   final String date;
   final String content;
+  final int read;
 
-  UserNotification({
-    this.notificationID = 0,
-    this.title = '',
-    this.date = '',
-    this.content = '',
-  });
+  UserNotification(
+      {this.notificationID = 0,
+      this.title = '',
+      this.date = '',
+      this.content = '',
+      this.read = 0});
 }

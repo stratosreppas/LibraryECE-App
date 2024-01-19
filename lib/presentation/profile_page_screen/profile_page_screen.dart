@@ -1,5 +1,4 @@
 import 'package:stratos_s_application3/constraints.dart';
-
 import '../profile_page_screen/widgets/loancomponent_item_widget.dart';
 import '../profile_page_screen/widgets/richtooltipgrid_item_widget.dart';
 import 'package:flutter/material.dart';
@@ -96,9 +95,8 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
         }),
       );
       final responseData = json.decode(response.body);
-      print(responseData);
-      if (response.statusCode == 200) {
-        final List<dynamic> dataList = responseData;
+      if (response.statusCode == 200 && responseData['status'] == "success") {
+        final List<dynamic> dataList = responseData['data'];
 
         if (dataList.isNotEmpty) {
           setState(() {
@@ -228,22 +226,32 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
           Container(
             height: 260.v,
             color: theme.primaryColor,
-            child: ListView.separated(
-              physics: ScrollPhysics(),
-              shrinkWrap: true,
-              separatorBuilder: (context, index) {
-                return SizedBox.shrink();
-              },
-              itemCount: transactionHistory.length,
-              itemBuilder: (context, index) {
-                return LoanComponentItemWidget(
-                  transaction: transactionHistory[index],
-                  onTapImgImage: () {
-                    onTapthLoan(context, transactionHistory[index]);
-                  },
-                );
-              },
-            ),
+            child: transactionHistory.isEmpty
+                ? Center(
+                    child: Text(
+                      "Δεν έχεις παλαιότερους δανεισμούς",
+                      style: TextStyle(
+                          fontSize: 16.h,
+                          color: appTheme.blueGray100,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  )
+                : ListView.separated(
+                    physics: ScrollPhysics(),
+                    shrinkWrap: true,
+                    separatorBuilder: (context, index) {
+                      return SizedBox.shrink();
+                    },
+                    itemCount: transactionHistory.length,
+                    itemBuilder: (context, index) {
+                      return LoanComponentItemWidget(
+                        transaction: transactionHistory[index],
+                        onTapImgImage: () {
+                          onTapthLoan(context, transactionHistory[index]);
+                        },
+                      );
+                    },
+                  ),
           ),
           Container(
             height: 12.v,

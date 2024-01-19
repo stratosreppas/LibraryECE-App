@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:stratos_s_application3/routes/classes/Notification.dart';
 
 class NotificationWidget extends StatefulWidget {
-  final String header;
-  final String date;
-  final String content;
+  final UserNotification notification;
+  final VoidCallback? onExpand;
 
-  NotificationWidget(
-      {required this.header, required this.date, required this.content});
+  NotificationWidget({required this.notification, this.onExpand});
 
   @override
   State<NotificationWidget> createState() => _NotificationWidgetState();
@@ -22,7 +22,8 @@ class _NotificationWidgetState extends State<NotificationWidget>
   late final Animation<double> _animation =
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
   bool _hasBeenExpanded = false;
-  bool _hasBeenColored = false;
+  //bool _hasBeenColored = false;
+  Color? backgroundColor = theme.primaryColor;
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +31,14 @@ class _NotificationWidgetState extends State<NotificationWidget>
       padding: const EdgeInsets.all(8.0),
       child: ExpansionTile(
         title: Text(
-          widget.header,
+          widget.notification.title,
           style: TextStyle(
               color: appTheme.blueGray100,
               fontSize: 14.h,
               fontWeight: FontWeight.w500),
         ),
         subtitle: Text(
-          widget.date,
+          formatDate(widget.notification.date),
           style: TextStyle(
               color: appTheme.blueGray100,
               fontSize: 12.h,
@@ -45,10 +46,18 @@ class _NotificationWidgetState extends State<NotificationWidget>
         ),
         onExpansionChanged: (value) {
           if (!_hasBeenExpanded && value) {
-            setState(() {
-              _hasBeenExpanded = true;
-              _hasBeenColored = true;
-            });
+            if (widget.notification.read == 0) {
+              widget.onExpand?.call();
+              setState(() {
+                _hasBeenExpanded = true;
+                backgroundColor = theme.primaryColor.withOpacity(0.7);
+              });
+            } else {
+              setState(() {
+                _hasBeenExpanded = true;
+              });
+            }
+
             _controller.forward(); // Start the animation when expanding
           } else if (_hasBeenExpanded && !value) {
             setState(() {
@@ -58,13 +67,12 @@ class _NotificationWidgetState extends State<NotificationWidget>
           }
         },
         collapsedIconColor: appTheme.blueGray100,
-        backgroundColor:
-            _hasBeenColored // Change color if _hasBeenColored is true
-                ? theme.primaryColor.withOpacity(0.7)
-                : theme.primaryColor,
-        collapsedBackgroundColor: _hasBeenColored
-            ? theme.primaryColor.withOpacity(0.7)
-            : theme.primaryColor,
+        backgroundColor: widget.notification.read == 0
+            ? backgroundColor
+            : theme.primaryColor.withOpacity(0.7),
+        collapsedBackgroundColor: widget.notification.read == 0
+            ? backgroundColor
+            : theme.primaryColor.withOpacity(0.7),
         collapsedShape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.h)),
         childrenPadding: EdgeInsets.all(8.h),
@@ -75,7 +83,7 @@ class _NotificationWidgetState extends State<NotificationWidget>
           SizeTransition(
             sizeFactor: _animation,
             child: Text(
-              widget.content,
+              widget.notification.content,
               style: TextStyle(
                 color: appTheme.blueGray100,
                 fontSize: 13.h,
@@ -85,5 +93,13 @@ class _NotificationWidgetState extends State<NotificationWidget>
         ],
       ),
     );
+  }
+
+  String formatDate(String dateString) {
+    final inputFormat = DateFormat('E, dd MMM yyyy HH:mm:ss Z');
+    final outputFormat = DateFormat('dd/MM/yyyy');
+
+    final date = inputFormat.parse(dateString);
+    return outputFormat.format(date);
   }
 }
