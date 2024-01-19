@@ -7,7 +7,7 @@ app = Flask(__name__)
 # MySQL Connection Configuration
 app.config['MYSQL_HOST'] = 'localhost'
 app.config["MYSQL_USER"] = 'root'
-app.config["MYSQL_PASSWORD"] = ''
+app.config["MYSQL_PASSWORD"] = 'password'
 app.config["MYSQL_DB"] = 'ecel'
 
 db = MySQL(app)
@@ -340,7 +340,7 @@ def get_all_transactions():
                 "WHERE transaction.visitor_id = %s AND transaction.return_date IS NULL " \
                 "GROUP BY books.isbn, books.title, books.subtitle, books.author, books.publisher, " \
                 "books.year, books.category, books.edition, books.dewey, books.language, books.image_url, " \
-                "transaction.book_id, transaction.borrow_date, transaction.must_return_date;"
+                "transaction.book_id, transaction.borrow_date, transaction.must_return_date,transaction.renew,transaction.transaction_id;"
 
 
         params = (visitor_id,)

@@ -287,8 +287,7 @@ class _HomePageState extends State<HomePage> {
                                   return CircularProgressIndicator(
                                     strokeCap: StrokeCap.round,
                                     value: value,
-                                    backgroundColor:
-                                            appTheme.gray60001,
+                                    backgroundColor: appTheme.gray60001,
                                     color: appTheme.green900,
                                     strokeWidth: 6,
                                   );
@@ -317,8 +316,7 @@ class _HomePageState extends State<HomePage> {
                                   return CircularProgressIndicator(
                                     strokeCap: StrokeCap.round,
                                     value: value,
-                                    backgroundColor:
-                                            appTheme.gray500,
+                                    backgroundColor: appTheme.gray500,
                                     color: appTheme.lime800,
                                     strokeWidth: 6,
                                   );
@@ -347,8 +345,7 @@ class _HomePageState extends State<HomePage> {
                                   return CircularProgressIndicator(
                                     strokeCap: StrokeCap.round,
                                     value: value,
-                                    backgroundColor:
-                                        appTheme.blueGray100,
+                                    backgroundColor: appTheme.blueGray100,
                                     color: theme.colorScheme.onPrimaryContainer,
                                     strokeWidth: 6,
                                   );
@@ -597,7 +594,7 @@ class _HomePageState extends State<HomePage> {
           '${AppConstants.apiUrl}/api/home/transactions?' + 'id=$id'));
 
       //print('Response status code: ${response.statusCode}');
-      //print('Response body: ${response.body}');
+      print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final List<dynamic> dataList = json.decode(response.body);
