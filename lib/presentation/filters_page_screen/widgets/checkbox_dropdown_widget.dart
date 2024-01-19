@@ -5,10 +5,11 @@ class CheckBoxDropDownWidget extends StatefulWidget {
   final String header;
   final List<String> contents;
   final Function(String) onSelectedValuesChanged; // Callback function
+  final List<String>? initialSelectedValues; // Optional parameter for initial selected values
 
 
   CheckBoxDropDownWidget(
-      {Key? key, required this.header, required this.contents, required this.onSelectedValuesChanged})
+      {Key? key, required this.header, required this.contents, required this.onSelectedValuesChanged, this.initialSelectedValues,})
       : super(key: key);
 
   @override
@@ -23,6 +24,15 @@ class CheckBoxDropDownWidgetState extends State<CheckBoxDropDownWidget> {
     super.initState();
     // Initialize checkboxValues with false for each content item
     checkboxValues = List<bool?>.filled(widget.contents.length, false);
+
+    if (widget.initialSelectedValues != null) {
+      for (String value in widget.initialSelectedValues!) {
+        int index = widget.contents.indexOf(value);
+        if (index != -1) {
+          checkboxValues[index] = true;
+        }
+      }
+    }
   }
 
   void clearSelection() {

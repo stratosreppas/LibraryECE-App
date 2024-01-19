@@ -8,7 +8,7 @@ class PhotoPage extends StatefulWidget {
 }
 
 class _PhotoPageState extends State<PhotoPage> {
-  String imageUrl = ''; // Initialize with an empty string
+  String imageUrl = 'NaN'; // Initialize with an empty string
   bool isDatabaseConnected = true; // Assume connected initially
 
   @override

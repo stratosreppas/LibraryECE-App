@@ -446,7 +446,7 @@ class _SignupPageScreenState extends State<SignupPageScreen> {
             'last_name': lastNameController.text,
             'phone': phoneNumberController.text,
             'registration_id': registrationIDController.text,
-            'role': selectedRole ?? ''
+            'role': selectedRole ?? 'NaN'
           }),
         );
         final responseData = json.decode(response.body);

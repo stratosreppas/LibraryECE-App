@@ -7,7 +7,7 @@ app = Flask(__name__)
 # MySQL Connection Configuration
 app.config['MYSQL_HOST'] = 'localhost'
 app.config["MYSQL_USER"] = 'root'
-app.config["MYSQL_PASSWORD"] = 'password'
+app.config["MYSQL_PASSWORD"] = ''
 app.config["MYSQL_DB"] = 'ecel'
 
 db = MySQL(app)
@@ -98,7 +98,9 @@ def user_transaction_history():
         print(id)
         cursor = db.connection.cursor()
         cursor.execute(f"select books.id,books.title, subtitle, isbn, image_url, author, category, edition, dewey, language, year, publisher, "
-                       f"transaction.book_id, transaction.borrow_date,transaction.return_date,books.image_url from visitor join transaction on visitor.id = transaction.visitor_id join books on transaction.book_id=books.id where visitor.id='{id}' and transaction.return_date IS NOT NULL;")
+                       f"transaction.book_id, transaction.borrow_date,transaction.return_date,books.image_url, "
+                       f"CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn) THEN TRUE ELSE FALSE END as isFav "
+                       f"from visitor join transaction on visitor.id = transaction.visitor_id join books on transaction.book_id=books.id where visitor.id='{id}' and transaction.return_date IS NOT NULL;")
         transaction_history = cursor.fetchall()
 
         if transaction_history:
@@ -258,6 +260,7 @@ def get_all_books():
         publishers_list = publishers.split('-')
         categories_list = categories.split('-')
         years_list = years.split('-')
+        print(years_list)
 
         languages_sql = ', '.join(['%s' for _ in languages.split('-')])
         authors_sql = ', '.join(['%s' for _ in authors.split('-')])
@@ -296,12 +299,12 @@ def get_all_books():
         # Use placeholders for the IN clauses
         query = query.format(languages_sql, authors_sql, publishers_sql, categories_sql, years_sql)
 
-        # Ensure the number of placeholders in the query matches the number of parameters
-        params = (*languages_list, *languages_list, *authors_list, *authors_list, *publishers_list, *publishers_list,
-                  *categories_list, *categories_list, *years_list, *years_list, f"%{searchText}%", f"%{searchText}%",
+        params = (*languages_list, languages_list[0], *authors_list, authors_list[0], *publishers_list, publishers_list[0],
+                  *categories_list, categories_list[0], *years_list, years_list[0], f"%{searchText}%", f"%{searchText}%",
                   f"%{searchText}%", f"%{searchText}%", f"%{searchText}%", f"%{searchText}%")
-
+        print(params)
         cursor.execute(query, params)
+        print(query)
 
         data = cursor.fetchall()
         print(data)
@@ -334,6 +337,7 @@ def get_all_transactions():
         query = "SELECT books.isbn, books.title, books.subtitle, books.author, books.publisher, books.year, " \
                 "books.category, books.edition, books.dewey, books.language, books.image_url, " \
                 "CAST(SUM(CASE WHEN books.category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies, " \
+                "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn) THEN TRUE ELSE FALSE END as isFav, " \
                 "transaction.transaction_id,transaction.book_id, transaction.borrow_date, transaction.must_return_date, transaction.renew " \
                 "FROM books " \
                 "JOIN transaction ON books.id = transaction.book_id " \
@@ -372,7 +376,8 @@ def get_all_selected_books():
         cursor = db.connection.cursor()
 
         query = "SELECT books.isbn, title, subtitle, author, publisher, year, category, " \
-                "edition, dewey, language, image_url, count(*) as copies " \
+                "edition, dewey, language, image_url, count(*) as copies, " \
+                "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn) THEN TRUE ELSE FALSE END as isFav " \
                 "FROM books JOIN favorites ON books.isbn = favorites.isbn " \
                 "WHERE favorites.id = %s GROUP BY books.isbn,title,subtitle,author,publisher,year,category,edition,dewey,language,image_url LIMIT 6;"
 

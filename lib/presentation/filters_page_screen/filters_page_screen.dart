@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/presentation/filters_page_screen/widgets/checkbox_dropdown_widget.dart';
 import 'package:stratos_s_application3/widgets/custom_elevated_button.dart';
+import 'package:stratos_s_application3/routes/classes/Filter.dart';
 
 class FiltersPageScreen extends StatefulWidget {
   FiltersPageScreen({Key? key}) : super(key: key);
@@ -11,20 +12,16 @@ class FiltersPageScreen extends StatefulWidget {
 }
 
 class _FiltersPageScreenState extends State<FiltersPageScreen> {
-  List<String> categoriesList = ["Μαθηματικά", "Φυσική", "Σήματα"];
 
-  List<String> authorsList = ["Author 1", "Author 2", "Author 3"];
+  Filter filters = Filter(
+    category: [],
+    language: [],
+    publisher: [],
+    author: [],
+    year: [],
+  );
 
-  List<String> publisherList = ["Τζιόλα", "Παπασωτηρίου", "Κλειδαριθμός"];
-
-  List<String> publicationYearList = ["2002", "2016", "2020"];
-
-  List<String> languageList = [
-    "Ελληνικά",
-    "Αγγλικά",
-  ];
-
-  String searchText = '';
+  String searchText = 'NaN';
 
   String languages = 'NaN';
   String categories = 'NaN';
@@ -41,7 +38,10 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
 
     // Access the 'languages' parameter from the arguments
     final Map<String, dynamic> args =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    ModalRoute
+        .of(context)!
+        .settings
+        .arguments as Map<String, dynamic>;
     print(args);
 
     if (args.containsKey('searchText')) {
@@ -54,6 +54,31 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
       // Get the value associated with the 'languages' key
       languages = args['languages'];
     }
+
+    if (args.containsKey('categories')) {
+      // Get the value associated with the 'languages' key
+      categories = args['categories'];
+    }
+
+    if (args.containsKey('authors')) {
+      // Get the value associated with the 'languages' key
+      authors = args['authors'];
+    }
+
+    if (args.containsKey('publishers')) {
+      // Get the value associated with the 'languages' key
+      publishers = args['publishers'];
+    }
+
+    if (args.containsKey('years')) {
+      // Get the value associated with the 'languages' key
+      years = args['years'];
+    }
+
+      if(args.containsKey('filters')){
+        filters = args['filters'];
+      }
+
   }
 
   @override
@@ -96,7 +121,8 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
                     CheckBoxDropDownWidget(
                       key: checkBoxKeys[0],
                       header: "Κατηγορίες",
-                      contents: categoriesList,
+                      contents: filters.category,
+                      initialSelectedValues: listify(categories),
                       onSelectedValuesChanged: (selectedValues) {
                         categories = selectedValues;
                       },
@@ -105,7 +131,8 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
                     CheckBoxDropDownWidget(
                       key: checkBoxKeys[1],
                       header: "Συγγραφείς",
-                      contents: authorsList,
+                      contents: filters.author,
+                      initialSelectedValues: listify(authors),
                       onSelectedValuesChanged: (selectedValues) {
                         authors = selectedValues;
                       },
@@ -114,7 +141,8 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
                     CheckBoxDropDownWidget(
                       key: checkBoxKeys[2],
                       header: "Εκδόσεις",
-                      contents: publisherList,
+                      contents: filters.publisher,
+                      initialSelectedValues: listify(publishers),
                       onSelectedValuesChanged: (selectedValues) {
                         publishers = selectedValues;
                       },
@@ -123,7 +151,8 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
                     CheckBoxDropDownWidget(
                       key: checkBoxKeys[3],
                       header: "Χρονολογία Έκδοσης",
-                      contents: publicationYearList,
+                      contents: filters.year,
+                      initialSelectedValues: listify(years),
                       onSelectedValuesChanged: (selectedValues) {
                         years = selectedValues;
                       },
@@ -132,7 +161,8 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
                     CheckBoxDropDownWidget(
                       key: checkBoxKeys[4],
                       header: "Γλώσσα",
-                      contents: languageList,
+                      contents: filters.language,
+                      initialSelectedValues: listify(languages),
                       onSelectedValuesChanged: (selectedValues) {
                         languages = selectedValues;
                       },
@@ -184,6 +214,11 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
     for (var key in checkBoxKeys) {
       key.currentState?.clearSelection();
     }
+    languages = 'NaN';
+    categories = 'NaN';
+    authors = 'NaN';
+    publishers = 'NaN';
+    years = 'NaN';
   }
 
   /// Navigates to the resultPageScreen when the action is triggered.
@@ -192,11 +227,17 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
     Navigator.pushNamed(context, AppRoutes.resultPageScreen, arguments: {
       'searchText':
           searchText, // Pass searchText as a parameter to the next screen
-      'languages': languages,
-      'authors': authors,
-      'publishers': publishers,
-      'years': years,
-      'categories': categories, // Pass books as a parameter to the next screen
+      'languages': languages!= '' ? languages : 'NaN',
+      'authors': authors!= '' ? authors : 'NaN',
+      'publishers': publishers!= '' ? publishers : 'NaN',
+      'years': years!= '' ? years : 'NaN',
+      'categories': categories!= '' ? categories : 'NaN',
     });
   }
+
+  List<String> listify(String str) {
+    List<String> list = str.split('-');
+    return list;
+  }
+
 }

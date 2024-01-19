@@ -170,8 +170,8 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                                                 "Πρόσθεσε στα αγαπημένα",
                                                 style: CustomTextStyles
                                                     .bodySmallRobotoOnPrimary11)),
-                              Padding(
-                                  padding: const EdgeInsets.only(bottom: 20.0, right: 15.0, left: 15.0),
+                                  Padding(
+                                  padding: const EdgeInsets.only(bottom: 20.0, left: 15.0),
                                         child: LikeButton(
                                           isLiked: book.isFav,
                                           onTap: (isLiked) async {
@@ -180,7 +180,7 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                                             return !isLiked;
                                           },
                                           animationDuration: Duration(milliseconds: 500),
-                                          size: 16.adaptSize,
+                                          size: 24.adaptSize,
                                           circleColor: CircleColor(
                                             start: Color(0xff00ddff),
                                             end: Color(0xff0099cc),
@@ -193,7 +193,7 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                                             return Icon(
                                               Icons.favorite,
                                               color: isLiked ? Colors.red : appTheme.blueGray100,
-                                              size: 26.adaptSize,
+                                              size: 24.adaptSize,
                                             );
                                           },
                                         )),

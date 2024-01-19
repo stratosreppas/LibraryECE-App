@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stratos_s_application3/constraints.dart';
+import 'package:stratos_s_application3/routes/classes/Filter.dart';
 
 class ResultPageScreen extends StatefulWidget {
   ResultPageScreen({Key? key})
@@ -34,6 +35,14 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
   String authors = 'NaN';
   String publishers = 'NaN';
   String years = 'NaN';
+
+  Filter filters = Filter(
+    category: [],
+    language: [],
+    publisher: [],
+    author: [],
+    year: [],
+  );
 
   Future<void> getEmailFromPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -95,10 +104,27 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
       if (mounted) {
         setState(() {
           this.books = fetchedBooks;
+          this.filters = setFilters(this.books);
         });
       }
     });
   }
+
+  @override
+  void didPopNext() {
+    // This method is called when the current route has been popped off,
+    // and the previous route (ResultPageScreen) is revealed.
+
+    // You can trigger a reload here.
+    fetchData().then((fetchedBooks) {
+      if (mounted) {
+        setState(() {
+          this.books = fetchedBooks;
+        });
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -175,18 +201,18 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
         if (dataList.isNotEmpty) {
           List<Book> books = dataList.map((map) {
             return Book(
-              title: map['title'] ?? '',
-              author: map['author'] ?? '',
-              imageurl: map['image_url'] ?? '',
-              isbn: map['isbn'] ?? '',
-              subtitle: map['subtitle'] ?? '',
-              publisher: map['publisher'] ?? '',
-              year: map['year'] ?? '',
-              language: map['language'] ?? '',
-              category: map['category'] ?? '',
-              edition: map['edition'] ?? '',
-              dewey: map['dewey'] ?? '',
-              copies: map['copies'] ?? '',
+              title: map['title'] ?? 'NaN',
+              author: map['author'] ?? 'NaN',
+              imageurl: map['image_url'] ?? 'NaN',
+              isbn: map['isbn'] ?? 'NaN',
+              subtitle: map['subtitle'] ?? 'NaN',
+              publisher: map['publisher'] ?? 'NaN',
+              year: map['year'] ?? 'NaN',
+              language: map['language'] ?? 'NaN',
+              category: map['category'] ?? 'NaN',
+              edition: map['edition'] ?? 'NaN',
+              dewey: map['dewey'] ?? 'NaN',
+              copies: map['copies'] ?? 'NaN',
               isFav: map['isFav'] != null ? map['isFav'] == 1 : false,
             );
           }).toList();
@@ -235,7 +261,42 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
   onTapFloatingActionButton(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.filtersPageScreen, arguments: {
       'searchText': searchText,
-      'languages': languages, // Pass books as a parameter to the next screen
+      'languages': languages,
+      'authors': authors,
+      'publishers': publishers,
+      'years': years,
+      'categories': categories,
+      'filters': filters,
     });
   }
+
+  Filter setFilters(List<Book> books) {
+    Filter filters = Filter(
+      category: [],
+      language: [],
+      publisher: [],
+      author: [],
+      year: [],
+    ); // Assuming Filter is a class you have defined
+
+    for (Book book in books) {
+      filters.language = addUnique(book.language, filters.language);
+      filters.author = addUnique(book.author, filters.author);
+      filters.year = addUnique(book.year, filters.year);
+      filters.publisher = addUnique(book.publisher, filters.publisher);
+      filters.category = addUnique(book.category, filters.category);
+    }
+
+    print(filters.year);
+    return filters;
+  }
+
+  List<String> addUnique(String? str, List<String> list) {
+    List<String> list1 = list;
+    if (str != null && str!='NaN' && !list.contains(str)) {
+      list1.add(str); // Make a mutable copy
+    }
+    return list1;
+  }
+
 }
