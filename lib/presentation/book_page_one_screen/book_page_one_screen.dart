@@ -21,6 +21,8 @@ class BookPageOneScreen extends StatefulWidget {
 
 class _BookPageOneScreenState extends State<BookPageOneScreen> {
 
+  final GlobalKey<LikeButtonState> likeButtonKey = GlobalKey<LikeButtonState>();
+
   Book book = Book();
   String? email;
   String authors = 'NaN';
@@ -185,95 +187,119 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                         isDisabled: book.copies>0 ? false : true,
                         alignment: Alignment.centerRight),
                     SizedBox(height: 71.v),
-                    SizedBox(
+                    GestureDetector(
+                      onTap: () {
+                        onTapFav(context, book.isFav);
+                        // Toggle the isFav property or perform any other necessary actions
+                        book.isFav = !book.isFav;
+
+                        likeButtonKey.currentState?.onTap();
+                      },
+                      child: SizedBox(
                         height: 25.v,
                         width: 186.h,
-                        child:
-                        Stack(alignment: Alignment.centerRight, children: [
-                          CustomImageView(
+                        child: Stack(
+                          alignment: Alignment.centerRight,
+                          children: [
+                            CustomImageView(
                               imagePath: ImageConstant.imgRectangle30,
                               height: 25.v,
                               width: 186.h,
                               radius: BorderRadius.circular(12.h),
-                              alignment: Alignment.center),
-                          Align(
+                              alignment: Alignment.center,
+                            ),
+                            Align(
                               alignment: Alignment.centerRight,
                               child: Padding(
-                                  padding: EdgeInsets.only(right: 5.h),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Padding(
-                                            padding: EdgeInsets.only(
-                                                top: 6.v, bottom: 4.v),
-                                            child: Text(
-                                                "Πρόσθεσε στα αγαπημένα",
-                                                style: CustomTextStyles
-                                                    .bodySmallRobotoOnPrimary11)),
-                                  Padding(
-                                  padding: const EdgeInsets.only(bottom: 20.0, left: 15.0),
-                                        child: LikeButton(
-                                          isLiked: book.isFav,
-                                          onTap: (isLiked) async {
-                                            onTapFav(context, isLiked);
-                                            book.isFav = !book.isFav;
-                                            return !isLiked;
-                                          },
-                                          animationDuration: Duration(milliseconds: 500),
-                                          size: 24.adaptSize,
-                                          circleColor: CircleColor(
-                                            start: Color(0xff00ddff),
-                                            end: Color(0xff0099cc),
-                                          ),
-                                          bubblesColor: BubblesColor(
-                                            dotPrimaryColor: Color(0xff33b5e5),
-                                            dotSecondaryColor: Color(0xff0099cc),
-                                          ),
-                                          likeBuilder: (bool isLiked) {
-                                            return Icon(
-                                              Icons.favorite,
-                                              color: isLiked ? Colors.red : appTheme.blueGray100,
-                                              size: 24.adaptSize,
-                                            );
-                                          },
-                                        )),
-                                      ])))
-                        ])),
-                    SizedBox(height: 14.v),
-                    SizedBox(
-                        height: 25.v,
-                        width: 186.h,
-                        child: Stack(alignment: Alignment.center, children: [
-                          CustomImageView(
-                              imagePath: ImageConstant.imgRectangle30,
-                              height: 25.v,
-                              width: 186.h,
-                              radius: BorderRadius.circular(12.h),
-                              alignment: Alignment.center,
-                              onTap: () {
-                                onTapImgImage(context);
-                              }),
-                          Align(
-                              alignment: Alignment.center,
-                              child: Row(
+                                padding: EdgeInsets.only(right: 5.h),
+                                child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Padding(
-                                        padding: EdgeInsets.only(
-                                            top: 4.v, bottom: 1.v),
-                                        child: Text("Βρες το στη Βιβλιοθήκη",
-                                            style: CustomTextStyles
-                                                .bodySmallRobotoOnPrimary11)),
-                                    CustomImageView(
-                                        imagePath: ImageConstant.imgPlace,
-                                        color: appTheme.blueGray100,
-                                        height: 20.v,
-                                        width: 20.h,
-                                        margin: EdgeInsets.only(left: 22.h))
-                                  ]))
-                        ]))
+                                      padding: EdgeInsets.only(top: 6.v, bottom: 4.v),
+                                      child: Text(
+                                        "Πρόσθεσε στα αγαπημένα",
+                                        style: CustomTextStyles.bodySmallRobotoOnPrimary11,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 20.0, left: 15.0),
+                                      child: LikeButton(
+                                        isLiked: book.isFav,
+                                        key: likeButtonKey,
+                                        onTap: (isLiked) async {
+                                          // The onTapFav action is now handled by the GestureDetector
+                                          // You can remove or keep this method based on your requirements
+                                          return !isLiked;
+                                        },
+                                        animationDuration: Duration(milliseconds: 500),
+                                        size: 24.adaptSize,
+                                        circleColor: CircleColor(
+                                          start: Color(0xff00ddff),
+                                          end: Color(0xff0099cc),
+                                        ),
+                                        bubblesColor: BubblesColor(
+                                          dotPrimaryColor: Color(0xff33b5e5),
+                                          dotSecondaryColor: Color(0xff0099cc),
+                                        ),
+                                        likeBuilder: (bool isLiked) {
+                                          return Icon(
+                                            Icons.favorite,
+                                            color: isLiked ? Colors.red : appTheme.blueGray100,
+                                            size: 24.adaptSize,
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 14.v),
+                    GestureDetector(
+                      onTap: () {
+                        onTapImgImage(context);
+                      },
+                      child: SizedBox(
+                          height: 25.v,
+                          width: 186.h,
+                          child: Stack(alignment: Alignment.center, children: [
+                            CustomImageView(
+                                imagePath: ImageConstant.imgRectangle30,
+                                height: 25.v,
+                                width: 186.h,
+                                radius: BorderRadius.circular(12.h),
+                                alignment: Alignment.center,
+                                onTap: () {
+                                  onTapImgImage(context);
+                                }),
+                            Align(
+                                alignment: Alignment.center,
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 4.v, bottom: 1.v),
+                                          child: Text("Βρες το στη Βιβλιοθήκη",
+                                              style: CustomTextStyles
+                                                  .bodySmallRobotoOnPrimary11)),
+                                      CustomImageView(
+                                          imagePath: ImageConstant.imgPlace,
+                                          color: appTheme.blueGray100,
+                                          height: 20.v,
+                                          width: 20.h,
+                                          margin: EdgeInsets.only(left: 22.h)
+                                      )
+                                    ]))
+                          ])),
+                    )
                   ]))
             ]));
   }
