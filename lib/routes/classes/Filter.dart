@@ -1,11 +1,11 @@
 
 class Filter {
 
-  final List<String> category;
-  final List<String> language;
-  final List<String> publisher;
-  final List<String> author;
-  final List<String> year;
+   List<String> category;
+   List<String> language;
+   List<String> publisher;
+   List<String> author;
+   List<String> year;
 
   Filter({
     required this.category,

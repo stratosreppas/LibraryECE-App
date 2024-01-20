@@ -149,7 +149,7 @@ class ResultBox extends StatelessWidget {
                   SizedBox(
                     width: 185.h,
                     child: Text(
-                      (book.edition != '') ? '${book.edition}\'  Έκδοση' : "1'  Έκδοση",
+                      (book.edition != 'NaN') ? '${book.edition}\'  Έκδοση' : "1'  Έκδοση",
                       maxLines: null,
                       overflow: TextOverflow.ellipsis,
                       style: CustomTextStyles.bodySmallRobotoOnPrimary.copyWith(

@@ -1,11 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class BootPageScreen extends StatelessWidget {
-  const BootPageScreen({Key? key})
-      : super(
-          key: key,
-        );
+
+class BootPageScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<BootPageScreen> {
+  @override
+  void initState() {
+    super.initState();
+    checkDependencies();
+  }
+
+  void checkDependencies() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Replace 'your_dependency_key' with the actual key you are checking for.
+    String? dependencyValue = prefs.getString('email');
+    if (dependencyValue != null && dependencyValue.isNotEmpty) {
+        Navigator.pushNamed(context, AppRoutes.homePage);
+    } else {
+      Navigator.pushNamed(context, AppRoutes.loginPageScreen);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,54 +33,8 @@ class BootPageScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: theme.colorScheme.primary,
         body: Container(
-          width: double.maxFinite,
-          padding: EdgeInsets.only(top: 242.v),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 131.v,
-                width: 136.h,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        height: 131.v,
-                        width: 136.h,
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.onPrimary.withOpacity(1),
-                          borderRadius: BorderRadius.circular(
-                            68.h,
-                          ),
-                        ),
-                      ),
-                    ),
-                    CustomImageView(
-                      imagePath: ImageConstant.imgImage1,
-                      height: 131.v,
-                      width: 136.h,
-                      radius: BorderRadius.vertical(
-                        bottom: Radius.circular(5.h),
-                      ),
-                      alignment: Alignment.center,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 36.v),
-              Container(
-                decoration: AppDecoration.outlineBlack,
-                child: Text(
-                  "ECE Library",
-                  style: theme.textTheme.headlineLarge,
-                ),
-              ),
-              SizedBox(height: 5.v),
-            ],
           ),
-        ),
-      ),
+    ),
     );
   }
 }

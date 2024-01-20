@@ -15,7 +15,9 @@ import 'package:stratos_s_application3/presentation/app_template/app_template.da
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:noise_meter/noise_meter.dart'; // Import the noise_meter package
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stratos_s_application3/presentation/book_page_four_screen/book_page_four_screen.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -575,13 +577,13 @@ class _HomePageState extends State<HomePage> {
         if (userData.isNotEmpty) {
           user = User(
             id: userData['id'] ?? 0,
-            name: userData['name'] ?? '',
-            surname: userData['surname'] ?? '',
-            email: userData['email'] ?? '',
+            name: userData['name'] ?? 'NaN',
+            surname: userData['surname'] ?? 'NaN',
+            email: userData['email'] ?? 'NaN',
             penalty: userData['penalty'] ?? '-',
-            am: userData['am'] ?? '',
-            phone: userData['phone'] ?? '',
-            property: userData['property'] ?? '',
+            am: userData['am'] ?? 'NaN',
+            phone: userData['phone'] ?? 'NaN',
+            property: userData['property'] ?? 'NaN',
           );
 
           //print('hello' + user.name);
@@ -619,22 +621,23 @@ class _HomePageState extends State<HomePage> {
           List<Transaction> transactions = dataList.map((map) {
             return Transaction(
                 transactionID: map['transaction_id'],
-                title: map['title'] ?? '',
-                author: map['author'] ?? '',
-                imageurl: map['image_url'] ?? '',
-                isbn: map['isbn'] ?? '',
-                subtitle: map['subtitle'] ?? '',
-                publisher: map['publisher'] ?? '',
-                year: map['year'] ?? '',
-                language: map['language'] ?? '',
-                category: map['category'] ?? '',
-                edition: map['edition'] ?? '',
-                dewey: map['dewey'] ?? '',
+                title: map['title'] ?? 'NaN',
+                author: map['author'] ?? 'NaN',
+                imageurl: map['image_url'] ?? 'NaN',
+                isbn: map['isbn'] ?? 'NaN',
+                subtitle: map['subtitle'] ?? 'NaN',
+                publisher: map['publisher'] ?? 'NaN',
+                year: map['year'] ?? 'NaN',
+                language: map['language'] ?? 'NaN',
+                category: map['category'] ?? 'NaN',
+                edition: map['edition'] ?? 'NaN',
+                dewey: map['dewey'] ?? 'NaN',
                 copies: map['copies'] ?? 0,
-                book_id: map['book_id'] ?? '',
-                borrow_date: map['borrow_date'] ?? '',
-                must_return_date: map['must_return_date'] ?? '',
-                return_date: map['return_date'] ?? '',
+                isFav: map['isFav'] != null ? map['isFav'] == 1 : false,
+                book_id: map['book_id'] ?? 'NaN',
+                borrow_date: map['borrow_date'] ?? 'NaN',
+                must_return_date: map['must_return_date'] ?? 'NaN',
+                return_date: map['return_date'] ?? 'NaN',
                 renew: map['renew']);
           }).toList();
 
@@ -684,18 +687,19 @@ class _HomePageState extends State<HomePage> {
         if (dataList.isNotEmpty) {
           List<Book> books = dataList.map((map) {
             return Book(
-              title: map['title'] ?? '',
-              author: map['author'] ?? '',
-              imageurl: map['image_url'] ?? '',
-              isbn: map['isbn'] ?? '',
-              subtitle: map['subtitle'] ?? '',
-              publisher: map['publisher'] ?? '',
-              year: map['year'] ?? '',
-              language: map['language'] ?? '',
-              category: map['category'] ?? '',
-              edition: map['edition'] ?? '',
-              dewey: map['dewey'] ?? '',
+              title: map['title'] ?? 'NaN',
+              author: map['author'] ?? 'NaN',
+              imageurl: map['image_url'] ?? 'NaN',
+              isbn: map['isbn'] ?? 'NaN',
+              subtitle: map['subtitle'] ?? 'NaN',
+              publisher: map['publisher'] ?? 'NaN',
+              year: map['year'] ?? 'NaN',
+              language: map['language'] ?? 'NaN',
+              category: map['category'] ?? 'NaN',
+              edition: map['edition'] ?? 'NaN',
+              dewey: map['dewey'] ?? 'NaN',
               copies: map['copies'] ?? -1,
+              isFav: map['isFav'] != null ? map['isFav'] == 1 : false,
             );
           }).toList();
 

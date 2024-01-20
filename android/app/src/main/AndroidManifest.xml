@@ -6,10 +6,13 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <application
-        android:label="stratos_s_application3"
-        android:icon="@mipmap/ic_launcher">
+        android:label="ECE Library"
+        android:icon="@mipmap/ecel_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

@@ -102,22 +102,23 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
           setState(() {
             transactionHistory = dataList.map((map) {
               return Transaction(
-                title: map['title'] ?? '',
-                author: map['author'] ?? '',
-                imageurl: map['image_url'] ?? '',
-                isbn: map['isbn'] ?? '',
-                subtitle: map['subtitle'] ?? '',
-                publisher: map['publisher'] ?? '',
-                year: map['year'] ?? '',
-                language: map['language'] ?? '',
-                category: map['category'] ?? '',
-                edition: map['edition'] ?? '',
-                dewey: map['dewey'] ?? '',
+                title: map['title'] ?? 'NaN',
+                author: map['author'] ?? 'NaN',
+                imageurl: map['image_url'] ?? 'NaN',
+                isbn: map['isbn'] ?? 'NaN',
+                subtitle: map['subtitle'] ?? 'NaN',
+                publisher: map['publisher'] ?? 'NaN',
+                year: map['year'] ?? 'NaN',
+                language: map['language'] ?? 'NaN',
+                category: map['category'] ?? 'NaN',
+                edition: map['edition'] ?? 'NaN',
+                dewey: map['dewey'] ?? 'NaN',
                 copies: map['copies'] ?? 0,
+                isFav: map['isFav'] != null ? map['isFav'] == 1 : false,
                 book_id: map['book_id'] ?? 0,
-                borrow_date: map['borrow_date'] ?? '',
-                must_return_date: map['must_return_date'] ?? '',
-                return_date: map['return_date'] ?? '',
+                borrow_date: map['borrow_date'] ?? 'NaN',
+                must_return_date: map['must_return_date'] ?? 'NaN',
+                return_date: map['return_date'] ?? 'NaN',
               );
             }).toList();
           });

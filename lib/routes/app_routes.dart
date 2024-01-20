@@ -86,7 +86,7 @@ class AppRoutes {
     libraryPageScreen: (context) => LibraryPageScreen(),
     profilePageScreen: (context) => ProfilePageScreen(),
     favouritesPageScreen: (context) => FavouritesPageScreen(),
-    bookPageFourScreen: (context) => BookPageFourScreen(),
+    bookPageFourScreen: (context) => NoiseApp(),
     bookPageOneScreen: (context) => BookPageOneScreen(),
     bookPageThreeScreen: (context) => PhotoPage(),
     bookPageFiveScreen: (context) => BookPageFiveScreen(),
