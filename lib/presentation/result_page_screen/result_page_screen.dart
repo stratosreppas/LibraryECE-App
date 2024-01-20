@@ -149,12 +149,87 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                     Text('Αποτελέσματα για: ' + searchText),
                   ],
                 ),
-                SizedBox(height: 16.v),
-                Row(
-                  // write a text here
+                if(languages!='NaN' || authors!='NaN' || publishers!='NaN' || years!='NaN' || categories!='NaN')
+                  SizedBox(height: 16.v),
+                if(languages!='NaN' || authors!='NaN' || publishers!='NaN' || years!='NaN' || categories!='NaN')
+                  Row(
                   children: [
-                    SizedBox(width: 16.h),
-                    Text('Αναζήτηση με βάση τα φίλτρα: ' + publishers),
+                    SizedBox(width: 16.h), // Adds a horizontal space of 16 times the value of 'h'
+                    Text('Αναζήτηση με βάση τα φίλτρα: '),
+                  ],),
+                SizedBox(height: 5.v), // Adds a horizontal space of 16 times the value of 'h'
+                Row(
+                    children: [// Displays a text indicating a search with filters
+                    SizedBox(width: 5.h), // Adds a horizontal space of 16 times the value of 'h'
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      width: 350.h, // Adjust the width as needed
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  if (languages != 'NaN')
+                                    Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 5.h),
+                                      decoration: BoxDecoration(
+                                        color: appTheme.deepPurple50014,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(languages),
+                                      ),
+                                    ), // Displays languages followed by a comma
+                                  if (authors != 'NaN')
+                                    Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 5.h),
+                                      decoration: BoxDecoration(
+                                        color: appTheme.deepPurple50014,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(authors),
+                                      ),
+                                    ), // Displays authors followed by a comma
+                                  if (publishers != 'NaN')
+                                    Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 5.h),
+                                      decoration: BoxDecoration(
+                                        color: appTheme.deepPurple50014,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(publishers),
+                                      ),
+                                    ), // Displays publishers followed by a comma
+                                  if (years != 'NaN')
+                                    Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 5.h),
+                                      decoration: BoxDecoration(
+                                        color: appTheme.deepPurple50014,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(years),
+                                      ),
+                                    ), // Displays years followed by a comma
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+
+                      ),
+                    ),
                   ],
                 ),
                 for (Book book in books)

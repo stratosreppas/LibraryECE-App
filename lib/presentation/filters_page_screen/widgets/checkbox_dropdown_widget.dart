@@ -48,19 +48,6 @@ class CheckBoxDropDownWidgetState extends State<CheckBoxDropDownWidget> {
 
     for (int i = 0; i < widget.contents.length; i++) {
       if (checkboxValues[i] == true) {
-        if (widget.header == 'Γλώσσα') {
-          switch (widget.contents[i]) {
-            case 'Ελληνικά':
-              selectedValues.add('el');
-              break;
-            case 'Αγγλικά':
-              selectedValues.add('en');
-              break;
-            default:
-              break;
-          }
-        }
-        else
           selectedValues.add(widget.contents[i]);
       }
     }

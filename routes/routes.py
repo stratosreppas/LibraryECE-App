@@ -144,11 +144,12 @@ def loan_renew():
 def new_notification():
     try:
         data=request.json
-        user_id=data["user_id"]
-        #print(user_id)
+        user_id=int(data["user_id"])
+        print(user_id)
         cursor = db.connection.cursor()
-        cursor.execute(f"SELECT notification_id FROM notify_me WHERE user_id='{user_id}' ORDER BY created_at ASC LIMIT 1;")
+        cursor.execute(f"SELECT notification_id FROM notify_me WHERE user_id={user_id} ORDER BY created_at ASC LIMIT 1;")
         notification_id = cursor.fetchone()
+        print(notification_id)
 
         if(notification_id):
             print(notification_id[0])
