@@ -23,8 +23,12 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
 
   Book book = Book();
   String? email;
-
-  TextEditingController authorsController = TextEditingController();
+  String authors = 'NaN';
+  String languages = 'NaN';
+  String categories = 'NaN';
+  String publishers = 'NaN';
+  String years = 'NaN';
+  String searchText = 'NaN';
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
@@ -46,76 +50,114 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
       // Get the value associated with the 'languages' key
       email = args['email'];
     }
+
+    if (args.containsKey('authors')) {
+      // Get the value associated with the 'languages' key
+      authors = args['authors'];
+    }
+
+    if(args.containsKey('languages')) {
+      // Get the value associated with the 'languages' key
+      languages = args['languages'];
+    }
+
+    if(args.containsKey('categories')) {
+      // Get the value associated with the 'languages' key
+      categories = args['categories'];
+    }
+
+    if(args.containsKey('publishers')) {
+      // Get the value associated with the 'languages' key
+      publishers = args['publishers'];
+    }
+
+    if(args.containsKey('years')) {
+      // Get the value associated with the 'languages' key
+      years = args['years'];
+    }
+
+    if(args.containsKey('searchText')) {
+      // Get the value associated with the 'languages' key
+      searchText = args['searchText'];
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: AppTemplate(
-        body: Container(
-          width: double.maxFinite,
-          padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 3.v),
-          child: Column(
-            children: [
-              SizedBox(height: 4.v),
-              _buildAvailableCopies(context),
-              SizedBox(height: 6.v),
-              SizedBox(
-                child: Container(
+    return WillPopScope(
+      onWillPop: () async {
+        // Pop all routes until reaching the home page
+        Navigator.pop(context);
+        Navigator.pushReplacementNamed(context, AppRoutes.resultPageScreen, arguments:{'email': email, 'authors': authors, 'languages': languages, 'categories': categories, 'publishers': publishers, 'years': years, 'searchText': searchText });
+        return false;
+      },
+      child: SafeArea(
+        child: AppTemplate(
+          body: Container(
+            width: double.maxFinite,
+            padding: EdgeInsets.symmetric(horizontal: 10.h, vertical: 3.v),
+            child: Column(
+              children: [
+                SizedBox(height: 4.v),
+                _buildAvailableCopies(context),
+                SizedBox(height: 6.v),
+                SizedBox(
+                  child: Container(
+                    height: 11.v,
+                    width: 340.h,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary,
+                      borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(10.h)),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16.h),
+                      decoration: AppDecoration.fillPrimary,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 13.v),
+                          _buildExtendableRich2(context, 'Τίτλος', book.title),
+                          SizedBox(height: 12.v),
+                          _buildExtendableRich2(context, 'Υπότιτλος', book.subtitle),
+                          SizedBox(height: 12.v),
+                          _buildExtendableRich2(context, 'Έκδοση', book.edition),
+                          SizedBox(height: 12.v),
+                          _buildExtendableRich2(context, 'ISBN', book.isbn),
+                          SizedBox(height: 12.v),
+                          _buildExtendableRich2(context, 'Συγγραφέας', book.author),
+                          SizedBox(height: 12.v),
+                          _buildExtendableRich2(context, 'Κατηγορία', book.category),
+                          SizedBox(height: 12.v),
+                          _buildExtendableRich2(context, 'Εκδότης', book.publisher),
+                          SizedBox(height: 12.v),
+                          _buildExtendableRich2(context, 'Έτος έκδοσης', book.year.toString()),
+                          SizedBox(height: 12.v),
+                          _buildExtendableRich2(context, 'Γλώσσα', book.language),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
                   height: 11.v,
                   width: 340.h,
                   decoration: BoxDecoration(
                     color: theme.colorScheme.primary,
-                    borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(10.h)),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16.h),
-                    decoration: AppDecoration.fillPrimary,
-                    child: Column(
-                      children: [
-                        SizedBox(height: 13.v),
-                        _buildExtendableRich2(context, 'Τίτλος', book.title),
-                        SizedBox(height: 12.v),
-                        _buildExtendableRich2(context, 'Υπότιτλος', book.subtitle),
-                        SizedBox(height: 12.v),
-                        _buildExtendableRich2(context, 'Έκδοση', book.edition),
-                        SizedBox(height: 12.v),
-                        _buildExtendableRich2(context, 'ISBN', book.isbn),
-                        SizedBox(height: 12.v),
-                        _buildExtendableRich2(context, 'Συγγραφέας', book.author),
-                        SizedBox(height: 12.v),
-                        _buildExtendableRich2(context, 'Κατηγορία', book.category),
-                        SizedBox(height: 12.v),
-                        _buildExtendableRich2(context, 'Εκδότης', book.publisher),
-                        SizedBox(height: 12.v),
-                        _buildExtendableRich2(context, 'Έτος έκδοσης', book.year.toString()),
-                        SizedBox(height: 12.v),
-                        _buildExtendableRich2(context, 'Γλώσσα', book.language),
-                      ],
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10.0),
+                      bottomRight: Radius.circular(10.0),
                     ),
                   ),
                 ),
-              ),
-              Container(
-                height: 11.v,
-                width: 340.h,
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(10.0),
-                    bottomRight: Radius.circular(10.0),
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
+          initialIndex: 1,
         ),
-        initialIndex: 1,
       ),
     );
   }

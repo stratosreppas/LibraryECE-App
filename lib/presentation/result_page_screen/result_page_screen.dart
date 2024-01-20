@@ -245,6 +245,12 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                                 arguments: {
                                   'book': book,
                                   'email': email,
+                                  'languages': languages,
+                                  'authors': authors,
+                                  'publishers': publishers,
+                                  'years': years,
+                                  'categories': categories,
+                                  'searchText': searchText,
                                 });
                           }),
                     ],
