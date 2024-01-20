@@ -38,7 +38,7 @@ class _NoiseAppState extends State<NoiseApp> {
     );
 
     // Check if dBs are more than 40 and show 'shhh' message
-    if (maxDB != null && maxDB! > 40) {
+    if (maxDB != null && maxDB! > 80) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('shhh'),

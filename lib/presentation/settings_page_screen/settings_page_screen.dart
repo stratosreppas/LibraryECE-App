@@ -14,7 +14,6 @@ class SettingsPageScreen extends StatelessWidget {
   List<String> notificationsDropDownItemList = [
     "Ανακοινώσεις",
     "Επιστροφή/Ανανέωση Βιβλίου",
-    "Διαθεσιμότητα Βιβλίου"
   ];
 
   List<String> homePageDropDownItemList = [

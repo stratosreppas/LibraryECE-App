@@ -24,20 +24,23 @@ class LibraryPageScreen extends StatelessWidget {
     "7ο Εξάμηνο",
     "8ο Εξάμηνο",
     "9ο Εξάμηνο",
+    "Εκτός Εξαμήνων"
 
   ];
 
   List<String> categoriesDropDown = [
-    "Item One",
-    "Item Two",
-    "Item Three",
-    "Item Four",
-    "Item Five",
-    "Item Six",
-    "Item Seven",
-    "Item Eight",
-    "Item Nine",
-    "Item Ten",
+    "Ροή Υ",
+    "Ροή Λ",
+    "Ροή Δ",
+    "Ροή Ε",
+    "Ροή Ζ",
+    "Ροή Η",
+    "Ροή Ο",
+    "Ροή Ι",
+    "Ροή Σ",
+    "Ροή Τ",
+    "Ροή Φ",
+    "Ροή Μ",
   ];
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
