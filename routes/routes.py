@@ -363,22 +363,26 @@ def get_all_transactions():
         return jsonify({'error': f'Database error: {str(e)}'})
 
 @app.route('/api/home/books',
-           methods=['GET'])
+           methods=['POST'])
 def get_all_selected_books():
     try:
-
-        visitor_id = request.args.get('id', '')
-
+        data=request.json
+        visitor_id = data['user_id']
+        home_page_value=data['value']
         cursor = db.connection.cursor()
 
-        query = "SELECT books.isbn, title, subtitle, author, publisher, year, category, " \
+        if home_page_value==0:
+            query = "SELECT books.isbn, title, subtitle, author, publisher, year, category, " \
                 "edition, dewey, language, image_url, count(*) as copies " \
                 "FROM books JOIN favorites ON books.isbn = favorites.isbn " \
                 "WHERE favorites.id = %s GROUP BY books.isbn,title,subtitle,author,publisher,year,category,edition,dewey,language,image_url LIMIT 6;"
-
-        params = (visitor_id,)
-
-        cursor.execute(query, params)
+            params = (visitor_id,)
+            cursor.execute(query, params)
+        elif home_page_value==2:
+            query=""
+        elif home_page_value==3:
+            query="SELECT isbn, title, subtitle, author, publisher, year, category,edition, dewey, language, image_url, COUNT(*) AS transaction_count FROM transaction JOIN books ON transaction.book_id = books.id WHERE transaction.borrow_date >= CURDATE() - INTERVAL 2 WEEK GROUP BY isbn,title,subtitle, author, publisher, year, category,edition, dewey, language, image_url ORDER BY transaction_count DESC LIMIT 10;"
+            cursor.execute(query)
 
         data = cursor.fetchall()
         print(data)
@@ -389,7 +393,7 @@ def get_all_selected_books():
 
             cursor.close()
 
-            return jsonify(results)
+            return jsonify({'data':results})
         else:
             return jsonify({'error': 'No data found'})
     except Exception as e:

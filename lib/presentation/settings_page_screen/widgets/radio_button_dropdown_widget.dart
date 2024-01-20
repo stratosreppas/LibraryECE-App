@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 
 class RadioButtonDropDownWidget extends StatefulWidget {
   final String header;
   final List<String> contents;
+  final int firstSelectedValue;
 
-  RadioButtonDropDownWidget({required this.header, required this.contents});
+  RadioButtonDropDownWidget(
+      {required this.header,
+      required this.contents,
+      required this.firstSelectedValue});
 
   @override
   State<RadioButtonDropDownWidget> createState() =>
@@ -14,12 +19,20 @@ class RadioButtonDropDownWidget extends StatefulWidget {
 
 class RadioButtonDropDownWidgetState extends State<RadioButtonDropDownWidget> {
   late int? selectedValue;
+  late SharedPreferences prefs;
 
   @override
   void initState() {
     super.initState();
     // Set the initial value to the index of the first item
-    selectedValue = widget.contents.isNotEmpty ? 0 : null;
+    selectedValue = null;
+    initializePreferences();
+  }
+
+  Future<void> initializePreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    // Set the initial value to the index of the first item
+    //selectedValue = prefs.getInt('HomePageValue') ?? 0;
   }
 
   @override
@@ -49,11 +62,12 @@ class RadioButtonDropDownWidgetState extends State<RadioButtonDropDownWidget> {
         children: List.generate(
           widget.contents.length,
           (index) => RadioListTile(
-            groupValue: selectedValue,
+            groupValue: selectedValue ?? widget.firstSelectedValue,
             value: index,
             onChanged: (int? value) {
               setState(() {
                 selectedValue = value;
+                prefs.setInt('HomePageValue', value ?? 0);
               });
             },
             title: Center(

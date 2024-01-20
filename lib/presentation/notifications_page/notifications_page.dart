@@ -37,7 +37,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
         }),
       );
       final responseData = json.decode(response.body);
-      print(responseData['data']);
+      //print(responseData['data']);
       if (response.statusCode == 200 && responseData["status"] == "success") {
         final List<dynamic> dataList = responseData['data'];
 

@@ -8,13 +8,17 @@ import 'package:stratos_s_application3/widgets/app_bar/custom_app_bar.dart';
 import 'package:stratos_s_application3/widgets/custom_elevated_button.dart';
 
 // ignore_for_file: must_be_immutable
-class SettingsPageScreen extends StatelessWidget {
+class SettingsPageScreen extends StatefulWidget {
   SettingsPageScreen({Key? key}) : super(key: key);
 
+  @override
+  State<SettingsPageScreen> createState() => _SettingsPageScreenState();
+}
+
+class _SettingsPageScreenState extends State<SettingsPageScreen> {
   List<String> notificationsDropDownItemList = [
     "Ανακοινώσεις",
     "Επιστροφή/Ανανέωση Βιβλίου",
-    "Διαθεσιμότητα Βιβλίου"
   ];
 
   List<String> homePageDropDownItemList = [
@@ -31,8 +35,38 @@ class SettingsPageScreen extends StatelessWidget {
     "Δημοφιλή"
   ];
 
+  int selectedValue = 0;
+
+  late SharedPreferences prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    initializePreferences();
+  }
+
+  Future<void> initializePreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    // Retrieve the saved value from SharedPreferences
+    selectedValue = prefs.getInt('HomePageValue') ?? 0;
+    print(selectedValue);
+  }
+
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder<void>(
+      future: initializePreferences(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return buildWidget(); // Call a separate method to build the widget
+        } else {
+          return CircularProgressIndicator(); // Or any loading indicator
+        }
+      },
+    );
+  }
+
+  Widget buildWidget() {
     return SafeArea(
         child: Scaffold(
             appBar: _buildAppBar(context),
@@ -46,8 +80,10 @@ class SettingsPageScreen extends StatelessWidget {
                         contents: notificationsDropDownItemList),
                     SizedBox(height: 20.v),
                     RadioButtonDropDownWidget(
-                        header: "Αρχική Σελίδα",
-                        contents: homePageDropDownItemList),
+                      header: "Αρχική Σελίδα",
+                      contents: homePageDropDownItemList,
+                      firstSelectedValue: selectedValue,
+                    ),
                     SizedBox(height: 20.v),
                     SwitchDropDownWidget(
                         header: "Σελίδα Βιβλιοθήκης",

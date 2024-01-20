@@ -25,10 +25,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late String? email;
+  late int? homePageValue;
   late final User user;
   late UserNotification notification;
   List<Transaction> activeTransactions = [];
   List<Book> selectedBooks = [];
+  List<String> homePageChoices = [
+    "Αγαπημένα Βιβλία",
+    "Προτείνονται για εσάς",
+    "Νέες Προσθήκες",
+    "Δημοφιλή"
+  ];
 
   void notificationsInitialazation() async {
     await AwesomeNotifications().initialize(null, [
@@ -56,6 +63,15 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       email = userEmail;
       print("Home Page: $email");
+    });
+  }
+
+  Future<void> getHomePageValueFromPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? value = prefs.getInt('HomePageValue');
+    setState(() {
+      homePageValue = value;
+      print("Home Page Value: $homePageValue");
     });
   }
 
@@ -504,7 +520,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Padding(
                             padding: EdgeInsets.only(bottom: 1.v),
-                            child: Text("Αγαπημένα Βιβλία",
+                            child: Text(homePageChoices[homePageValue ?? 0],
                                 style: CustomTextStyles.titleMediumOnPrimary)),
                         GestureDetector(
                             onTap: () {
@@ -541,6 +557,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<User> fetchUserData() async {
     await getEmailFromPreferences();
+    await getHomePageValueFromPreferences();
 
     User user = User();
 
@@ -588,13 +605,12 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<Transaction>> fetchTransactionData() async {
     try {
-      //print('hi');
       int id = user.id;
       final response = await http.get(Uri.parse(
           '${AppConstants.apiUrl}/api/home/transactions?' + 'id=$id'));
 
       //print('Response status code: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      //print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final List<dynamic> dataList = json.decode(response.body);
@@ -649,13 +665,21 @@ class _HomePageState extends State<HomePage> {
       //print('hi');
       int id = user.id;
       //print(id);
-      final response = await http
-          .get(Uri.parse('${AppConstants.apiUrl}/api/home/books?' + 'id=$id'));
+      final response = await http.post(
+        Uri.parse('${AppConstants.apiUrl}/api/home/books'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+            <String, int>{'user_id': id, 'value': homePageValue ?? 0}),
+      );
       //print('Response status code: ${response.statusCode}');
       //print('Response body: ${response.body}');
 
+      final responseData = json.decode(response.body);
+      print(responseData['data']);
       if (response.statusCode == 200) {
-        final List<dynamic> dataList = json.decode(response.body);
+        final List<dynamic> dataList = responseData['data'];
 
         if (dataList.isNotEmpty) {
           List<Book> books = dataList.map((map) {

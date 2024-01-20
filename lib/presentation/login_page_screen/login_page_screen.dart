@@ -231,6 +231,9 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
         // Save email to shared preferences
         saveEmailToPreferences(emailController.text);
 
+        //Set the home page to default: Αγαπημένα Βιβλία
+        saveHomePageValue(0);
+
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
             successMessage,
@@ -269,6 +272,11 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
   void saveEmailToPreferences(String email) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('email', email);
+  }
+
+  Future<void> saveHomePageValue(int value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('HomePageValue', value);
   }
 
   /// Navigates to the signupPageScreen when the action is triggered.
