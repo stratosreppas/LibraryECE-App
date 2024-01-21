@@ -10,7 +10,7 @@ SET GLOBAL sql_mode = "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FO
 
 
 CREATE TABLE books (
-  id int NOT NULL ,
+  id int NOT NULL auto_increment,
   title varchar(255) DEFAULT NULL,
   subtitle varchar(255) DEFAULT NULL,
   author varchar(255) DEFAULT NULL,
@@ -63,42 +63,6 @@ CREATE TABLE categories (
   category varchar(255) NOT NULL,
   PRIMARY KEY (category, isbn)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- CREATE TABLE authors_books (
---   isbn varchar(255) NOT NULL,
---   author_id int(11) NOT NULL,
---   PRIMARY KEY (author_id, isbn),
--- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- CREATE TABLE authors (
---   author_id int(11) NOT NULL AUTO_INCREMENT,
---   first_name varchar(255) NOT NULL,
---   middle_name varchar(255) DEFAULT NULL,
---   last_name varchar(255) NOT NULL,
---   PRIMARY KEY (author_id),
--- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
--- ALTER TABLE `books`
---   ADD PRIMARY KEY (`id`);
-
--- ALTER TABLE `transaction`
---   ADD PRIMARY KEY (`transaction_id`);
-
--- ALTER TABLE `visitor`
---   ADD PRIMARY KEY (`id`);
-
--- ALTER TABLE `books`
---   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9623;
-
-
-
--- ALTER TABLE `transaction`
---   MODIFY `transaction_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76890;
-
--- ALTER TABLE `visitor`
---   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6894;
--- COMMIT;
 
 CREATE TABLE favorites (
   isbn varchar(50) NOT NULL,
