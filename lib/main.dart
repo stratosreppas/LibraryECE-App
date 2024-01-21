@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'core/app_export.dart';
-import "package:library_ece/presentation/boot_page_screen/boot_page_screen.dart";
+import "package:stratos_s_application3/presentation/boot_page_screen/boot_page_screen.dart";
 
 var globalMessengerKey = GlobalKey<ScaffoldMessengerState>();
 void main() {

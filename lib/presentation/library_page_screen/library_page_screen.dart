@@ -1,14 +1,14 @@
-import 'package:library_ece/presentation/library_page_screen/widgets/checkbox_with_button_dropdown_widget.dart';
+import 'package:stratos_s_application3/presentation/library_page_screen/widgets/checkbox_with_button_dropdown_widget.dart';
 import '../library_page_screen/widgets/booklist_item_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:library_ece/core/app_export.dart';
-import 'package:library_ece/presentation/app_template/app_template.dart';
-import 'package:library_ece/widgets/custom_search_bar.dart';
-import 'package:library_ece/routes/classes/Book.dart';
+import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
+import 'package:stratos_s_application3/widgets/custom_search_bar.dart';
+import 'package:stratos_s_application3/routes/classes/Book.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:library_ece/constraints.dart';
-import 'package:library_ece/routes/classes/User.dart';
+import 'package:stratos_s_application3/constraints.dart';
+import 'package:stratos_s_application3/routes/classes/User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore_for_file: must_be_immutable

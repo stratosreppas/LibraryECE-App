@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:library_ece/core/app_export.dart';
-import 'package:library_ece/presentation/settings_page_screen/widgets/radio_button_dropdown_widget.dart';
-import 'package:library_ece/presentation/settings_page_screen/widgets/switch_dropdown_widget.dart';
-import 'package:library_ece/routes/classes/timer.dart';
-import 'package:library_ece/widgets/app_bar/appbar_subtitle.dart';
-import 'package:library_ece/widgets/app_bar/custom_app_bar.dart';
-import 'package:library_ece/widgets/custom_elevated_button.dart';
+import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:stratos_s_application3/presentation/settings_page_screen/widgets/radio_button_dropdown_widget.dart';
+import 'package:stratos_s_application3/presentation/settings_page_screen/widgets/switch_dropdown_widget.dart';
+import 'package:stratos_s_application3/routes/classes/timer.dart';
+import 'package:stratos_s_application3/widgets/app_bar/appbar_subtitle.dart';
+import 'package:stratos_s_application3/widgets/app_bar/custom_app_bar.dart';
+import 'package:stratos_s_application3/widgets/custom_elevated_button.dart';
 
 // ignore_for_file: must_be_immutable
 class SettingsPageScreen extends StatefulWidget {

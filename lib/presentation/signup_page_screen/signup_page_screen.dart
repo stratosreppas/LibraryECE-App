@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:library_ece/constraints.dart';
-import 'package:library_ece/core/app_export.dart';
-import 'package:library_ece/widgets/custom_text_form_field.dart';
+import 'package:stratos_s_application3/constraints.dart';
+import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:stratos_s_application3/widgets/custom_text_form_field.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:library_ece/core/app_export.dart';
-import 'package:library_ece/routes/classes/Transaction.dart';
+import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:stratos_s_application3/routes/classes/Transaction.dart';
 import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
