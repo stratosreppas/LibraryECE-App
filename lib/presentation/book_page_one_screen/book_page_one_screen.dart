@@ -32,7 +32,7 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
   String publishers = 'NaN';
   String years = 'NaN';
   String searchText = 'NaN';
-  dynamic? route;
+  dynamic route;
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 

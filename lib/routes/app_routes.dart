@@ -8,7 +8,6 @@ import 'package:stratos_s_application3/presentation/rules_page_screen/rules_page
 import 'package:stratos_s_application3/presentation/settings_page_screen/settings_page_screen.dart';
 import 'package:stratos_s_application3/presentation/login_page_screen/login_page_screen.dart';
 import 'package:stratos_s_application3/presentation/signup_page_screen/signup_page_screen.dart';
-import 'package:stratos_s_application3/presentation/home_page_container_screen/home_page_container_screen.dart';
 import 'package:stratos_s_application3/presentation/library_page_screen/library_page_screen.dart';
 import 'package:stratos_s_application3/presentation/profile_page_screen/profile_page_screen.dart';
 import 'package:stratos_s_application3/presentation/favourites_page_screen/favourites_page_screen.dart';
@@ -82,7 +81,6 @@ class AppRoutes {
     settingsPageScreen: (context) => SettingsPageScreen(),
     loginPageScreen: (context) => LoginPageScreen(),
     signupPageScreen: (context) => SignupPageScreen(),
-    homePageContainerScreen: (context) => HomePageContainerScreen(),
     libraryPageScreen: (context) => LibraryPageScreen(),
     profilePageScreen: (context) => ProfilePageScreen(),
     favouritesPageScreen: (context) => FavouritesPageScreen(),

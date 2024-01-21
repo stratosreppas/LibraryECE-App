@@ -1,15 +1,12 @@
-import 'package:stratos_s_application3/presentation/book_page_one_screen/book_page_one_screen.dart';
 import 'package:stratos_s_application3/presentation/library_page_screen/widgets/checkbox_with_button_dropdown_widget.dart';
 import '../library_page_screen/widgets/booklist_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
-import 'package:stratos_s_application3/core/utils/navigation_utils.dart';
 import 'package:stratos_s_application3/widgets/custom_search_bar.dart';
 import 'package:stratos_s_application3/routes/classes/Book.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:stratos_s_application3/routes/app_routes.dart';
 import 'package:stratos_s_application3/constraints.dart';
 import 'package:stratos_s_application3/routes/classes/User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,7 +20,6 @@ class LibraryPageScreen extends StatefulWidget {
 }
 
 class _LibraryPageScreenState extends State<LibraryPageScreen> {
-
   late final User user;
   late final String? email;
   late final List<Book> popularBooks;
@@ -45,7 +41,6 @@ class _LibraryPageScreenState extends State<LibraryPageScreen> {
     "8ο Εξάμηνο",
     "9ο Εξάμηνο",
     "Εκτός Εξαμήνων"
-
   ];
 
   List<String> categoriesDropDown = [
@@ -65,6 +60,17 @@ class _LibraryPageScreenState extends State<LibraryPageScreen> {
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
+  List<String>? libraryPageValues = [];
+
+  late SharedPreferences prefs;
+
+  Future<void> initializePreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    // Retrieve the saved values from SharedPreferences
+    libraryPageValues = prefs.getStringList("libraryPageValues");
+    print(libraryPageValues);
+  }
+
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
@@ -77,11 +83,11 @@ class _LibraryPageScreenState extends State<LibraryPageScreen> {
       this.newBooks = await fetchBookData(2);
       this.recommendedBooks = await fetchBookData(1);
       this.favoriteBooks = await fetchBookData(0);
+      await initializePreferences();
 
       if (mounted) {
         setState(() {});
       }
-
     } catch (error) {
       print('Error fetching data: $error');
     }
@@ -173,6 +179,7 @@ class _LibraryPageScreenState extends State<LibraryPageScreen> {
                   context: context,
                   email: user.email,
                   index: index,
+                  valuesList: libraryPageValues,
                   books: index == 0
                       ? recommendedBooks
                       : index == 1
@@ -181,8 +188,7 @@ class _LibraryPageScreenState extends State<LibraryPageScreen> {
                               ? newBooks
                               : index == 3
                                   ? popularBooks
-                                  : notifiedBooks
-              );
+                                  : notifiedBooks);
             }));
   }
 
@@ -225,7 +231,8 @@ class _LibraryPageScreenState extends State<LibraryPageScreen> {
               interest: map['interest'] ?? 'NaN',
               copies: map['copies'] ?? -1,
               isFav: map['isFav'] != null ? map['isFav'] == 1 : false,
-              isNotified: map['isNotified'] != null ? map['isNotified'] == 1 : false,
+              isNotified:
+                  map['isNotified'] != null ? map['isNotified'] == 1 : false,
             );
           }).toList();
 

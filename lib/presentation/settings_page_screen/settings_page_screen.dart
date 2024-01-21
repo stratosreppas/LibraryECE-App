@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/presentation/settings_page_screen/widgets/radio_button_dropdown_widget.dart';
 import 'package:stratos_s_application3/presentation/settings_page_screen/widgets/switch_dropdown_widget.dart';
+import 'package:stratos_s_application3/routes/classes/timer.dart';
 import 'package:stratos_s_application3/widgets/app_bar/appbar_subtitle.dart';
 import 'package:stratos_s_application3/widgets/app_bar/custom_app_bar.dart';
 import 'package:stratos_s_application3/widgets/custom_elevated_button.dart';
@@ -31,26 +32,27 @@ class _SettingsPageScreenState extends State<SettingsPageScreen> {
 
   List<String> libraryPageDropDownItemList = [
     "Προτείνονται για Εσάς",
-    "Είδατε Πρόσφατα",
+    "Αγαπημένα",
     "Νέες Προσθήκες",
-    "Δημοφιλή"
+    "Δημοφιλή",
+    "Λαμβάνετε Ειδοποιήσεις"
   ];
 
   int selectedValue = 0;
+  List<String>? libraryPageValues = [];
+  List<String>? notificationsValues = [];
 
   late SharedPreferences prefs;
-
-  @override
-  void initState() {
-    super.initState();
-    initializePreferences();
-  }
 
   Future<void> initializePreferences() async {
     prefs = await SharedPreferences.getInstance();
     // Retrieve the saved value from SharedPreferences
     selectedValue = prefs.getInt('HomePageValue') ?? 0;
     print(selectedValue);
+    libraryPageValues = prefs.getStringList("libraryPageValues");
+    print(libraryPageValues);
+    notificationsValues = prefs.getStringList("notificationsValues");
+    print(notificationsValues);
   }
 
   @override
@@ -77,8 +79,10 @@ class _SettingsPageScreenState extends State<SettingsPageScreen> {
                 child: SingleChildScrollView(
                   child: Column(children: [
                     SwitchDropDownWidget(
-                        header: "Ειδοποιήσεις",
-                        contents: notificationsDropDownItemList),
+                      header: "Ειδοποιήσεις",
+                      contents: notificationsDropDownItemList,
+                      savedValues: notificationsValues,
+                    ),
                     SizedBox(height: 20.v),
                     RadioButtonDropDownWidget(
                       header: "Αρχική Σελίδα",
@@ -87,8 +91,10 @@ class _SettingsPageScreenState extends State<SettingsPageScreen> {
                     ),
                     SizedBox(height: 20.v),
                     SwitchDropDownWidget(
-                        header: "Σελίδα Βιβλιοθήκης",
-                        contents: libraryPageDropDownItemList),
+                      header: "Σελίδα Βιβλιοθήκης",
+                      contents: libraryPageDropDownItemList,
+                      savedValues: libraryPageValues,
+                    ),
                     SizedBox(height: 20.v),
                   ]),
                 )),
@@ -180,6 +186,7 @@ class _SettingsPageScreenState extends State<SettingsPageScreen> {
   /// Navigates to the logoutPageScreen when the action is triggered.
   onTapLogout(BuildContext context) {
     _clearUserData();
+    TimerService().stopTimer();
     Navigator.pushNamedAndRemoveUntil(
         context, AppRoutes.loginPageScreen, (route) => false);
   }

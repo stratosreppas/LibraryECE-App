@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:flutter/material.dart';

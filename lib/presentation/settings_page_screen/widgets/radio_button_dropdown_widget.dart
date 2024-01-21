@@ -31,8 +31,6 @@ class RadioButtonDropDownWidgetState extends State<RadioButtonDropDownWidget> {
 
   Future<void> initializePreferences() async {
     prefs = await SharedPreferences.getInstance();
-    // Set the initial value to the index of the first item
-    //selectedValue = prefs.getInt('HomePageValue') ?? 0;
   }
 
   @override
