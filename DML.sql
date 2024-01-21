@@ -6,6 +6,9 @@
 CREATE DATABASE ecel;
 USE ecel;
 
+SET GLOBAL sql_mode = "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION";
+
+
 CREATE TABLE books (
   id int NOT NULL ,
   title varchar(255) DEFAULT NULL,
@@ -114,6 +117,7 @@ CREATE TABLE notify_me (
     id INT AUTO_INCREMENT PRIMARY KEY,
     notification_id int NOT NULL,
     user_id int NOT NULL,
+    category int NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -123,6 +127,7 @@ CREATE TABLE notifications (
     title varchar(200) NOT NULL,
     notification_date date NOT NULL,
     content varchar(1000) NOT NULL,
+    category int NOT NULL,
     opened bool DEFAULT FALSE,
     PRIMARY KEY(id),
     CONSTRAINT `fk_user_id` FOREIGN KEY (user_id) REFERENCES visitor (id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -178,7 +183,7 @@ CREATE TRIGGER new_notification_trigger
 AFTER INSERT
 ON notifications FOR EACH ROW
 BEGIN
-    INSERT INTO notify_me (notification_id, user_id) VALUES (NEW.id,NEW.user_id);
+    INSERT INTO notify_me (notification_id, user_id,category) VALUES (NEW.id,NEW.user_id,NEW.category);
 END;
 //
 DELIMITER ;

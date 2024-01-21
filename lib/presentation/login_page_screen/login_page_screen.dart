@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stratos_s_application3/constraints.dart';
-import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/widgets/custom_text_form_field.dart';
+import 'package:library_ece/constraints.dart';
+import 'package:library_ece/core/app_export.dart';
+import 'package:library_ece/widgets/custom_text_form_field.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,6 +18,8 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
   late final TextEditingController passwordController;
   late FocusNode emailFocusNode;
   late FocusNode passwordFocusNode;
+  List<int> libraryPageValues = [];
+  List<int> notificationsValues = [];
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -31,6 +33,8 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
     passwordController = TextEditingController();
     emailFocusNode = FocusNode();
     passwordFocusNode = FocusNode();
+    libraryPageValues = List<int>.filled(5, 1);
+    notificationsValues = List<int>.filled(2, 1);
   }
 
   @override
@@ -234,6 +238,10 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
         //Set the home page to default: Αγαπημένα Βιβλία
         saveHomePageValue(0);
 
+        saveLibraryPageValues(libraryPageValues);
+
+        saveNotificationValues(notificationsValues);
+
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
             successMessage,
@@ -277,6 +285,18 @@ class _LoginPageScreenState extends State<LoginPageScreen> {
   Future<void> saveHomePageValue(int value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt('HomePageValue', value);
+  }
+
+  static Future<void> saveLibraryPageValues(List<int> intList) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> stringList = intList.map((e) => e.toString()).toList();
+    prefs.setStringList("libraryPageValues", stringList);
+  }
+
+  static Future<void> saveNotificationValues(List<int> intList) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> stringList = intList.map((e) => e.toString()).toList();
+    prefs.setStringList("notificationsValues", stringList);
   }
 
   /// Navigates to the signupPageScreen when the action is triggered.

@@ -103,11 +103,23 @@ def user_transaction_history():
         id=data.get('id')
         print(id)
         cursor = db.connection.cursor()
-        cursor.execute(f"select books.id,books.title, subtitle, isbn, image_url, author, category, edition, dewey, language, year, publisher, "
-                       f"transaction.book_id, transaction.borrow_date,transaction.return_date,books.image_url, "
-                       f"CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn AND favorites.id = {id}) THEN TRUE ELSE FALSE END as isFav, " \
-                       f"CASE WHEN EXISTS (SELECT 1 FROM set_notification WHERE books.isbn = set_notification.isbn and set_notification.id = {id}) THEN TRUE ELSE FALSE END as isNotified " \
-                       f"from visitor join transaction on visitor.id = transaction.visitor_id join books on transaction.book_id=books.id where visitor.id='{id}' and transaction.return_date IS NOT NULL;")
+        cursor.execute(
+    f"SELECT books.id, books.title, books.subtitle, books.isbn, books.image_url, books.author, books.category, "
+    f"books.edition, books.dewey, books.language, books.year, books.publisher, "
+    f"transaction.book_id, transaction.borrow_date, transaction.return_date, "
+    f"CAST(SUM(CASE WHEN books.category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) AS copies, "
+    f"CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn) THEN TRUE ELSE FALSE END AS isFav, "
+    f"CASE WHEN EXISTS (SELECT 1 FROM set_notification WHERE books.isbn = set_notification.isbn) THEN TRUE ELSE FALSE END AS isNotified "
+    f"FROM visitor "
+    f"JOIN transaction ON visitor.id = transaction.visitor_id "
+    f"JOIN books ON transaction.book_id = books.id "
+    f"WHERE visitor.id = '{id}' AND transaction.return_date IS NOT NULL "
+    f"GROUP BY books.id, books.title, books.subtitle, books.isbn, books.image_url, books.author, "
+    f"books.edition, books.dewey, books.language, books.year, books.publisher, "
+    f"transaction.book_id, transaction.borrow_date, transaction.return_date "
+    f"ORDER BY transaction.borrow_date DESC;"
+)
+
         transaction_history = cursor.fetchall()
 
         if transaction_history:
@@ -152,18 +164,32 @@ def new_notification():
     try:
         data=request.json
         user_id=int(data["user_id"])
+        notifications_values=data['notifications_values']
         print(user_id)
+        print(notifications_values)
+
         cursor = db.connection.cursor()
-        cursor.execute(f"SELECT notification_id FROM notify_me WHERE user_id={user_id} ORDER BY created_at ASC LIMIT 1;")
+        cursor.execute(f"SELECT notification_id,category FROM notify_me WHERE user_id={user_id} ORDER BY created_at ASC LIMIT 1;")
         notification_id = cursor.fetchone()
         print(notification_id)
 
         if(notification_id):
             print(notification_id[0])
-            cursor.execute(f"DELETE FROM notify_me WHERE notification_id='{notification_id[0]}';")
-            db.connection.commit()
-            cursor.close()
-            return jsonify({'status':'success','data':notification_id[0]})
+            print(notification_id[1])
+            if((notifications_values[0]=="1" and notifications_values[1]=="1") or (notifications_values[0]=="0" and notifications_values[1]=="1" and notification_id[1]==1) or (notifications_values[0]=="1" and notifications_values[1]=="0" and notification_id[1]==0)): #show the notification
+                cursor.execute(f"DELETE FROM notify_me WHERE notification_id='{notification_id[0]}';")
+                db.connection.commit()
+                cursor.close()
+                return jsonify({'status':'success','data':notification_id[0]})
+            elif((notifications_values[0]=="0" and notifications_values[1]=="1" and notification_id[1]==0) or (notifications_values[0]=="1" and notifications_values[1]=="0" and notification_id[1]==1)):
+                cursor.execute(f"DELETE FROM notify_me WHERE notification_id='{notification_id[0]}';")
+                db.connection.commit()
+                cursor.close()
+                return jsonify({'status':'failure','message':"No new notification found"})
+            elif(notifications_values[0]=="0" and notifications_values[1]=="0"):
+                cursor.execute(f"DELETE FROM notify_me WHERE notification_id='{notification_id[0]}';")
+                db.connection.commit()
+                return jsonify({'status':'failure','message':"The user has disabled notifications"})
         else:
             cursor.close() 
             return jsonify({'status':'failure','message':"No new notification found"})

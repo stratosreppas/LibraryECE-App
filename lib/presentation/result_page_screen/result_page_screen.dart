@@ -1,15 +1,15 @@
-import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
-import 'package:stratos_s_application3/widgets/custom_search_bar.dart';
+import 'package:library_ece/presentation/app_template/app_template.dart';
+import 'package:library_ece/widgets/custom_search_bar.dart';
 import '../result_page_screen/widgets/result_box.dart';
 import 'package:flutter/material.dart';
-import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/widgets/custom_floating_button.dart';
-import 'package:stratos_s_application3/routes/classes/Book.dart';
+import 'package:library_ece/core/app_export.dart';
+import 'package:library_ece/widgets/custom_floating_button.dart';
+import 'package:library_ece/routes/classes/Book.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stratos_s_application3/constraints.dart';
-import 'package:stratos_s_application3/routes/classes/Filter.dart';
+import 'package:library_ece/constraints.dart';
+import 'package:library_ece/routes/classes/Filter.dart';
 
 class ResultPageScreen extends StatefulWidget {
   ResultPageScreen({Key? key})
@@ -93,11 +93,11 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
       years = args['years'];
     }
 
-    if(args.containsKey('semesters')){
+    if (args.containsKey('semesters')) {
       semesters = args['semesters'];
     }
 
-    if(args.containsKey('interests')){
+    if (args.containsKey('interests')) {
       interests = args['interests'];
     }
 
@@ -134,7 +134,6 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -158,22 +157,42 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                     Text('Αποτελέσματα για: ' + searchText),
                   ],
                 ),
-                if(languages!='NaN' || authors!='NaN' || publishers!='NaN' || years!='NaN' || categories!='NaN' || semesters!='NaN' || interests!='NaN')
+                if (languages != 'NaN' ||
+                    authors != 'NaN' ||
+                    publishers != 'NaN' ||
+                    years != 'NaN' ||
+                    categories != 'NaN' ||
+                    semesters != 'NaN' ||
+                    interests != 'NaN')
                   SizedBox(height: 16.v),
-                if(languages!='NaN' || authors!='NaN' || publishers!='NaN' || years!='NaN' || categories!='NaN' || semesters!='NaN' || interests!='NaN')
+                if (languages != 'NaN' ||
+                    authors != 'NaN' ||
+                    publishers != 'NaN' ||
+                    years != 'NaN' ||
+                    categories != 'NaN' ||
+                    semesters != 'NaN' ||
+                    interests != 'NaN')
                   Row(
-                  children: [
-                    SizedBox(width: 16.h), // Adds a horizontal space of 16 times the value of 'h'
-                    Text('Αναζήτηση με βάση τα φίλτρα: '),
-                  ],),
-                SizedBox(height: 5.v), // Adds a horizontal space of 16 times the value of 'h'
+                    children: [
+                      SizedBox(
+                          width: 16
+                              .h), // Adds a horizontal space of 16 times the value of 'h'
+                      Text('Αναζήτηση με βάση τα φίλτρα: '),
+                    ],
+                  ),
+                SizedBox(
+                    height: 5
+                        .v), // Adds a horizontal space of 16 times the value of 'h'
                 Row(
-                    children: [// Displays a text indicating a search with filters
-                    SizedBox(width: 5.h), // Adds a horizontal space of 16 times the value of 'h'
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                  children: [
+                    // Displays a text indicating a search with filters
+                    SizedBox(
+                        width: 5
+                            .h), // Adds a horizontal space of 16 times the value of 'h'
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       width: 350.h, // Adjust the width as needed
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
@@ -185,7 +204,8 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                                 children: [
                                   if (languages != 'NaN')
                                     Container(
-                                      margin: EdgeInsets.symmetric(horizontal: 5.h),
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 5.h),
                                       decoration: BoxDecoration(
                                         color: appTheme.deepPurple50014,
                                         borderRadius: BorderRadius.circular(10),
@@ -197,7 +217,8 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                                     ), // Displays languages followed by a comma
                                   if (authors != 'NaN')
                                     Container(
-                                      margin: EdgeInsets.symmetric(horizontal: 5.h),
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 5.h),
                                       decoration: BoxDecoration(
                                         color: appTheme.deepPurple50014,
                                         borderRadius: BorderRadius.circular(10),
@@ -209,7 +230,8 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                                     ), // Displays authors followed by a comma
                                   if (publishers != 'NaN')
                                     Container(
-                                      margin: EdgeInsets.symmetric(horizontal: 5.h),
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 5.h),
                                       decoration: BoxDecoration(
                                         color: appTheme.deepPurple50014,
                                         borderRadius: BorderRadius.circular(10),
@@ -221,7 +243,8 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                                     ), // Displays publishers followed by a comma
                                   if (years != 'NaN')
                                     Container(
-                                      margin: EdgeInsets.symmetric(horizontal: 5.h),
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 5.h),
                                       decoration: BoxDecoration(
                                         color: appTheme.deepPurple50014,
                                         borderRadius: BorderRadius.circular(10),
@@ -233,7 +256,8 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                                     ),
                                   if (categories != 'NaN')
                                     Container(
-                                      margin: EdgeInsets.symmetric(horizontal: 5.h),
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 5.h),
                                       decoration: BoxDecoration(
                                         color: appTheme.deepPurple50014,
                                         borderRadius: BorderRadius.circular(10),
@@ -245,7 +269,8 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                                     ),
                                   if (semesters != 'NaN')
                                     Container(
-                                      margin: EdgeInsets.symmetric(horizontal: 5.h),
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 5.h),
                                       decoration: BoxDecoration(
                                         color: appTheme.deepPurple50014,
                                         borderRadius: BorderRadius.circular(10),
@@ -257,21 +282,22 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                                     ),
                                   if (interests != 'NaN')
                                     Container(
-                                      margin: EdgeInsets.symmetric(horizontal: 5.h),
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 5.h),
                                       decoration: BoxDecoration(
                                         color: appTheme.deepPurple50014,
                                         borderRadius: BorderRadius.circular(10),
-                                      ), child: Padding(
+                                      ),
+                                      child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(interests),
                                       ),
                                     ),
-                                      ],
+                                ],
                               ),
                             ),
                           ],
                         ),
-
                       ),
                     ),
                   ],
@@ -428,10 +454,9 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
 
   List<String> addUnique(String? str, List<String> list) {
     List<String> list1 = list;
-    if (str != null && str!='NaN' && !list.contains(str)) {
+    if (str != null && str != 'NaN' && !list.contains(str)) {
       list1.add(str); // Make a mutable copy
     }
     return list1;
   }
-
 }

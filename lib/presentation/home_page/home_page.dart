@@ -1,23 +1,23 @@
 import 'dart:async';
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:stratos_s_application3/constraints.dart';
-import 'package:stratos_s_application3/presentation/home_page/widgets/penalty_box.dart';
-import 'package:stratos_s_application3/routes/classes/notification_controller.dart';
+import 'package:library_ece/constraints.dart';
+import 'package:library_ece/presentation/home_page/widgets/penalty_box.dart';
+import 'package:library_ece/routes/classes/notification_controller.dart';
+import 'package:library_ece/routes/classes/timer.dart';
 import '../home_page/widgets/book_item_widget.dart';
 import '../home_page/widgets/userprofile_item_widget.dart';
-import 'package:stratos_s_application3/routes/classes/Transaction.dart';
-import 'package:stratos_s_application3/routes/classes/Book.dart';
-import 'package:stratos_s_application3/routes/classes/User.dart';
-import 'package:stratos_s_application3/routes/classes/Notification.dart';
+import 'package:library_ece/routes/classes/Transaction.dart';
+import 'package:library_ece/routes/classes/Book.dart';
+import 'package:library_ece/routes/classes/User.dart';
+import 'package:library_ece/routes/classes/Notification.dart';
 import 'package:flutter/material.dart';
-import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
+import 'package:library_ece/core/app_export.dart';
+import 'package:library_ece/presentation/app_template/app_template.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
-import 'package:noise_meter/noise_meter.dart'; // Import the noise_meter package
+// Import the noise_meter package
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stratos_s_application3/presentation/book_page_four_screen/book_page_four_screen.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -27,7 +27,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late String? email;
-  late int? homePageValue;
+  int? homePageValue = 0;
   User user = User();
   late UserNotification notification;
   List<Transaction> activeTransactions = [];
@@ -39,15 +39,17 @@ class _HomePageState extends State<HomePage> {
     "Δημοφιλή",
     "Λαμβάνετε Ειδοποιήσεις"
   ];
+  List<String>? notificationsValues = [];
 
   void notificationsInitialazation() async {
     await AwesomeNotifications().initialize(null, [
       NotificationChannel(
-        channelGroupKey: "basic_channel_group",
-        channelKey: "basic_channel",
-        channelName: "Basic Notification",
-        channelDescription: "Basin Notification Channel",
-      )
+          channelGroupKey: "basic_channel_group",
+          channelKey: "basic_channel",
+          channelName: "Basic Notification",
+          channelDescription: "Basin Notification Channel",
+          playSound: true,
+          enableVibration: true)
     ], channelGroups: [
       NotificationChannelGroup(
           channelGroupKey: "basic_channel_group",
@@ -76,6 +78,16 @@ class _HomePageState extends State<HomePage> {
       homePageValue = value;
       print("Home Page Value: $homePageValue");
     });
+  }
+
+  Future<void> getNotificationsPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      //stopTimer();
+      notificationsValues = prefs.getStringList("notificationsValues");
+      //startTimer();
+    });
+    print("Notifications Values: $notificationsValues");
   }
 
   String formatDate(String dateString) {
@@ -119,13 +131,14 @@ class _HomePageState extends State<HomePage> {
 
         AwesomeNotifications().createNotification(
             content: NotificationContent(
-                id: 1,
-                channelKey: "basic_channel",
-                title: notification.title,
-                body: notification.content,
-                actionType: ActionType.Default,
-                backgroundColor: theme.primaryColor,
-                color: appTheme.blueGray100));
+          id: 1,
+          channelKey: "basic_channel",
+          title: notification.title,
+          body: notification.content,
+          actionType: ActionType.Default,
+          backgroundColor: theme.primaryColor,
+          color: appTheme.blueGray100,
+        ));
       } else if (responseData['status'] == 'failure') {
         print(responseData['message']);
       }
@@ -142,8 +155,9 @@ class _HomePageState extends State<HomePage> {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, int>{
+        body: jsonEncode(<String, dynamic>{
           'user_id': user.id,
+          'notifications_values': notificationsValues,
         }),
       );
 
@@ -164,10 +178,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   void startTimer() {
-    const Duration duration = const Duration(seconds: 10);
-    Timer.periodic(duration, (Timer timer) {
+    TimerService().startTimer(() {
       checkNewNotification();
     });
+  }
+
+  void stopTimer() {
+    TimerService().stopTimer();
   }
 
   @override
@@ -182,6 +199,7 @@ class _HomePageState extends State<HomePage> {
             NotificationController.onNotificationDisplayedMethod,
         onDismissActionReceivedMethod:
             NotificationController.onDismissActionReceivedMethod);
+    stopTimer();
     startTimer();
   }
 
@@ -561,6 +579,7 @@ class _HomePageState extends State<HomePage> {
   Future<User> fetchUserData() async {
     await getEmailFromPreferences();
     await getHomePageValueFromPreferences();
+    await getNotificationsPreferences();
 
     User user = User();
 
@@ -637,7 +656,8 @@ class _HomePageState extends State<HomePage> {
                 interest: map['interest'] ?? 'NaN',
                 copies: map['copies'] ?? 0,
                 isFav: map['isFav'] != null ? map['isFav'] == 1 : false,
-                isNotified: map['isNotified'] != null ? map['isNotified'] == 1 : false,
+                isNotified:
+                    map['isNotified'] != null ? map['isNotified'] == 1 : false,
                 book_id: map['book_id'] ?? 'NaN',
                 borrow_date: map['borrow_date'] ?? 'NaN',
                 must_return_date: map['must_return_date'] ?? 'NaN',
@@ -706,7 +726,8 @@ class _HomePageState extends State<HomePage> {
               interest: map['interest'].toString() ?? 'NaN',
               copies: map['copies'] ?? -1,
               isFav: map['isFav'] != null ? map['isFav'] == 1 : false,
-              isNotified: map['isNotified'] != null ? map['isNotified'] == 1 : false,
+              isNotified:
+                  map['isNotified'] != null ? map['isNotified'] == 1 : false,
             );
           }).toList();
 
@@ -790,7 +811,7 @@ class _HomePageState extends State<HomePage> {
   /// Navigates to the bookPageFourScreen when the action is triggered.
   onTapImgImage(BuildContext context, Book book) {
     Navigator.pushNamed(context, AppRoutes.bookPageOneScreen,
-        arguments: {'book': book, 'route': AppRoutes.homePage, 'email': email });
+        arguments: {'book': book, 'route': AppRoutes.homePage, 'email': email});
   }
 
   /// Navigates to the profilePageScreen when the action is triggered.

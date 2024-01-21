@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/widgets/custom_search_view.dart';
+import 'package:library_ece/core/app_export.dart';
+import 'package:library_ece/widgets/custom_search_view.dart';
 
 // ignore: must_be_immutable
 class TwelveItemWidget extends StatelessWidget {

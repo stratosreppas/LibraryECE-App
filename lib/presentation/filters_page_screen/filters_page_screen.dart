@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/presentation/filters_page_screen/widgets/checkbox_dropdown_widget.dart';
-import 'package:stratos_s_application3/widgets/custom_elevated_button.dart';
-import 'package:stratos_s_application3/routes/classes/Filter.dart';
+import 'package:library_ece/core/app_export.dart';
+import 'package:library_ece/presentation/filters_page_screen/widgets/checkbox_dropdown_widget.dart';
+import 'package:library_ece/widgets/custom_elevated_button.dart';
+import 'package:library_ece/routes/classes/Filter.dart';
 
 class FiltersPageScreen extends StatefulWidget {
   FiltersPageScreen({Key? key}) : super(key: key);
@@ -12,7 +12,6 @@ class FiltersPageScreen extends StatefulWidget {
 }
 
 class _FiltersPageScreenState extends State<FiltersPageScreen> {
-
   Filter filters = Filter(
     category: [],
     language: [],
@@ -41,10 +40,7 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
 
     // Access the 'languages' parameter from the arguments
     final Map<String, dynamic> args =
-    ModalRoute
-        .of(context)!
-        .settings
-        .arguments as Map<String, dynamic>;
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     print(args);
 
     if (args.containsKey('searchText')) {
@@ -78,18 +74,17 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
       years = args['years'];
     }
 
-      if(args.containsKey('filters')){
-        filters = args['filters'];
-      }
+    if (args.containsKey('filters')) {
+      filters = args['filters'];
+    }
 
-      if(args.containsKey('semesters')){
-        semesters = args['semesters'];
-      }
+    if (args.containsKey('semesters')) {
+      semesters = args['semesters'];
+    }
 
-      if(args.containsKey('interests')){
-        interests = args['interests'];
-      }
-
+    if (args.containsKey('interests')) {
+      interests = args['interests'];
+    }
   }
 
   @override
@@ -238,13 +233,13 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
     Navigator.pushNamed(context, AppRoutes.resultPageScreen, arguments: {
       'searchText':
           searchText, // Pass searchText as a parameter to the next screen
-      'languages': languages!= '' ? languages : 'NaN',
-      'authors': authors!= '' ? authors : 'NaN',
-      'publishers': publishers!= '' ? publishers : 'NaN',
-      'years': years!= '' ? years : 'NaN',
-      'categories': categories!= '' ? categories : 'NaN',
-      'semesters': semesters!= '' ? semesters : 'NaN',
-      'interests': interests!= '' ? interests : 'NaN',
+      'languages': languages != '' ? languages : 'NaN',
+      'authors': authors != '' ? authors : 'NaN',
+      'publishers': publishers != '' ? publishers : 'NaN',
+      'years': years != '' ? years : 'NaN',
+      'categories': categories != '' ? categories : 'NaN',
+      'semesters': semesters != '' ? semesters : 'NaN',
+      'interests': interests != '' ? interests : 'NaN',
     });
   }
 
@@ -252,5 +247,4 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
     List<String> list = str.split('-');
     return list;
   }
-
 }

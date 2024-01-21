@@ -1,11 +1,9 @@
-import 'dart:typed_data';
-
 import 'package:arcore_flutter_plugin/arcore_flutter_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/widgets/app_bar/appbar_subtitle.dart';
-import 'package:stratos_s_application3/widgets/app_bar/custom_app_bar.dart';
+import 'package:library_ece/core/app_export.dart';
+import 'package:library_ece/widgets/app_bar/appbar_subtitle.dart';
+import 'package:library_ece/widgets/app_bar/custom_app_bar.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -20,7 +18,8 @@ class LocationPageScreen extends StatefulWidget {
 class _LocationPageScreenState extends State<LocationPageScreen> {
   ArCoreController? arCoreController;
   late Position position;
-  String? locationText = 'Φαίνεται πως δε βρίσκεστε στο χώρο της βιβλιοθήκης. Παρακαλώ προσπαθήστε ξανά όταν βρίσκεστε εντός αυτού.';
+  String? locationText =
+      'Φαίνεται πως δε βρίσκεστε στο χώρο της βιβλιοθήκης. Παρακαλώ προσπαθήστε ξανά όταν βρίσκεστε εντός αυτού.';
   final double latitude = 38.0961649;
   final double longitude = 23.8178306;
 
@@ -44,23 +43,22 @@ class _LocationPageScreenState extends State<LocationPageScreen> {
         extendBodyBehindAppBar: true,
         appBar: _buildAppBar(context),
         body: isCloseToTargetLocation() // 38.0961649, 23.8178306
-          ?
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Center(
-            child: Text(locationText ?? 'Loading...',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            ? Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Center(
+                  child: Text(
+                    locationText ?? 'Loading...',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
                     ),
-          )
-        :
-        ArCoreView(
-          onArCoreViewCreated: _onArCoreViewCreated,
-          enableUpdateListener: true, // Enable the update listener
-        ),
+                  ),
+                ),
+              )
+            : ArCoreView(
+                onArCoreViewCreated: _onArCoreViewCreated,
+                enableUpdateListener: true, // Enable the update listener
+              ),
       ),
     );
   }
@@ -96,7 +94,7 @@ class _LocationPageScreenState extends State<LocationPageScreen> {
 
   void _addArrow(ArCoreController? arCoreController) async {
     final ByteData textureBytes =
-    await rootBundle.load('assets/images/img_location.png');
+        await rootBundle.load('assets/images/img_location.png');
     final materials = ArCoreMaterial(
       color: Colors.blue,
       textureBytes: textureBytes.buffer.asUint8List(),
@@ -123,9 +121,7 @@ class _LocationPageScreenState extends State<LocationPageScreen> {
     try {
       position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
-      setState(() {
-
-      });
+      setState(() {});
     } catch (e) {
       print(e);
     }

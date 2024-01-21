@@ -1,4 +1,4 @@
-import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:library_ece/core/app_export.dart';
 import 'package:flutter/material.dart';
 
 /// A class that offers pre-defined button styles for customizing button appearance.

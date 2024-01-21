@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:library_ece/core/app_export.dart';
 
 class SwitchDropDownWidget extends StatefulWidget {
   final String header;
   final List<String> contents;
+  final List<String>? savedValues;
 
-  SwitchDropDownWidget({required this.header, required this.contents});
+  SwitchDropDownWidget(
+      {required this.header,
+      required this.contents,
+      required this.savedValues});
 
   @override
   State<SwitchDropDownWidget> createState() => SwitchDropDownWidgetState();
@@ -13,12 +18,23 @@ class SwitchDropDownWidget extends StatefulWidget {
 
 class SwitchDropDownWidgetState extends State<SwitchDropDownWidget> {
   List<bool> switchValues = [];
+  List<String>? tempValues;
+  late SharedPreferences prefs;
 
   @override
   void initState() {
     super.initState();
-    // Initialize checkboxValues with false for each content item
-    switchValues = List<bool>.filled(widget.contents.length, true);
+    initializePreferences();
+    initializeSwitchValues();
+  }
+
+  void initializeSwitchValues() {
+    switchValues = widget.savedValues!.map((value) => value == "1").toList();
+    tempValues = List<String>.from(widget.savedValues!);
+  }
+
+  Future<void> initializePreferences() async {
+    prefs = await SharedPreferences.getInstance();
   }
 
   @override
@@ -52,6 +68,23 @@ class SwitchDropDownWidgetState extends State<SwitchDropDownWidget> {
             onChanged: (bool value) {
               setState(() {
                 switchValues[index] = value;
+                if (widget.header == "Σελίδα Βιβλιοθήκης") {
+                  if (value == true) {
+                    tempValues![index] = "1";
+                    prefs.setStringList('libraryPageValues', tempValues!);
+                  } else {
+                    tempValues![index] = "0";
+                    prefs.setStringList('libraryPageValues', tempValues!);
+                  }
+                } else if (widget.header == "Ειδοποιήσεις") {
+                  if (value == true) {
+                    tempValues![index] = "1";
+                    prefs.setStringList('notificationsValues', tempValues!);
+                  } else {
+                    tempValues![index] = "0";
+                    prefs.setStringList('notificationsValues', tempValues!);
+                  }
+                }
               });
             },
             title: Center(

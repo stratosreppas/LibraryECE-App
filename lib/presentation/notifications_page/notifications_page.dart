@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stratos_s_application3/constraints.dart';
-import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
-import 'package:stratos_s_application3/presentation/notifications_page/widgets/notification_widget.dart';
-import 'package:stratos_s_application3/routes/classes/Notification.dart';
+import 'package:library_ece/constraints.dart';
+import 'package:library_ece/core/app_export.dart';
+import 'package:library_ece/presentation/app_template/app_template.dart';
+import 'package:library_ece/presentation/notifications_page/widgets/notification_widget.dart';
+import 'package:library_ece/routes/classes/Notification.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

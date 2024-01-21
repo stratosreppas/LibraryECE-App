@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:like_button/like_button.dart';
-import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/widgets/custom_outlined_button.dart';
-import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
-import 'package:stratos_s_application3/routes/classes/Book.dart';
+import 'package:library_ece/core/app_export.dart';
+import 'package:library_ece/widgets/custom_outlined_button.dart';
+import 'package:library_ece/presentation/app_template/app_template.dart';
+import 'package:library_ece/routes/classes/Book.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:stratos_s_application3/constraints.dart';
-
-
+import 'package:library_ece/constraints.dart';
 
 // ignore_for_file: must_be_immutable
 class BookPageOneScreen extends StatefulWidget {
-
   BookPageOneScreen({Key? key}) : super(key: key);
 
   @override
@@ -20,7 +17,6 @@ class BookPageOneScreen extends StatefulWidget {
 }
 
 class _BookPageOneScreenState extends State<BookPageOneScreen> {
-
   final GlobalKey<LikeButtonState> likeButtonKey = GlobalKey<LikeButtonState>();
 
   bool? isFavorite;
@@ -49,7 +45,7 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
 
     // Access the 'languages' parameter from the arguments
     final Map<String, dynamic> args =
-    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     print(args);
 
     if (args.containsKey('book')) {
@@ -68,47 +64,48 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
       authors = args['authors'];
     }
 
-    if(args.containsKey('languages')) {
+    if (args.containsKey('languages')) {
       // Get the value associated with the 'languages' key
       languages = args['languages'];
     }
 
-    if(args.containsKey('categories')) {
+    if (args.containsKey('categories')) {
       // Get the value associated with the 'languages' key
       categories = args['categories'];
     }
 
-    if(args.containsKey('publishers')) {
+    if (args.containsKey('publishers')) {
       // Get the value associated with the 'languages' key
       publishers = args['publishers'];
     }
 
-    if(args.containsKey('years')) {
+    if (args.containsKey('years')) {
       // Get the value associated with the 'languages' key
       years = args['years'];
     }
 
-    if(args.containsKey('searchText')) {
+    if (args.containsKey('searchText')) {
       // Get the value associated with the 'languages' key
       searchText = args['searchText'];
     }
 
-    if(args.containsKey('semesters')) {
+    if (args.containsKey('semesters')) {
       // Get the value associated with the 'languages' key
       semesters = args['semesters'];
     }
 
-    if(args.containsKey('interests')) {
+    if (args.containsKey('interests')) {
       // Get the value associated with the 'languages' key
       interests = args['interests'];
     }
 
-    if(args.containsKey('route')) {
+    if (args.containsKey('route')) {
       // Get the value associated with the 'languages' key
       route = args['route'];
     }
 
-  print('Book: ${book.title} ${book.subtitle} ${book.edition} ${book.isbn} ${book.author} ${book.category} ${book.publisher} ${book.year} ${book.language} ${book.imageurl} ${book.copies} ${book.isFav}');
+    print(
+        'Book: ${book.title} ${book.subtitle} ${book.edition} ${book.isbn} ${book.author} ${book.category} ${book.publisher} ${book.year} ${book.language} ${book.imageurl} ${book.copies} ${book.isFav}');
   }
 
   @override
@@ -118,7 +115,17 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
         // Pop all routes until reaching the home page
         Navigator.pop(context);
 
-        Navigator.pushNamed(context, route, arguments:{'email': email, 'authors': authors, 'languages': languages, 'categories': categories, 'publishers': publishers, 'years': years, 'searchText': searchText, 'semesters': semesters, 'interests': interests });
+        Navigator.pushNamed(context, route, arguments: {
+          'email': email,
+          'authors': authors,
+          'languages': languages,
+          'categories': categories,
+          'publishers': publishers,
+          'years': years,
+          'searchText': searchText,
+          'semesters': semesters,
+          'interests': interests
+        });
         return false;
       },
       child: SafeArea(
@@ -137,8 +144,8 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                     width: 340.h,
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primary,
-                      borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(10.h)),
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(10.h)),
                     ),
                   ),
                 ),
@@ -152,21 +159,28 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                           SizedBox(height: 13.v),
                           _buildExtendableRich2(context, 'Τίτλος', book.title),
                           SizedBox(height: 12.v),
-                          _buildExtendableRich2(context, 'Υπότιτλος', book.subtitle),
+                          _buildExtendableRich2(
+                              context, 'Υπότιτλος', book.subtitle),
                           SizedBox(height: 12.v),
-                          _buildExtendableRich2(context, 'Έκδοση', book.edition),
+                          _buildExtendableRich2(
+                              context, 'Έκδοση', book.edition),
                           SizedBox(height: 12.v),
                           _buildExtendableRich2(context, 'ISBN', book.isbn),
                           SizedBox(height: 12.v),
-                          _buildExtendableRich2(context, 'Συγγραφέας', book.author),
+                          _buildExtendableRich2(
+                              context, 'Συγγραφέας', book.author),
                           SizedBox(height: 12.v),
-                          _buildExtendableRich2(context, 'Κατηγορία', book.category),
+                          _buildExtendableRich2(
+                              context, 'Κατηγορία', book.category),
                           SizedBox(height: 12.v),
-                          _buildExtendableRich2(context, 'Εκδότης', book.publisher),
+                          _buildExtendableRich2(
+                              context, 'Εκδότης', book.publisher),
                           SizedBox(height: 12.v),
-                          _buildExtendableRich2(context, 'Έτος έκδοσης', book.year.toString()),
+                          _buildExtendableRich2(
+                              context, 'Έτος έκδοσης', book.year.toString()),
                           SizedBox(height: 12.v),
-                          _buildExtendableRich2(context, 'Γλώσσα', book.language),
+                          _buildExtendableRich2(
+                              context, 'Γλώσσα', book.language),
                         ],
                       ),
                     ),
@@ -212,10 +226,10 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                         width: 166.h,
                         text: "Διαθέσιμα Αντίτυπα: " + book.copies.toString(),
                         margin: EdgeInsets.only(right: 5.h),
-                        isDisabled: book.copies>0 ? false : true,
+                        isDisabled: book.copies > 0 ? false : true,
                         alignment: Alignment.centerRight),
                     SizedBox(height: 10.v),
-                    if(book.copies==0)
+                    if (book.copies == 0)
                       GestureDetector(
                         onTap: () {
                           onTapNotify(context, book.isNotified);
@@ -225,40 +239,44 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                         child: SizedBox(
                             height: 25.v,
                             width: 140.h,
-                            child: Stack(alignment: Alignment.center, children: [
+                            child:
+                                Stack(alignment: Alignment.center, children: [
                               CustomImageView(
-                                  imagePath: ImageConstant.imgRectangle30,
-                                  height: 25.v,
-                                  width: 186.h,
-                                  radius: BorderRadius.circular(12.h),
-                                  alignment: Alignment.center,
+                                imagePath: ImageConstant.imgRectangle30,
+                                height: 25.v,
+                                width: 186.h,
+                                radius: BorderRadius.circular(12.h),
+                                alignment: Alignment.center,
                               ),
                               Align(
                                   alignment: Alignment.center,
                                   child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Padding(
                                             padding: EdgeInsets.only(
                                                 top: 4.v, bottom: 1.v),
-                                            child: Text("Eιδοποίηση: " + (book.isNotified ? "ON" : "OFF"),
+                                            child: Text(
+                                                "Eιδοποίηση: " +
+                                                    (book.isNotified
+                                                        ? "ON"
+                                                        : "OFF"),
                                                 style: CustomTextStyles
                                                     .bodySmallRobotoOnPrimary11)),
                                         CustomImageView(
                                             imagePath: ImageConstant.imgBell,
-                                            color: book.isNotified ? appTheme.green900 : appTheme.blueGray100,
+                                            color: book.isNotified
+                                                ? appTheme.green900
+                                                : appTheme.blueGray100,
                                             height: 20.v,
                                             width: 20.h,
-                                            margin: EdgeInsets.only(left: 10.h)
-                                        )
+                                            margin: EdgeInsets.only(left: 10.h))
                                       ]))
                             ])),
                       ),
-                    if(book.copies==0)
-                      SizedBox(height: 36.v),
-                    if(book.copies!=0)
-                      SizedBox(height: 61.v),
-
+                    if (book.copies == 0) SizedBox(height: 36.v),
+                    if (book.copies != 0) SizedBox(height: 61.v),
                     GestureDetector(
                       onTap: () {
                         onTapFav(context, isFavorite!);
@@ -288,14 +306,17 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.only(top: 6.v, bottom: 4.v),
+                                      padding: EdgeInsets.only(
+                                          top: 6.v, bottom: 4.v),
                                       child: Text(
                                         "Πρόσθεσε στα αγαπημένα",
-                                        style: CustomTextStyles.bodySmallRobotoOnPrimary11,
+                                        style: CustomTextStyles
+                                            .bodySmallRobotoOnPrimary11,
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(bottom: 20.0, left: 15.0),
+                                      padding: const EdgeInsets.only(
+                                          bottom: 20.0, left: 15.0),
                                       child: LikeButton(
                                         isLiked: book.isFav,
                                         key: likeButtonKey,
@@ -304,7 +325,8 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                                           // You can remove or keep this method based on your requirements
                                           return !isLiked;
                                         },
-                                        animationDuration: Duration(milliseconds: 500),
+                                        animationDuration:
+                                            Duration(milliseconds: 500),
                                         size: 24.adaptSize,
                                         circleColor: CircleColor(
                                           start: Color(0xff00ddff),
@@ -317,7 +339,9 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                                         likeBuilder: (bool isLiked) {
                                           return Icon(
                                             Icons.favorite,
-                                            color: isLiked ? Colors.red : appTheme.blueGray100,
+                                            color: isLiked
+                                                ? Colors.red
+                                                : appTheme.blueGray100,
                                             size: 24.adaptSize,
                                           );
                                         },
@@ -331,7 +355,6 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                         ),
                       ),
                     ),
-
                     SizedBox(height: 14.v),
                     GestureDetector(
                       onTap: () {
@@ -366,8 +389,7 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                                           color: appTheme.blueGray100,
                                           height: 20.v,
                                           width: 20.h,
-                                          margin: EdgeInsets.only(left: 22.h)
-                                      )
+                                          margin: EdgeInsets.only(left: 22.h))
                                     ]))
                           ])),
                     )
@@ -397,8 +419,7 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                         SizedBox(height: 6.v),
                         SizedBox(
                             width: 272.h,
-                            child: Text(
-                                text,
+                            child: Text(text,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: theme.textTheme.bodyMedium!
@@ -408,7 +429,8 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
   }
 
   /// Common widget
-  Widget _buildExtendableRich2(BuildContext context, String title, String text) {
+  Widget _buildExtendableRich2(
+      BuildContext context, String title, String text) {
     return Container(
         width: 308.h,
         padding: EdgeInsets.symmetric(horizontal: 16.h, vertical: 11.v),
@@ -428,10 +450,11 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
 
   /// Navigates to the locationPageScreen when the action is triggered.
   onTapImgImage(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.locationPageScreen, arguments: {'book': book});
+    Navigator.pushNamed(context, AppRoutes.locationPageScreen,
+        arguments: {'book': book});
   }
 
-  onTapNotify(BuildContext context, bool isNotified) async{
+  onTapNotify(BuildContext context, bool isNotified) async {
     final response = await http.post(
       Uri.parse('${AppConstants.apiUrl}/notify_book'),
       headers: <String, String>{
@@ -440,7 +463,7 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
       body: jsonEncode(<String, String>{
         'isbn': book.isbn,
         'email': email.toString(),
-        'isNotified' : isNotified ? 'true' : 'false',
+        'isNotified': isNotified ? 'true' : 'false',
       }),
     );
 
@@ -461,7 +484,6 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
         padding: EdgeInsets.all(8.h),
         dismissDirection: DismissDirection.down,
       ));
-
     } else {
       // Handle unsuccessful login (show an error message, etc.)
       String errorMessage = responseData['error'] ?? responseData['message'];
@@ -482,7 +504,6 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
   }
 
   onTapFav(BuildContext context, bool isFav) async {
-
     final response = await http.post(
       Uri.parse('${AppConstants.apiUrl}/fav'),
       headers: <String, String>{
@@ -491,7 +512,7 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
       body: jsonEncode(<String, String>{
         'isbn': book.isbn,
         'email': email.toString(),
-        'isFav' : isFav ? 'true' : 'false',
+        'isFav': isFav ? 'true' : 'false',
       }),
     );
 
@@ -512,7 +533,6 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
         padding: EdgeInsets.all(8.h),
         dismissDirection: DismissDirection.down,
       ));
-
     } else {
       // Handle unsuccessful login (show an error message, etc.)
       String errorMessage = responseData['error'] ?? responseData['message'];
