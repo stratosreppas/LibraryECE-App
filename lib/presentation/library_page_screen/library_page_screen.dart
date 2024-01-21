@@ -26,11 +26,15 @@ class _LibraryPageScreenState extends State<LibraryPageScreen> {
 
   late final User user;
   late final String? email;
+
   late final List<Book> popularBooks;
   late final List<Book> newBooks;
   late final List<Book> recommendedBooks;
   late final List<Book> favoriteBooks;
   late final List<Book> notifiedBooks;
+
+  String semesters = 'NaN';
+  String interests = 'NaN';
 
   TextEditingController searchController = TextEditingController();
 
@@ -45,25 +49,33 @@ class _LibraryPageScreenState extends State<LibraryPageScreen> {
     "8ο Εξάμηνο",
     "9ο Εξάμηνο",
     "Εκτός Εξαμήνων"
-
   ];
 
   List<String> categoriesDropDown = [
-    "Ροή Υ",
-    "Ροή Λ",
-    "Ροή Δ",
-    "Ροή Ε",
-    "Ροή Ζ",
-    "Ροή Η",
-    "Ροή Ο",
-    "Ροή Ι",
-    "Ροή Σ",
-    "Ροή Τ",
-    "Ροή Φ",
-    "Ροή Μ",
+    "Μαθηματικά",
+    "Διοίκηση Επιχειρήσεων",
+    "Προγραμματισμός",
+    "Λειτουργικά Συστήματα",
+    "Ενσωματωμένα Συστήματα",
+    "Ηλεκτρική Ενέργεια",
+    "Θεωρητική Επιστήμη Υπολογιστών",
+    "Φυσική",
+    "Διαφορικές Εξισώσεις",
+    "Ηλεκτρομαγνητισμός",
+    "Ηλεκτροτεχνία",
+    "Στατική Τεχνική Μηχανική",
+    "Αριθμητική Ανάλυση",
+    "Ηλεκτρομαγνητικά Πεδία",
+    "Οργάνωση και Σχεδίαση Υπολογιστών",
+    "Ηλεκτρικές Μετρήσεις (Κλασσικές)",
+    "Ηλεκτρικές Μετρήσεις (Ηλεκτρονικές)",
+    "Μικροηλεκτρονική",
   ];
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+
+  final List<GlobalKey<CheckBoxButtonDropDownWidgetState>> checkBoxKeys =
+  List.generate(2, (index) => GlobalKey<CheckBoxButtonDropDownWidgetState>());
 
   @override
   void didChangeDependencies() async {
@@ -131,8 +143,11 @@ class _LibraryPageScreenState extends State<LibraryPageScreen> {
                 child: Padding(
                   padding: EdgeInsets.only(right: 180.h),
                   child: CheckBoxButtonDropDownWidget(
-                    header: "Εξάμηνο",
+                    header: "Εξάμηνα",
                     contents: semesterDropDown,
+                    onSelectedValuesChanged: (selectedValues) {
+                      semesters = selectedValues;
+                    },
                   ),
                 ),
               ),
@@ -145,6 +160,9 @@ class _LibraryPageScreenState extends State<LibraryPageScreen> {
                   child: CheckBoxButtonDropDownWidget(
                     header: "Κατηγορίες",
                     contents: categoriesDropDown,
+                    onSelectedValuesChanged: (selectedValues) {
+                      interests = selectedValues;
+                    },
                   ),
                 ),
               ),
@@ -210,19 +228,19 @@ class _LibraryPageScreenState extends State<LibraryPageScreen> {
         if (dataList.isNotEmpty) {
           List<Book> books = dataList.map((map) {
             return Book(
-              title: map['title'] ?? 'NaN',
-              author: map['author'] ?? 'NaN',
-              imageurl: map['image_url'] ?? 'NaN',
-              isbn: map['isbn'] ?? 'NaN',
-              subtitle: map['subtitle'] ?? 'NaN',
-              publisher: map['publisher'] ?? 'NaN',
-              year: map['year'] ?? 'NaN',
-              language: map['language'] ?? 'NaN',
-              category: map['category'] ?? 'NaN',
-              edition: map['edition'] ?? 'NaN',
-              dewey: map['dewey'] ?? 'NaN',
-              semester: map['semester'] ?? 'NaN',
-              interest: map['interest'] ?? 'NaN',
+              title: map['title'].toString() ?? 'NaN',
+              author: map['author'].toString() ?? 'NaN',
+              imageurl: map['image_url'].toString() ?? 'NaN',
+              isbn: map['isbn'].toString() ?? 'NaN',
+              subtitle: map['subtitle'].toString() ?? 'NaN',
+              publisher: map['publisher'].toString() ?? 'NaN',
+              year: map['year'].toString() ?? 'NaN',
+              language: map['language'].toString() ?? 'NaN',
+              category: map['category'].toString() ?? 'NaN',
+              edition: map['edition'].toString() ?? 'NaN',
+              dewey: map['dewey'].toString() ?? 'NaN',
+              semester: map['semester'].toString() ?? 'NaN',
+              interest: map['interest'].toString() ?? 'NaN',
               copies: map['copies'] ?? -1,
               isFav: map['isFav'] != null ? map['isFav'] == 1 : false,
               isNotified: map['isNotified'] != null ? map['isNotified'] == 1 : false,

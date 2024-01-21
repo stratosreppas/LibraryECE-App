@@ -64,3 +64,6 @@ python:
     mysql-connector-python: ^8.0.28
     flask: ^2.0.2
     flask_apscheduler: ^1.12.1
+    scikit-learn: ^1.4.0
+    pandas: ^2.8.2
+    numpy: ^1.26.3

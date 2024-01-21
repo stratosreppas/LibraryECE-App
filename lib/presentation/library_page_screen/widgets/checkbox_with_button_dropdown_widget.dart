@@ -4,9 +4,11 @@ import 'package:stratos_s_application3/core/app_export.dart';
 class CheckBoxButtonDropDownWidget extends StatefulWidget {
   final String header;
   final List<String> contents;
+  final Function(String) onSelectedValuesChanged; // Callback function
+
 
   CheckBoxButtonDropDownWidget(
-      {Key? key, required this.header, required this.contents})
+      {Key? key, required this.header, required this.contents, required this.onSelectedValuesChanged,})
       : super(key: key);
 
   @override
@@ -23,6 +25,7 @@ class CheckBoxButtonDropDownWidgetState
     super.initState();
     // Initialize checkboxValues with false for each content item
     checkboxValues = List<bool?>.filled(widget.contents.length, false);
+
   }
 
   void clearSelection() {
@@ -70,6 +73,7 @@ class CheckBoxButtonDropDownWidgetState
                       onChanged: (bool? value) {
                         setState(() {
                           checkboxValues[index] = value;
+                          widget.onSelectedValuesChanged(getSelectedValues());
                         });
                       },
                       title: Center(
@@ -90,7 +94,7 @@ class CheckBoxButtonDropDownWidgetState
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, AppRoutes.resultPageScreen);
+                  onTapf(context);
                 },
                 style: ButtonStyle(
                   backgroundColor:
@@ -110,4 +114,36 @@ class CheckBoxButtonDropDownWidgetState
       ),
     );
   }
+
+  /// Navigates to the resultPageScreen when the action is triggered.
+  onTapf(BuildContext context) {
+    String header;
+    switch (widget.header) {
+      case 'Εξάμηνα':
+        header = 'semesters';
+        break;
+      case 'Κατηγορίες':
+        header = 'interests';
+        break;
+      default:
+        header = 'NaN';
+    }
+    Navigator.pushNamed(context, AppRoutes.resultPageScreen, arguments: {
+      '$header': getSelectedValues(),
+    });
+  }
+
+
+  String getSelectedValues() {
+
+    List<String> selectedValues = [];
+
+    for (int i = 0; i < widget.contents.length; i++) {
+      if (checkboxValues[i] == true) {
+        selectedValues.add(widget.contents[i]);
+      }
+    }
+    return selectedValues.join('-');
+  }
+
 }

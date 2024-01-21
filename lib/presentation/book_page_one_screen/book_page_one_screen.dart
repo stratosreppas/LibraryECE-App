@@ -24,14 +24,21 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
   final GlobalKey<LikeButtonState> likeButtonKey = GlobalKey<LikeButtonState>();
 
   bool? isFavorite;
+
   Book book = Book();
+
   String? email;
+
   String authors = 'NaN';
   String languages = 'NaN';
   String categories = 'NaN';
   String publishers = 'NaN';
   String years = 'NaN';
   String searchText = 'NaN';
+
+  String semesters = 'NaN';
+  String interests = 'NaN';
+
   dynamic? route;
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
@@ -86,6 +93,16 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
       searchText = args['searchText'];
     }
 
+    if(args.containsKey('semesters')) {
+      // Get the value associated with the 'languages' key
+      semesters = args['semesters'];
+    }
+
+    if(args.containsKey('interests')) {
+      // Get the value associated with the 'languages' key
+      interests = args['interests'];
+    }
+
     if(args.containsKey('route')) {
       // Get the value associated with the 'languages' key
       route = args['route'];
@@ -101,7 +118,7 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
         // Pop all routes until reaching the home page
         Navigator.pop(context);
 
-        Navigator.pushNamed(context, route, arguments:{'email': email, 'authors': authors, 'languages': languages, 'categories': categories, 'publishers': publishers, 'years': years, 'searchText': searchText });
+        Navigator.pushNamed(context, route, arguments:{'email': email, 'authors': authors, 'languages': languages, 'categories': categories, 'publishers': publishers, 'years': years, 'searchText': searchText, 'semesters': semesters, 'interests': interests });
         return false;
       },
       child: SafeArea(
