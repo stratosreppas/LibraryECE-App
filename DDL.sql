@@ -99,6 +99,7 @@ INSERT INTO `books` (`id`, `title`, `subtitle`, `author`, `isbn`, `year`, `langu
 (9424, 'ΕΙΣΑΓΩΓΗ ΣΤΗ ΓΡΑΜΜΙΚΗ ΑΛΓΕΒΡΑ', NULL, NULL, '9786185495329', '2021', 'el', '1', 'Διαθέσιμο', NULL, '512.5', 'ΤΣΟΤΡΑΣ');
 
 UPDATE books SET semester = '2ο Εξάμηνο';
+UPDATE books SET author = 'Some Author';
 
 -- Temporary Image for all books
 UPDATE `books`
