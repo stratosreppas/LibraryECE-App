@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:library_ece/core/app_export.dart';
 
 class CheckBoxDropDownWidget extends StatefulWidget {
   final String header;
   final List<String> contents;
   final Function(String) onSelectedValuesChanged; // Callback function
   String selectedValues = 'NaN';
-  final List<String>? initialSelectedValues; // Optional parameter for initial selected values
+  final List<String>?
+      initialSelectedValues; // Optional parameter for initial selected values
 
-
-  CheckBoxDropDownWidget(
-      {Key? key, required this.header, required this.contents, required this.onSelectedValuesChanged, this.initialSelectedValues,})
-      : super(key: key);
+  CheckBoxDropDownWidget({
+    Key? key,
+    required this.header,
+    required this.contents,
+    required this.onSelectedValuesChanged,
+    this.initialSelectedValues,
+  }) : super(key: key);
 
   @override
   State<CheckBoxDropDownWidget> createState() => CheckBoxDropDownWidgetState();
@@ -42,14 +46,12 @@ class CheckBoxDropDownWidgetState extends State<CheckBoxDropDownWidget> {
     });
   }
 
-
   String getSelectedValues() {
-
     List<String> selectedValues = [];
 
     for (int i = 0; i < widget.contents.length; i++) {
       if (checkboxValues[i] == true) {
-          selectedValues.add(widget.contents[i]);
+        selectedValues.add(widget.contents[i]);
       }
     }
 

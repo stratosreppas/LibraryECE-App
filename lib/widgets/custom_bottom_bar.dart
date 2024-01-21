@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/presentation/home_page/home_page.dart';
-import 'package:stratos_s_application3/presentation/library_page_screen/library_page_screen.dart';
-import 'package:stratos_s_application3/presentation/notifications_page/notifications_page.dart';
-import 'package:stratos_s_application3/presentation/profile_page_screen/profile_page_screen.dart';
-import 'package:stratos_s_application3/core/utils/navigation_utils.dart';
+import 'package:library_ece/core/app_export.dart';
+import 'package:library_ece/presentation/home_page/home_page.dart';
+import 'package:library_ece/presentation/library_page_screen/library_page_screen.dart';
+import 'package:library_ece/presentation/notifications_page/notifications_page.dart';
+import 'package:library_ece/presentation/profile_page_screen/profile_page_screen.dart';
+import 'package:library_ece/core/utils/navigation_utils.dart';
 
 class CustomBottomBar extends StatefulWidget {
-
   CustomBottomBar({this.onChanged, int initialIndex = 0})
       : assert(initialIndex >= 0),
         selectedIndex = initialIndex;

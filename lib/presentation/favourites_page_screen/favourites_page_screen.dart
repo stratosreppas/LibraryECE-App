@@ -1,16 +1,16 @@
 import '../favourites_page_screen/widgets/one_item_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/presentation/home_page/home_page.dart';
-import 'package:stratos_s_application3/presentation/notifications_page/notifications_page.dart';
-import 'package:stratos_s_application3/widgets/app_bar/appbar_image.dart';
-import 'package:stratos_s_application3/widgets/app_bar/appbar_title.dart';
-import 'package:stratos_s_application3/widgets/app_bar/appbar_trailing_image.dart';
-import 'package:stratos_s_application3/widgets/app_bar/custom_app_bar.dart';
-import 'package:stratos_s_application3/widgets/custom_bottom_bar.dart';
-import 'package:stratos_s_application3/widgets/custom_floating_button.dart';
-import 'package:stratos_s_application3/widgets/custom_icon_button.dart';
-import 'package:stratos_s_application3/widgets/custom_outlined_button.dart';
+import 'package:library_ece/core/app_export.dart';
+import 'package:library_ece/presentation/home_page/home_page.dart';
+import 'package:library_ece/presentation/notifications_page/notifications_page.dart';
+import 'package:library_ece/widgets/app_bar/appbar_image.dart';
+import 'package:library_ece/widgets/app_bar/appbar_title.dart';
+import 'package:library_ece/widgets/app_bar/appbar_trailing_image.dart';
+import 'package:library_ece/widgets/app_bar/custom_app_bar.dart';
+import 'package:library_ece/widgets/custom_bottom_bar.dart';
+import 'package:library_ece/widgets/custom_floating_button.dart';
+import 'package:library_ece/widgets/custom_icon_button.dart';
+import 'package:library_ece/widgets/custom_outlined_button.dart';
 
 class FavouritesPageScreen extends StatelessWidget {
   FavouritesPageScreen({Key? key})

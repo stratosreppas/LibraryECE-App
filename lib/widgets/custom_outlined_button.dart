@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/widgets/base_button.dart';
+import 'package:library_ece/core/app_export.dart';
+import 'package:library_ece/widgets/base_button.dart';
 
 class CustomOutlinedButton extends BaseButton {
   CustomOutlinedButton({
@@ -54,7 +54,11 @@ class CustomOutlinedButton extends BaseButton {
         margin: margin,
         decoration: decoration,
         child: OutlinedButton(
-          style: ButtonStyle(backgroundColor: MaterialStateProperty.all( isDisabled ?? false ? appTheme.red900.withOpacity(0.8) : appTheme.green900),),
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(isDisabled ?? false
+                ? appTheme.red900.withOpacity(0.8)
+                : appTheme.green900),
+          ),
           onPressed: isDisabled ?? false ? null : onPressed ?? () {},
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +67,8 @@ class CustomOutlinedButton extends BaseButton {
               leftIcon ?? const SizedBox.shrink(),
               Text(
                 text,
-                style: CustomTextStyles.titleSmallOnPrimary_1.copyWith(color: appTheme.blueGray100),
+                style: CustomTextStyles.titleSmallOnPrimary_1
+                    .copyWith(color: appTheme.blueGray100),
               ),
               rightIcon ?? const SizedBox.shrink(),
             ],

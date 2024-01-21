@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:stratos_s_application3/core/app_export.dart';
-import 'package:stratos_s_application3/routes/classes/Transaction.dart';
+import 'package:library_ece/core/app_export.dart';
+import 'package:library_ece/routes/classes/Transaction.dart';
 import 'package:intl/intl.dart';
 
 class LoanComponentItemWidget extends StatelessWidget {
-
   final Transaction transaction;
   final VoidCallback? onTapImgImage;
 
@@ -37,7 +36,6 @@ class LoanComponentItemWidget extends StatelessWidget {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-
                 children: [
                   Container(
                     decoration: BoxDecoration(
@@ -55,7 +53,6 @@ class LoanComponentItemWidget extends StatelessWidget {
                       imagePath: transaction.imageurl ?? ImageConstant.imgBook,
                       height: 60.v,
                       width: 44.h,
-
                       margin: EdgeInsets.only(
                         top: 2.v,
                         bottom: 3.v,
@@ -138,5 +135,4 @@ class LoanComponentItemWidget extends StatelessWidget {
     final date = inputFormat.parse(dateString);
     return outputFormat.format(date);
   }
-
 }

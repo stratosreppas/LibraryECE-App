@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:library_ece/core/app_export.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:stratos_s_application3/constraints.dart';
+import 'package:library_ece/constraints.dart';
 
 class BootPageScreen extends StatefulWidget {
   @override
@@ -23,7 +23,7 @@ class _SplashScreenState extends State<BootPageScreen> {
     // Replace 'your_dependency_key' with the actual key you are checking for.
     String? dependencyValue = prefs.getString('email');
     if (dependencyValue != null && dependencyValue.isNotEmpty) {
-        Navigator.pushNamed(context, AppRoutes.homePage);
+      Navigator.pushNamed(context, AppRoutes.homePage);
     } else {
       Navigator.pushNamed(context, AppRoutes.loginPageScreen);
     }
@@ -35,14 +35,12 @@ class _SplashScreenState extends State<BootPageScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: theme.colorScheme.primary,
-        body: Container(
-          ),
-    ),
+        body: Container(),
+      ),
     );
   }
 
   Future<void> makeAsyncApiCall() async {
-
     String email = await checkDependencies();
     return http.get(
       Uri.parse('${AppConstants.apiUrl}/recommender/load?' + 'email=$email'),
@@ -51,7 +49,8 @@ class _SplashScreenState extends State<BootPageScreen> {
       }, //
     ).then((response) {
       // Parse the response
-      if (response.statusCode == 200) {return;
+      if (response.statusCode == 200) {
+        return;
       } else {
         print('Error: ${response.reasonPhrase}');
       }

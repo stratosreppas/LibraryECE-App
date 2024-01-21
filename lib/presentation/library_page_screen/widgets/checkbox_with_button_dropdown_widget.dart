@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:library_ece/core/app_export.dart';
 
 class CheckBoxButtonDropDownWidget extends StatefulWidget {
   final String header;
   final List<String> contents;
   final Function(String) onSelectedValuesChanged; // Callback function
 
-
-  CheckBoxButtonDropDownWidget(
-      {Key? key, required this.header, required this.contents, required this.onSelectedValuesChanged,})
-      : super(key: key);
+  CheckBoxButtonDropDownWidget({
+    Key? key,
+    required this.header,
+    required this.contents,
+    required this.onSelectedValuesChanged,
+  }) : super(key: key);
 
   @override
   State<CheckBoxButtonDropDownWidget> createState() =>
@@ -25,7 +27,6 @@ class CheckBoxButtonDropDownWidgetState
     super.initState();
     // Initialize checkboxValues with false for each content item
     checkboxValues = List<bool?>.filled(widget.contents.length, false);
-
   }
 
   void clearSelection() {
@@ -133,9 +134,7 @@ class CheckBoxButtonDropDownWidgetState
     });
   }
 
-
   String getSelectedValues() {
-
     List<String> selectedValues = [];
 
     for (int i = 0; i < widget.contents.length; i++) {
@@ -145,5 +144,4 @@ class CheckBoxButtonDropDownWidgetState
     }
     return selectedValues.join('-');
   }
-
 }
