@@ -149,17 +149,14 @@ class _LocationPageScreenState extends State<LocationPageScreen> {
   bool isCloseToTargetLocation() {
     print(position.latitude);
     print(position.longitude);
-    if (position.latitude == null || position.longitude == null) {
-      return false;
-    }
 
     // Define a threshold for proximity (adjust as needed)
     double proximityThreshold = 0.1;
 
     // Calculate the distance between the current and target locations
     double distance = Geolocator.distanceBetween(
-      position.latitude!,
-      position.longitude!,
+      position.latitude,
+      position.longitude,
       latitude,
       longitude,
     );

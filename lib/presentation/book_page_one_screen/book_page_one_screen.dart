@@ -35,7 +35,7 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
   String semesters = 'NaN';
   String interests = 'NaN';
 
-  dynamic? route;
+  dynamic route;
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
