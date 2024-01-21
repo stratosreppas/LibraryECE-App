@@ -25,7 +25,8 @@ class _SettingsPageScreenState extends State<SettingsPageScreen> {
     "Αγαπημένα Βιβλία",
     "Προτείνονται για Εσάς",
     "Νέες Προσθήκες",
-    "Δημοφιλή"
+    "Δημοφιλή",
+    "Λαμβάνετε Ειδοποιήσεις"
   ];
 
   List<String> libraryPageDropDownItemList = [

@@ -23,6 +23,7 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
 
   final GlobalKey<LikeButtonState> likeButtonKey = GlobalKey<LikeButtonState>();
 
+  bool? isFavorite;
   Book book = Book();
   String? email;
   String authors = 'NaN';
@@ -31,6 +32,7 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
   String publishers = 'NaN';
   String years = 'NaN';
   String searchText = 'NaN';
+  dynamic? route;
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
@@ -46,6 +48,7 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
     if (args.containsKey('book')) {
       // Get the value associated with the 'languages' key
       book = args['book'];
+      isFavorite = book.isFav;
     }
 
     if (args.containsKey('email')) {
@@ -82,6 +85,13 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
       // Get the value associated with the 'languages' key
       searchText = args['searchText'];
     }
+
+    if(args.containsKey('route')) {
+      // Get the value associated with the 'languages' key
+      route = args['route'];
+    }
+
+  print('Book: ${book.title} ${book.subtitle} ${book.edition} ${book.isbn} ${book.author} ${book.category} ${book.publisher} ${book.year} ${book.language} ${book.imageurl} ${book.copies} ${book.isFav}');
   }
 
   @override
@@ -90,7 +100,8 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
       onWillPop: () async {
         // Pop all routes until reaching the home page
         Navigator.pop(context);
-        Navigator.pushReplacementNamed(context, AppRoutes.resultPageScreen, arguments:{'email': email, 'authors': authors, 'languages': languages, 'categories': categories, 'publishers': publishers, 'years': years, 'searchText': searchText });
+
+        Navigator.pushNamed(context, route, arguments:{'email': email, 'authors': authors, 'languages': languages, 'categories': categories, 'publishers': publishers, 'years': years, 'searchText': searchText });
         return false;
       },
       child: SafeArea(
@@ -186,13 +197,56 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                         margin: EdgeInsets.only(right: 5.h),
                         isDisabled: book.copies>0 ? false : true,
                         alignment: Alignment.centerRight),
-                    SizedBox(height: 71.v),
+                    SizedBox(height: 10.v),
+                    if(book.copies==0)
+                      GestureDetector(
+                        onTap: () {
+                          onTapNotify(context, book.isNotified);
+                          book.isNotified = !book.isNotified;
+                          setState(() {});
+                        },
+                        child: SizedBox(
+                            height: 25.v,
+                            width: 140.h,
+                            child: Stack(alignment: Alignment.center, children: [
+                              CustomImageView(
+                                  imagePath: ImageConstant.imgRectangle30,
+                                  height: 25.v,
+                                  width: 186.h,
+                                  radius: BorderRadius.circular(12.h),
+                                  alignment: Alignment.center,
+                              ),
+                              Align(
+                                  alignment: Alignment.center,
+                                  child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 4.v, bottom: 1.v),
+                                            child: Text("Eιδοποίηση: " + (book.isNotified ? "ON" : "OFF"),
+                                                style: CustomTextStyles
+                                                    .bodySmallRobotoOnPrimary11)),
+                                        CustomImageView(
+                                            imagePath: ImageConstant.imgBell,
+                                            color: book.isNotified ? appTheme.green900 : appTheme.blueGray100,
+                                            height: 20.v,
+                                            width: 20.h,
+                                            margin: EdgeInsets.only(left: 10.h)
+                                        )
+                                      ]))
+                            ])),
+                      ),
+                    if(book.copies==0)
+                      SizedBox(height: 36.v),
+                    if(book.copies!=0)
+                      SizedBox(height: 61.v),
+
                     GestureDetector(
                       onTap: () {
-                        onTapFav(context, book.isFav);
+                        onTapFav(context, isFavorite!);
                         // Toggle the isFav property or perform any other necessary actions
-                        book.isFav = !book.isFav;
-
+                        isFavorite = !isFavorite!;
                         likeButtonKey.currentState?.onTap();
                       },
                       child: SizedBox(
@@ -358,6 +412,56 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
   /// Navigates to the locationPageScreen when the action is triggered.
   onTapImgImage(BuildContext context) {
     Navigator.pushNamed(context, AppRoutes.locationPageScreen);
+  }
+
+  onTapNotify(BuildContext context, bool isNotified) async{
+    final response = await http.post(
+      Uri.parse('${AppConstants.apiUrl}/notify_book'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      }, //
+      body: jsonEncode(<String, String>{
+        'isbn': book.isbn,
+        'email': email.toString(),
+        'isNotified' : isNotified ? 'true' : 'false',
+      }),
+    );
+
+    final responseData = json.decode(response.body);
+
+    if (response.statusCode == 200 && responseData['status'] == 'success') {
+      // Successful login
+      String successMessage = responseData['message'];
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          successMessage,
+          textAlign: TextAlign.center,
+        ),
+        duration: Duration(milliseconds: 500),
+        backgroundColor: Color.fromARGB(255, 16, 124, 1),
+        elevation: 8,
+        padding: EdgeInsets.all(8.h),
+        dismissDirection: DismissDirection.down,
+      ));
+
+    } else {
+      // Handle unsuccessful login (show an error message, etc.)
+      String errorMessage = responseData['error'] ?? responseData['message'];
+      print("Error: $errorMessage");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            errorMessage,
+            textAlign: TextAlign.center,
+          ),
+          backgroundColor: Color.fromARGB(255, 180, 14, 3),
+          elevation: 8,
+          padding: EdgeInsets.all(8.h),
+          dismissDirection: DismissDirection.down,
+        ),
+      );
+    }
   }
 
   onTapFav(BuildContext context, bool isFav) async {

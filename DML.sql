@@ -20,7 +20,8 @@ CREATE TABLE books (
   dewey varchar(20) DEFAULT NULL,
   publisher varchar(100) DEFAULT NULL,
   image_url varchar(500) DEFAULT NULL,
-  semester int DEFAULT NULL,
+  semester varchar(255) DEFAULT NULL,
+  interest varchar(255) DEFAULT NULL,
   primary key(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -102,6 +103,13 @@ CREATE TABLE favorites (
   PRIMARY KEY (id, isbn)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+CREATE TABLE set_notification (
+  isbn varchar(50) NOT NULL,
+  id int(11) NOT NULL,
+  PRIMARY KEY (id, isbn)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 CREATE TABLE notify_me (
     id INT AUTO_INCREMENT PRIMARY KEY,
     notification_id int NOT NULL,
@@ -120,19 +128,57 @@ CREATE TABLE notifications (
     CONSTRAINT `fk_user_id` FOREIGN KEY (user_id) REFERENCES visitor (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-DELIMITER //
-CREATE TRIGGER new_notification_trigger
-AFTER INSERT
-ON notifications FOR EACH ROW
-BEGIN
-    INSERT INTO notify_me (notification_id,user_id) VALUES (NEW.id,NEW.user_id);
-END;
-//
-DELIMITER ;
-
 ALTER TABLE `favorites`
   ADD CONSTRAINT `fk_favorites_isbn` FOREIGN KEY (isbn) REFERENCES `books` (isbn) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_favorites_user_id` FOREIGN KEY (`id`) REFERENCES `visitor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
   ALTER TABLE `categories`
   ADD CONSTRAINT `fk_categories_isbn` FOREIGN KEY (`isbn`) REFERENCES `books` (`isbn`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `set_notification`
+  ADD CONSTRAINT `fk_set_nots_isbn` FOREIGN KEY (isbn) REFERENCES `books` (isbn) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_set_nots_user_id` FOREIGN KEY (`id`) REFERENCES `visitor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+DELIMITER //
+CREATE TRIGGER book_notification_trigger_update
+AFTER UPDATE
+ON books FOR EACH ROW
+BEGIN
+    -- Check if ISBN was updated
+    IF NEW.category = 'Διαθέσιμο' AND OLD.category <> 'Διαθέσιμο' THEN
+        -- Insert into notify_me for the updated ISBN
+        INSERT INTO notifications (user_id, title, notification_date, content)
+        SELECT sn.id, 'Διαθέσιμο βιβλίο', CURDATE(), CONCAT('Το βιβλίο με ISBN: ', NEW.isbn, ' είναι διαθέσιμο.')
+        FROM set_notification sn
+        WHERE sn.isbn = NEW.isbn;
+    END IF;
+END;
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER book_notification_trigger_insert
+AFTER INSERT
+ON books FOR EACH ROW
+BEGIN
+    -- Check if ISBN was updated
+    IF NEW.category = 'Διαθέσιμο' THEN
+        -- Insert into notify_me for the updated ISBN
+        INSERT INTO notifications (user_id, title, notification_date, content)
+        SELECT sn.id, 'Διαθέσιμο βιβλίο', CURDATE(), CONCAT('Το βιβλίο με ISBN: ', NEW.isbn, ' είναι διαθέσιμο.')
+        FROM set_notification sn
+        WHERE sn.isbn = NEW.isbn;
+    END IF;
+END;
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER new_notification_trigger
+AFTER INSERT
+ON notifications FOR EACH ROW
+BEGIN
+    INSERT INTO notify_me (notification_id, user_id) VALUES (NEW.id,NEW.user_id);
+END;
+//
+DELIMITER ;

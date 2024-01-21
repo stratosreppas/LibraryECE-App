@@ -35,6 +35,8 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
   String authors = 'NaN';
   String publishers = 'NaN';
   String years = 'NaN';
+  String semesters = 'NaN';
+  String interests = 'NaN';
 
   Filter filters = Filter(
     category: [],
@@ -90,6 +92,14 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
     if (args.containsKey('years')) {
       // Get the value associated with the 'languages' key
       years = args['years'];
+    }
+
+    if(args.containsKey('semesters')){
+      semesters = args['semesters'];
+    }
+
+    if(args.containsKey('interests')){
+      interests = args['interests'];
     }
 
     if (args.containsKey('searchText')) {
@@ -149,9 +159,9 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                     Text('Αποτελέσματα για: ' + searchText),
                   ],
                 ),
-                if(languages!='NaN' || authors!='NaN' || publishers!='NaN' || years!='NaN' || categories!='NaN')
+                if(languages!='NaN' || authors!='NaN' || publishers!='NaN' || years!='NaN' || categories!='NaN' || semesters!='NaN' || interests!='NaN')
                   SizedBox(height: 16.v),
-                if(languages!='NaN' || authors!='NaN' || publishers!='NaN' || years!='NaN' || categories!='NaN')
+                if(languages!='NaN' || authors!='NaN' || publishers!='NaN' || years!='NaN' || categories!='NaN' || semesters!='NaN' || interests!='NaN')
                   Row(
                   children: [
                     SizedBox(width: 16.h), // Adds a horizontal space of 16 times the value of 'h'
@@ -221,8 +231,32 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(years),
                                       ),
-                                    ), // Displays years followed by a comma
-                                ],
+                                    ),
+                                  if (categories != 'NaN')
+                                    Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 5.h),
+                                      decoration: BoxDecoration(
+                                        color: appTheme.deepPurple50014,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(categories),
+                                      ),
+                                    ),
+                                  if (semesters != 'NaN')
+                                    Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 5.h),
+                                      decoration: BoxDecoration(
+                                        color: appTheme.deepPurple50014,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(semesters),
+                                      ),
+                                    ),
+                                      ],
                               ),
                             ),
                           ],
@@ -243,6 +277,7 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                             Navigator.pushNamed(
                                 context, AppRoutes.bookPageOneScreen,
                                 arguments: {
+                                  'route': AppRoutes.resultPageScreen,
                                   'book': book,
                                   'email': email,
                                   'languages': languages,
@@ -271,7 +306,7 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
       //print('hi');
       final response = await http.get(Uri.parse(
           '${AppConstants.apiUrl}/api/all_books?' +
-              'searchText=$searchText&categories=$categories&authors=$authors&publishers=$publishers&years=$years&languages=$languages'));
+              'searchText=$searchText&categories=$categories&authors=$authors&publishers=$publishers&years=$years&languages=$languages&semesters=$semesters&interests=$interests'));
 
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
@@ -293,8 +328,12 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
               category: map['category'] ?? 'NaN',
               edition: map['edition'] ?? 'NaN',
               dewey: map['dewey'] ?? 'NaN',
+              semester: map['semester'] ?? 'NaN',
+              interest: map['interest'] ?? 'NaN',
               copies: map['copies'] ?? 'NaN',
               isFav: map['isFav'] != null ? map['isFav'] == 1 : false,
+              isNotified:
+                  map['isNotified'] != null ? map['isNotified'] == 1 : false,
             );
           }).toList();
 

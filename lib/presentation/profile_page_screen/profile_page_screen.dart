@@ -113,8 +113,12 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                 category: map['category'] ?? 'NaN',
                 edition: map['edition'] ?? 'NaN',
                 dewey: map['dewey'] ?? 'NaN',
+                semester: map['semester'] ?? 'NaN',
+                interest: map['interest'] ?? 'NaN',
                 copies: map['copies'] ?? 0,
                 isFav: map['isFav'] != null ? map['isFav'] == 1 : false,
+                isNotified:
+                    map['isNotified'] != null ? map['isNotified'] == 1 : false,
                 book_id: map['book_id'] ?? 0,
                 borrow_date: map['borrow_date'] ?? 'NaN',
                 must_return_date: map['must_return_date'] ?? 'NaN',

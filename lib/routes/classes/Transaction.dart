@@ -26,8 +26,11 @@ class Transaction extends Book {
     required String category,
     required String edition,
     required String dewey,
+    required String semester,
+    required String interest,
     required int copies,
     required bool isFav,
+    required bool isNotified,
   }) : super(
           title: title,
           subtitle: subtitle,
@@ -40,7 +43,10 @@ class Transaction extends Book {
           category: category,
           edition: edition,
           dewey: dewey,
+          semester: semester,
+          interest: interest,
           copies: copies,
           isFav: isFav,
+          isNotified: isNotified,
         );
 }

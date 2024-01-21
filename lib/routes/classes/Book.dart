@@ -11,6 +11,8 @@ class Book {
   final String category;
   final String edition;
   final String dewey;
+  final String semester;
+  final String interest;
   final int copies;
   bool isFav;
   bool isNotified;
@@ -28,6 +30,8 @@ class Book {
   this.category = 'NaN',
   this.edition = 'NaN',
   this.dewey = 'NaN',
+  this.semester = 'NaN',
+  this.interest = 'NaN',
   this.copies = 0,
   this.isFav = false,
   this.isNotified = false,

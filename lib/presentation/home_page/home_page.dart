@@ -28,7 +28,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late String? email;
   late int? homePageValue;
-  late final User user;
+  User user = User();
   late UserNotification notification;
   List<Transaction> activeTransactions = [];
   List<Book> selectedBooks = [];
@@ -36,7 +36,8 @@ class _HomePageState extends State<HomePage> {
     "Αγαπημένα Βιβλία",
     "Προτείνονται για εσάς",
     "Νέες Προσθήκες",
-    "Δημοφιλή"
+    "Δημοφιλή",
+    "Λαμβάνετε Ειδοποιήσεις"
   ];
 
   void notificationsInitialazation() async {
@@ -193,7 +194,7 @@ class _HomePageState extends State<HomePage> {
       if (mounted) {
         setState(() {});
       }
-      print('hi' + user.name);
+      print('hi ' + user.name);
       this.activeTransactions = await fetchTransactionData();
       if (mounted) {
         setState(() {});
@@ -632,8 +633,11 @@ class _HomePageState extends State<HomePage> {
                 category: map['category'] ?? 'NaN',
                 edition: map['edition'] ?? 'NaN',
                 dewey: map['dewey'] ?? 'NaN',
+                semester: map['semester'] ?? 'NaN',
+                interest: map['interest'] ?? 'NaN',
                 copies: map['copies'] ?? 0,
                 isFav: map['isFav'] != null ? map['isFav'] == 1 : false,
+                isNotified: map['isNotified'] != null ? map['isNotified'] == 1 : false,
                 book_id: map['book_id'] ?? 'NaN',
                 borrow_date: map['borrow_date'] ?? 'NaN',
                 must_return_date: map['must_return_date'] ?? 'NaN',
@@ -698,8 +702,11 @@ class _HomePageState extends State<HomePage> {
               category: map['category'] ?? 'NaN',
               edition: map['edition'] ?? 'NaN',
               dewey: map['dewey'] ?? 'NaN',
+              semester: map['semester'] ?? 'NaN',
+              interest: map['interest'] ?? 'NaN',
               copies: map['copies'] ?? -1,
               isFav: map['isFav'] != null ? map['isFav'] == 1 : false,
+              isNotified: map['isNotified'] != null ? map['isNotified'] == 1 : false,
             );
           }).toList();
 
@@ -777,13 +784,13 @@ class _HomePageState extends State<HomePage> {
   /// Navigates to the bookPageThreeScreen when the action is triggered.
   onTapImgOperatingSystemImage(BuildContext context, Book book) {
     Navigator.pushNamed(context, AppRoutes.bookPageOneScreen,
-        arguments: {'book': book});
+        arguments: {'book': book, 'route': AppRoutes.homePage, 'email': email});
   }
 
   /// Navigates to the bookPageFourScreen when the action is triggered.
   onTapImgImage(BuildContext context, Book book) {
     Navigator.pushNamed(context, AppRoutes.bookPageOneScreen,
-        arguments: {'book': book});
+        arguments: {'book': book, 'route': AppRoutes.homePage, 'email': email });
   }
 
   /// Navigates to the profilePageScreen when the action is triggered.
