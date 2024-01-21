@@ -1,15 +1,15 @@
-import 'package:library_ece/presentation/app_template/app_template.dart';
-import 'package:library_ece/widgets/custom_search_bar.dart';
+import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
+import 'package:stratos_s_application3/widgets/custom_search_bar.dart';
 import '../result_page_screen/widgets/result_box.dart';
 import 'package:flutter/material.dart';
-import 'package:library_ece/core/app_export.dart';
-import 'package:library_ece/widgets/custom_floating_button.dart';
-import 'package:library_ece/routes/classes/Book.dart';
+import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:stratos_s_application3/widgets/custom_floating_button.dart';
+import 'package:stratos_s_application3/routes/classes/Book.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:library_ece/constraints.dart';
-import 'package:library_ece/routes/classes/Filter.dart';
+import 'package:stratos_s_application3/constraints.dart';
+import 'package:stratos_s_application3/routes/classes/Filter.dart';
 
 class ResultPageScreen extends StatefulWidget {
   ResultPageScreen({Key? key})
@@ -58,7 +58,6 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
   @override
   void initState() {
     super.initState();
-    getEmailFromPreferences();
   }
 
   @override
@@ -342,10 +341,11 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
 
   Future<List<Book>> fetchData() async {
     try {
+      await getEmailFromPreferences();
       //print('hi');
       final response = await http.get(Uri.parse(
           '${AppConstants.apiUrl}/api/all_books?' +
-              'searchText=$searchText&categories=$categories&authors=$authors&publishers=$publishers&years=$years&languages=$languages&semesters=$semesters&interests=$interests'));
+              'searchText=$searchText&categories=$categories&authors=$authors&publishers=$publishers&years=$years&languages=$languages&semesters=$semesters&interests=$interests&email=$email'));
 
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');

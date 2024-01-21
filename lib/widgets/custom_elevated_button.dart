@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:library_ece/core/app_export.dart';
-import 'package:library_ece/widgets/base_button.dart';
+import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:stratos_s_application3/widgets/base_button.dart';
 
 class CustomElevatedButton extends BaseButton {
   CustomElevatedButton({

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:library_ece/core/app_export.dart';
-import 'package:library_ece/presentation/filters_page_screen/widgets/checkbox_dropdown_widget.dart';
-import 'package:library_ece/widgets/custom_elevated_button.dart';
-import 'package:library_ece/routes/classes/Filter.dart';
+import 'package:stratos_s_application3/core/app_export.dart';
+import 'package:stratos_s_application3/presentation/filters_page_screen/widgets/checkbox_dropdown_widget.dart';
+import 'package:stratos_s_application3/widgets/custom_elevated_button.dart';
+import 'package:stratos_s_application3/routes/classes/Filter.dart';
 
 class FiltersPageScreen extends StatefulWidget {
   FiltersPageScreen({Key? key}) : super(key: key);

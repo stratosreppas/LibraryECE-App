@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:library_ece/core/app_export.dart';
+import 'package:stratos_s_application3/core/app_export.dart';
 
 class AppNavigationScreen extends StatelessWidget {
   const AppNavigationScreen({Key? key})

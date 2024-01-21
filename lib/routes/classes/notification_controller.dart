@@ -1,6 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:library_ece/routes/app_routes.dart';
+import 'package:stratos_s_application3/routes/app_routes.dart';
 
 class NotificationController {
   static BuildContext? _appContext; // Store the app context

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:library_ece/core/app_export.dart';
+import 'package:stratos_s_application3/core/app_export.dart';
 
 // ignore: must_be_immutable
 class AppbarImage extends StatelessWidget {

@@ -13,7 +13,7 @@ app = Flask(__name__)
 # MySQL Connection Configuration
 app.config['MYSQL_HOST'] = 'localhost'
 app.config["MYSQL_USER"] = 'root'
-app.config["MYSQL_PASSWORD"] = 'password'
+app.config["MYSQL_PASSWORD"] = ''
 app.config["MYSQL_DB"] = 'ecel'
 
 db = MySQL(app)
@@ -172,7 +172,7 @@ def new_notification():
         cursor.execute(f"SELECT notification_id,category FROM notify_me WHERE user_id={user_id} ORDER BY created_at ASC LIMIT 1;")
         notification_id = cursor.fetchone()
         print(notification_id)
-            
+
         if(notification_id):
             print(notification_id[0])
             print(notification_id[1])
@@ -184,7 +184,7 @@ def new_notification():
             elif((notifications_values[0]=="0" and notifications_values[1]=="1" and notification_id[1]==0) or (notifications_values[0]=="1" and notifications_values[1]=="0" and notification_id[1]==1)):
                 cursor.execute(f"DELETE FROM notify_me WHERE notification_id='{notification_id[0]}';")
                 db.connection.commit()
-                cursor.close() 
+                cursor.close()
                 return jsonify({'status':'failure','message':"No new notification found"})
             elif(notifications_values[0]=="0" and notifications_values[1]=="0"):
                 cursor.execute(f"DELETE FROM notify_me WHERE notification_id='{notification_id[0]}';")
@@ -281,7 +281,7 @@ def get_first_book_image():
            methods=['GET'])
 def get_all_books():
     try:
-
+        email = request.args.get('email', 'NaN')
         languages = request.args.get('languages', 'NaN')
         searchText = request.args.get('searchText', 'NaN')
         authors = request.args.get('authors', 'NaN')
@@ -320,8 +320,8 @@ def get_all_books():
 
         query = "SELECT isbn, title, subtitle, author, publisher, year, category, edition, dewey, " \
                 "language, image_url, CAST(SUM(CASE WHEN category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies, " \
-                "CASE WHEN EXISTS (SELECT 1 FROM set_notification WHERE books.isbn = set_notification.isbn) THEN TRUE ELSE FALSE END as isNotified, " \
-                "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn) THEN TRUE ELSE FALSE END as isFav " \
+                "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn AND favorites.id = (SELECT id FROM visitor WHERE email = %s)) THEN TRUE ELSE FALSE END as isFav, " \
+                "CASE WHEN EXISTS (SELECT 1 FROM set_notification WHERE books.isbn = set_notification.isbn and set_notification.id = (SELECT id FROM visitor WHERE email = %s)) THEN TRUE ELSE FALSE END as isNotified " \
                 "FROM books WHERE (language IN ({}) OR %s = 'NaN') " \
                 "AND (author IN ({}) OR %s = 'NaN') " \
                 "AND (publisher IN ({}) OR %s = 'NaN') " \
@@ -345,7 +345,7 @@ def get_all_books():
         # Use placeholders for the IN clauses
         query = query.format(languages_sql, authors_sql, publishers_sql, categories_sql, years_sql, semesters_sql, interests_sql)
         print(query)
-        params = (*languages_list, languages_list[0], *authors_list, authors_list[0], *publishers_list, publishers_list[0],
+        params = (email, email, *languages_list, languages_list[0], *authors_list, authors_list[0], *publishers_list, publishers_list[0],
                   *categories_list, categories_list[0], *years_list, years_list[0], *semesters_list, semesters_list[0],
                   *interests_list, interests_list[0], f"%{searchText}%", f"%{searchText}%",
                   f"%{searchText}%", f"%{searchText}%", f"%{searchText}%", f"%{searchText}%", f"%{searchText}%", f"%{searchText}%", searchText)
@@ -384,8 +384,8 @@ def get_all_transactions():
         query = "SELECT books.isbn, books.title, books.subtitle, books.author, books.publisher, books.year, " \
                 "books.category, books.edition, books.dewey, books.language, books.image_url, " \
                 "CAST(SUM(CASE WHEN books.category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies, " \
-                "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn) THEN TRUE ELSE FALSE END as isFav, " \
-                "CASE WHEN EXISTS (SELECT 1 FROM set_notification WHERE books.isbn = set_notification.isbn) THEN TRUE ELSE FALSE END as isNotified, " \
+                "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn AND favorites.id = %s) THEN TRUE ELSE FALSE END as isFav, " \
+                "CASE WHEN EXISTS (SELECT 1 FROM set_notification WHERE books.isbn = set_notification.isbn and set_notification.id = %s) THEN TRUE ELSE FALSE END as isNotified, " \
                 "transaction.transaction_id,transaction.book_id, transaction.borrow_date, transaction.must_return_date, transaction.renew " \
                 "FROM books " \
                 "JOIN transaction ON books.id = transaction.book_id " \
@@ -395,7 +395,7 @@ def get_all_transactions():
                 "transaction.book_id, transaction.borrow_date, transaction.must_return_date,transaction.renew,transaction.transaction_id;"
 
 
-        params = (visitor_id,)
+        params = (visitor_id,visitor_id,visitor_id,)
 
         cursor.execute(query, params)
 
@@ -421,7 +421,7 @@ def get_all_selected_books():
         data=request.json
         visitor_id = data['user_id']
         home_page_value=data['value']
-        print(home_page_value)
+
         cursor = db.connection.cursor()
 #                 "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn AND favorites.id = (SELECT id FROM visitor WHERE email = %s)) THEN TRUE ELSE FALSE END as isFav, " \
         # Favorite books
@@ -470,34 +470,38 @@ def get_all_selected_books():
         elif home_page_value==2:
             query="SELECT isbn, title, subtitle, author, publisher, year, category, edition, dewey, " \
                   "CAST(SUM(CASE WHEN category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies, " \
-                  "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn) THEN TRUE ELSE FALSE END as isFav, " \
-                  "CASE WHEN EXISTS (SELECT 1 FROM set_notification WHERE books.isbn = set_notification.isbn) THEN TRUE ELSE FALSE END as isNotified, " \
+                  "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn AND favorites.id = %s) THEN TRUE ELSE FALSE END as isFav, " \
+                  "CASE WHEN EXISTS (SELECT 1 FROM set_notification WHERE books.isbn = set_notification.isbn and set_notification.id = %s) THEN TRUE ELSE FALSE END as isNotified, " \
                   "language, image_url FROM books GROUP BY isbn,title,subtitle, author, publisher, year, " \
                   "edition, dewey, language, image_url ORDER BY id DESC LIMIT 10;"
-            cursor.execute(query)
+            params = (visitor_id, visitor_id,)
+            cursor.execute(query, params)
 
         # Most popular books
         elif home_page_value==3:
+
             query="SELECT isbn, title, subtitle, author, publisher, year, category, edition, dewey, " \
                   "CAST(SUM(CASE WHEN category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies, " \
-                  "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn) THEN TRUE ELSE FALSE END as isFav, " \
-                  "CASE WHEN EXISTS (SELECT 1 FROM set_notification WHERE books.isbn = set_notification.isbn) THEN TRUE ELSE FALSE END as isNotified, " \
+                  "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn AND favorites.id = %s) THEN TRUE ELSE FALSE END as isFav, " \
+                  "CASE WHEN EXISTS (SELECT 1 FROM set_notification WHERE books.isbn = set_notification.isbn and set_notification.id = %s) THEN TRUE ELSE FALSE END as isNotified, " \
                   "language, image_url, COUNT(*) AS transaction_count FROM transaction JOIN books " \
                   "ON transaction.book_id = books.id WHERE transaction.borrow_date >= CURDATE() " \
                   "- INTERVAL 2 WEEK GROUP BY isbn,title,subtitle, author, publisher, year, " \
                   "edition, dewey, language, image_url ORDER BY transaction_count DESC LIMIT 10;"
-            cursor.execute(query)
+
+            params=(visitor_id, visitor_id,)
+            cursor.execute(query, params)
 
         # Notified books
         elif home_page_value==4:
             query = "SELECT books.isbn, title, subtitle, author, publisher, year, category, " \
                     "edition, dewey, language, image_url, semester, interest," \
                     "CAST(SUM(CASE WHEN books.category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies, " \
-                    "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn) THEN TRUE ELSE FALSE END as isFav, " \
-                    "CASE WHEN EXISTS (SELECT 1 FROM set_notification WHERE books.isbn = set_notification.isbn) THEN TRUE ELSE FALSE END as isNotified " \
+                    "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn AND favorites.id = %s) THEN TRUE ELSE FALSE END as isFav, " \
+                    "CASE WHEN EXISTS (SELECT 1 FROM set_notification WHERE books.isbn = set_notification.isbn and set_notification.id = %s) THEN TRUE ELSE FALSE END as isNotified " \
                     "FROM books JOIN set_notification ON books.isbn = set_notification.isbn " \
                     "WHERE set_notification.id = %s GROUP BY books.isbn,title,subtitle,author,publisher,year,edition,dewey,language,image_url,semester,interest LIMIT 10;"
-            params = (visitor_id,)
+            params = (visitor_id, visitor_id, visitor_id,)
             cursor.execute(query, params)
 
         data = cursor.fetchall()

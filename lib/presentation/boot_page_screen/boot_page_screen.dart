@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:library_ece/core/app_export.dart';
+import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:library_ece/constraints.dart';
+import 'dart:convert';
+import 'package:stratos_s_application3/constraints.dart';
 
 class BootPageScreen extends StatefulWidget {
   @override
