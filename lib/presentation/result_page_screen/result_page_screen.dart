@@ -58,7 +58,6 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
   @override
   void initState() {
     super.initState();
-    getEmailFromPreferences();
   }
 
   @override
@@ -316,10 +315,11 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
 
   Future<List<Book>> fetchData() async {
     try {
+      await getEmailFromPreferences();
       //print('hi');
       final response = await http.get(Uri.parse(
           '${AppConstants.apiUrl}/api/all_books?' +
-              'searchText=$searchText&categories=$categories&authors=$authors&publishers=$publishers&years=$years&languages=$languages&semesters=$semesters&interests=$interests'));
+              'searchText=$searchText&categories=$categories&authors=$authors&publishers=$publishers&years=$years&languages=$languages&semesters=$semesters&interests=$interests&email=$email'));
 
       print('Response status code: ${response.statusCode}');
       print('Response body: ${response.body}');
