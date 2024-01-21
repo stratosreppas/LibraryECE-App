@@ -406,7 +406,13 @@ def get_all_selected_books():
 
         # New books
         elif home_page_value==2:
-            query=""
+            query="SELECT isbn, title, subtitle, author, publisher, year, category, edition, dewey, " \
+                  "CAST(SUM(CASE WHEN category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies, " \
+                  "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn) THEN TRUE ELSE FALSE END as isFav, " \
+                  "CASE WHEN EXISTS (SELECT 1 FROM set_notification WHERE books.isbn = set_notification.isbn) THEN TRUE ELSE FALSE END as isNotified, " \
+                  "language, image_url FROM books GROUP BY isbn,title,subtitle, author, publisher, year, " \
+                  "edition, dewey, language, image_url ORDER BY id DESC LIMIT 10;"
+            cursor.execute(query)
 
         # Most popular books
         elif home_page_value==3:

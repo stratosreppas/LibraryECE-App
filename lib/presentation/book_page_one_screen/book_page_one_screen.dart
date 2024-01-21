@@ -411,7 +411,7 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
 
   /// Navigates to the locationPageScreen when the action is triggered.
   onTapImgImage(BuildContext context) {
-    Navigator.pushNamed(context, AppRoutes.locationPageScreen);
+    Navigator.pushNamed(context, AppRoutes.locationPageScreen, arguments: {'book': book});
   }
 
   onTapNotify(BuildContext context, bool isNotified) async{
