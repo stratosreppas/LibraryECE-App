@@ -7,6 +7,7 @@ import 'package:stratos_s_application3/widgets/app_bar/custom_app_bar.dart';
 import 'package:vector_math/vector_math_64.dart' as vector;
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:stratos_s_application3/routes/classes/Book.dart';
 
 class LocationPageScreen extends StatefulWidget {
   const LocationPageScreen({Key? key}) : super(key: key);
@@ -18,12 +19,29 @@ class LocationPageScreen extends StatefulWidget {
 class _LocationPageScreenState extends State<LocationPageScreen> {
   ArCoreController? arCoreController;
   late Position position;
+  Book book = Book();
   String? locationText =
       'Φαίνεται πως δε βρίσκεστε στο χώρο της βιβλιοθήκης. Παρακαλώ προσπαθήστε ξανά όταν βρίσκεστε εντός αυτού.';
   final double latitude = 38.0961649;
   final double longitude = 23.8178306;
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    // Access the 'languages' parameter from the arguments
+    final Map<String, dynamic> args =
+    ModalRoute
+        .of(context)!
+        .settings
+        .arguments as Map<String, dynamic>;
+    print(args);
+
+    if (args.containsKey('book')) {
+      // Get the value associated with the 'languages' key
+      book = args['book'];
+    }
+  }
 
   _onArCoreViewCreated(ArCoreController controller) {
     arCoreController = controller;
@@ -105,10 +123,10 @@ class _LocationPageScreenState extends State<LocationPageScreen> {
     final arrow = ArCoreCylinder(
       materials: [materials],
       radius: 0.05,
-      height: 0.5,
+      height: 0.2,
     );
 
-    final initialPosition = vector.Vector3(-1, 0, -2);
+    final initialPosition = double.parse(book.dewey) > 600 ? vector.Vector3(-1, 0, -2) : vector.Vector3(-1, -0.5, -2);
 
     final node = ArCoreNode(
       shape: arrow,

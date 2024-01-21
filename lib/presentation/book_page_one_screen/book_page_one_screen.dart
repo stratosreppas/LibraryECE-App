@@ -166,6 +166,9 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
                           _buildExtendableRich2(
                               context, 'Έκδοση', book.edition),
                           SizedBox(height: 12.v),
+                          _buildExtendableRich2(
+                              context, 'Dewey', book.dewey),
+                          SizedBox(height: 12.v),
                           _buildExtendableRich2(context, 'ISBN', book.isbn),
                           SizedBox(height: 12.v),
                           _buildExtendableRich2(
