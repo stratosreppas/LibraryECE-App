@@ -114,6 +114,7 @@ class _BookPageOneScreenState extends State<BookPageOneScreen> {
       onWillPop: () async {
         // Pop all routes until reaching the home page
         Navigator.pop(context);
+        Navigator.pop(context);
 
         Navigator.pushNamed(context, route, arguments: {
           'email': email,

@@ -395,7 +395,7 @@ class _HomePageState extends State<HomePage> {
                       Container(
                           width: 56.h,
                           padding: EdgeInsets.symmetric(
-                              horizontal: 6.h, vertical: 1.v),
+                              horizontal: 5.h, vertical: 1.v),
                           decoration: AppDecoration.fillOnPrimaryContainer
                               .copyWith(
                                   borderRadius:
@@ -414,7 +414,7 @@ class _HomePageState extends State<HomePage> {
                       Container(
                           width: 56.h,
                           padding: EdgeInsets.symmetric(
-                              horizontal: 6.h, vertical: 1.v),
+                              horizontal: 5.h, vertical: 1.v),
                           decoration: AppDecoration.fillLime.copyWith(
                               borderRadius: BorderRadiusStyle.roundedBorder10),
                           child: Center(
@@ -431,7 +431,7 @@ class _HomePageState extends State<HomePage> {
                       Container(
                           width: 56.h,
                           padding: EdgeInsets.symmetric(
-                              horizontal: 6.h, vertical: 1.v),
+                              horizontal: 5.h, vertical: 1.v),
                           decoration: AppDecoration.fillLightGreen.copyWith(
                               borderRadius: BorderRadiusStyle.roundedBorder10),
                           child: Center(
@@ -543,14 +543,6 @@ class _HomePageState extends State<HomePage> {
                             padding: EdgeInsets.only(bottom: 1.v),
                             child: Text(homePageChoices[homePageValue ?? 0],
                                 style: CustomTextStyles.titleMediumOnPrimary)),
-                        GestureDetector(
-                            onTap: () {
-                              onTapTxtWidget1(context);
-                            },
-                            child: Padding(
-                                padding: EdgeInsets.only(top: 8.v),
-                                child: Text("Προβολή όλων",
-                                    style: CustomTextStyles.labelMediumRoboto)))
                       ])),
               SizedBox(height: 5.v),
               Container(

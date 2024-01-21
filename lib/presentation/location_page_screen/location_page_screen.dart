@@ -23,6 +23,8 @@ class _LocationPageScreenState extends State<LocationPageScreen> {
   final double latitude = 38.0961649;
   final double longitude = 23.8178306;
 
+
+
   _onArCoreViewCreated(ArCoreController controller) {
     arCoreController = controller;
 
