@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:stratos_s_application3/core/app_export.dart';
 import 'book.dart';
+import 'package:stratos_s_application3/routes/classes/Book.dart';
 
 class BooklistItemWidget extends StatelessWidget {
+
+  List<Book> books = [];
+  int index;
+  String email;
+  dynamic context;
+
   BooklistItemWidget({
     Key? key,
-    this.onTapImgImage,
+    required this.books,
+    required this.email,
+    required this.index,
+    required this.context,
   }) : super(key: key);
 
-  final VoidCallback? onTapImgImage;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +37,12 @@ class BooklistItemWidget extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 1.h),
             child: Text(
-              "Προτείνονται για Εσάς",
+              // Depending on the index
+              index == 0 ? "Προτείνονται για Εσάς" :
+              index == 1 ? "Αγαπημένα" :
+              index == 2 ? "Νέες Προσθήκες" :
+              index == 3 ? "Δημοφιλή" :
+              "Λαμβάνετε Ειδοποιήσεις",
               style: CustomTextStyles.bodyLargeInterOnPrimary,
             ),
           ),
@@ -43,12 +57,13 @@ class BooklistItemWidget extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: List.generate(
-                  6,
+                  books.length,
                       (index) => Container(
                     margin: EdgeInsets.only(right: 8.h), // Adjust the margin as needed
                     child: BookWidget(
+                      book: books[index],
                       onTap: () {
-                        onTapImgImage?.call();
+                        onTapImgImage?.call(books[index]);
                       },
                     ),
                   ),
@@ -60,5 +75,9 @@ class BooklistItemWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  onTapImgImage(Book book) {
+    Navigator.pushNamed(context, AppRoutes.bookPageOneScreen, arguments: {'book': book, 'route': AppRoutes.libraryPageScreen, 'email': email});
   }
 }

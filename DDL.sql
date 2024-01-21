@@ -102,7 +102,7 @@ UPDATE books SET semester = 2;
 
 -- Temporary Image for all books
 UPDATE `books`
-SET `image_url` = 'https://encrypted-tbn3.gstatic.com/images?q=tbn%3AANd9GcQEld1XcPtsdXW4ggQoVm6zcYxfRxoM9F1fp07JtE41g-e7olqk';
+SET `image_url` = 'https://publications.upatras.gr/sites/default/files/book-images/EPP-BK0041.jpg';
 
 INSERT INTO `visitor` (`name`, `surname`, `am`, `property`, `phone`, `email`,password)
 VALUES

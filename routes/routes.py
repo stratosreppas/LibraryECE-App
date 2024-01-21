@@ -389,8 +389,10 @@ def get_all_selected_books():
         data=request.json
         visitor_id = data['user_id']
         home_page_value=data['value']
+
         cursor = db.connection.cursor()
 
+        # Favorite books
         if home_page_value==0:
             query = "SELECT books.isbn, title, subtitle, author, publisher, year, category, " \
                 "edition, dewey, language, image_url, semester, interest," \
@@ -401,8 +403,12 @@ def get_all_selected_books():
                 "WHERE favorites.id = %s GROUP BY books.isbn,title,subtitle,author,publisher,year,edition,dewey,language,image_url LIMIT 10;"
             params = (visitor_id,)
             cursor.execute(query, params)
+
+        # New books
         elif home_page_value==2:
             query=""
+
+        # Most popular books
         elif home_page_value==3:
             query="SELECT isbn, title, subtitle, author, publisher, year, category, edition, dewey, " \
                   "CAST(SUM(CASE WHEN category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies, " \
@@ -414,6 +420,7 @@ def get_all_selected_books():
                   "edition, dewey, language, image_url ORDER BY transaction_count DESC LIMIT 10;"
             cursor.execute(query)
 
+        # Notified books
         elif home_page_value==4:
             query = "SELECT books.isbn, title, subtitle, author, publisher, year, category, " \
                     "edition, dewey, language, image_url, semester, interest," \

@@ -6,13 +6,33 @@ import 'package:stratos_s_application3/core/app_export.dart';
 import 'package:stratos_s_application3/presentation/app_template/app_template.dart';
 import 'package:stratos_s_application3/core/utils/navigation_utils.dart';
 import 'package:stratos_s_application3/widgets/custom_search_bar.dart';
+import 'package:stratos_s_application3/routes/classes/Book.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:stratos_s_application3/routes/app_routes.dart';
+import 'package:stratos_s_application3/constraints.dart';
+import 'package:stratos_s_application3/routes/classes/User.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore_for_file: must_be_immutable
-class LibraryPageScreen extends StatelessWidget {
+class LibraryPageScreen extends StatefulWidget {
   LibraryPageScreen({Key? key}) : super(key: key);
 
-  TextEditingController searchController = TextEditingController();
+  @override
+  State<LibraryPageScreen> createState() => _LibraryPageScreenState();
+}
 
+class _LibraryPageScreenState extends State<LibraryPageScreen> {
+
+  late final User user;
+  late final String? email;
+  late final List<Book> popularBooks;
+  late final List<Book> newBooks;
+  late final List<Book> recommendedBooks;
+  late final List<Book> favoriteBooks;
+  late final List<Book> notifiedBooks;
+
+  TextEditingController searchController = TextEditingController();
 
   List<String> semesterDropDown = [
     "1ο Εξάμηνο",
@@ -44,6 +64,28 @@ class LibraryPageScreen extends StatelessWidget {
   ];
 
   GlobalKey<NavigatorState> navigatorKey = GlobalKey();
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+
+    try {
+      print('here');
+      this.user = await fetchUserData();
+      this.popularBooks = await fetchBookData(3);
+      this.notifiedBooks = await fetchBookData(4);
+      this.newBooks = await fetchBookData(2);
+      this.recommendedBooks = await fetchBookData(1);
+      this.favoriteBooks = await fetchBookData(0);
+
+      if (mounted) {
+        setState(() {});
+      }
+
+    } catch (error) {
+      print('Error fetching data: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,11 +167,150 @@ class LibraryPageScreen extends StatelessWidget {
             separatorBuilder: (context, index) {
               return SizedBox(height: 26.v);
             },
-            itemCount: 4,
+            itemCount: 5,
             itemBuilder: (context, index) {
-              return BooklistItemWidget(onTapImgImage: () {
-                slideLeftTo(context, BookPageOneScreen());
-              });
+              return BooklistItemWidget(
+                  context: context,
+                  email: user.email,
+                  index: index,
+                  books: index == 0
+                      ? recommendedBooks
+                      : index == 1
+                          ? favoriteBooks
+                          : index == 2
+                              ? newBooks
+                              : index == 3
+                                  ? popularBooks
+                                  : notifiedBooks
+              );
             }));
+  }
+
+  Future<List<Book>> fetchBookData(int homePageValue) async {
+    try {
+      //print('hi');
+      int id = user.id;
+      //print(id);
+      final response = await http.post(
+        Uri.parse('${AppConstants.apiUrl}/api/home/books'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+            <String, int>{'user_id': id, 'value': homePageValue ?? 0}),
+      );
+      //print('Response status code: ${response.statusCode}');
+      //print('Response body: ${response.body}');
+
+      final responseData = json.decode(response.body);
+      print(responseData['data']);
+      if (response.statusCode == 200) {
+        final List<dynamic> dataList = responseData['data'];
+
+        if (dataList.isNotEmpty) {
+          List<Book> books = dataList.map((map) {
+            return Book(
+              title: map['title'] ?? 'NaN',
+              author: map['author'] ?? 'NaN',
+              imageurl: map['image_url'] ?? 'NaN',
+              isbn: map['isbn'] ?? 'NaN',
+              subtitle: map['subtitle'] ?? 'NaN',
+              publisher: map['publisher'] ?? 'NaN',
+              year: map['year'] ?? 'NaN',
+              language: map['language'] ?? 'NaN',
+              category: map['category'] ?? 'NaN',
+              edition: map['edition'] ?? 'NaN',
+              dewey: map['dewey'] ?? 'NaN',
+              semester: map['semester'] ?? 'NaN',
+              interest: map['interest'] ?? 'NaN',
+              copies: map['copies'] ?? -1,
+              isFav: map['isFav'] != null ? map['isFav'] == 1 : false,
+              isNotified: map['isNotified'] != null ? map['isNotified'] == 1 : false,
+            );
+          }).toList();
+
+          // books.forEach((book) {
+          //   print('Book Title: ${book.title}');
+          //   print('Book Author: ${book.author}');
+          // });
+
+          if (mounted) {
+            return books;
+          }
+        } else {
+          print(
+              'Δεν βρέθηκαν βιβλία με τα συγκεκριμένα κριτήρια για αυτόν το χρήστη.');
+        }
+      } else {
+        print('Σόρρυ, υπάρχει κάποιο θέμα με τη βάση.');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+
+    // Return an empty list in case of an error or no data
+    return [];
+  }
+
+  Future<dynamic> getHomePageValueFromPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs;
+  }
+
+  Future<void> getEmailFromPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userEmail = prefs.getString('email');
+    setState(() {
+      email = userEmail;
+      print("Home Page: $email");
+    });
+  }
+
+  Future<User> fetchUserData() async {
+    await getEmailFromPreferences();
+    await getHomePageValueFromPreferences();
+
+    User user = User();
+
+    try {
+      //print('hi');
+      final response = await http.get(
+          Uri.parse('${AppConstants.apiUrl}/api/home/user?' + 'email=$email'));
+
+      //print('Response status code: ${response.statusCode}');
+      //print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> userData = json.decode(response.body);
+        //print(userData);
+        if (userData.isNotEmpty) {
+          user = User(
+            id: userData['id'] ?? 0,
+            name: userData['name'] ?? 'NaN',
+            surname: userData['surname'] ?? 'NaN',
+            email: userData['email'] ?? 'NaN',
+            penalty: userData['penalty'] ?? '-',
+            am: userData['am'] ?? 'NaN',
+            phone: userData['phone'] ?? 'NaN',
+            property: userData['property'] ?? 'NaN',
+          );
+
+          //print('hello' + user.name);
+          if (mounted) {
+            print("Succesfully fetched user data.");
+            return user;
+          }
+        } else {
+          print('Δεν βρέθηκε χρήστης με αυτό το μέιλ.');
+        }
+      } else {
+        print('Σόρρυ, υπάρχει κάποιο θέμα με τη βάση.');
+      }
+    } catch (error) {
+      print('Error: $error');
+    }
+
+    // Return an empty list in case of an error or no data
+    return user;
   }
 }
