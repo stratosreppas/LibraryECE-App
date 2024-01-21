@@ -256,6 +256,17 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                                         child: Text(semesters),
                                       ),
                                     ),
+                                  if (interests != 'NaN')
+                                    Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 5.h),
+                                      decoration: BoxDecoration(
+                                        color: appTheme.deepPurple50014,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ), child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(interests),
+                                      ),
+                                    ),
                                       ],
                               ),
                             ),
@@ -286,6 +297,8 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
                                   'years': years,
                                   'categories': categories,
                                   'searchText': searchText,
+                                  'semesters': semesters,
+                                  'interests': interests,
                                 });
                           }),
                     ],
@@ -387,6 +400,8 @@ class _ResultPageScreenState extends State<ResultPageScreen> {
       'years': years,
       'categories': categories,
       'filters': filters,
+      'semesters': semesters,
+      'interests': interests,
     });
   }
 

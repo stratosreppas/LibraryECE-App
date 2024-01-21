@@ -5,6 +5,7 @@ class CheckBoxDropDownWidget extends StatefulWidget {
   final String header;
   final List<String> contents;
   final Function(String) onSelectedValuesChanged; // Callback function
+  String selectedValues = 'NaN';
   final List<String>? initialSelectedValues; // Optional parameter for initial selected values
 
 
@@ -55,7 +56,6 @@ class CheckBoxDropDownWidgetState extends State<CheckBoxDropDownWidget> {
     // Join the selected values with a '-' in between
     return selectedValues.join('-');
   }
-
 
   @override
   Widget build(BuildContext context) {

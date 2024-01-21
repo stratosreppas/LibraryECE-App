@@ -29,6 +29,9 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
   String publishers = 'NaN';
   String years = 'NaN';
 
+  String semesters = 'NaN';
+  String interests = 'NaN';
+
   final List<GlobalKey<CheckBoxDropDownWidgetState>> checkBoxKeys =
       List.generate(5, (index) => GlobalKey<CheckBoxDropDownWidgetState>());
 
@@ -77,6 +80,14 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
 
       if(args.containsKey('filters')){
         filters = args['filters'];
+      }
+
+      if(args.containsKey('semesters')){
+        semesters = args['semesters'];
+      }
+
+      if(args.containsKey('interests')){
+        interests = args['interests'];
       }
 
   }
@@ -232,6 +243,8 @@ class _FiltersPageScreenState extends State<FiltersPageScreen> {
       'publishers': publishers!= '' ? publishers : 'NaN',
       'years': years!= '' ? years : 'NaN',
       'categories': categories!= '' ? categories : 'NaN',
+      'semesters': semesters!= '' ? semesters : 'NaN',
+      'interests': interests!= '' ? interests : 'NaN',
     });
   }
 

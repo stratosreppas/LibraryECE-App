@@ -1,6 +1,12 @@
 from flask import Flask,request,jsonify
 from flask_mysqldb import MySQL
 from flask_apscheduler import APScheduler
+import pandas as pd
+import numpy as np
+import pickle
+from recommendation_engine.model import train_model
+from recommendation_engine.recommendation import return_recommendations
+
 
 app = Flask(__name__)
 
@@ -330,18 +336,19 @@ def get_all_books():
                 "OR category LIKE %s " \
                 "OR year LIKE %s " \
                 "OR semester LIKE %s " \
-                "OR interest LIKE %s) " \
+                "OR interest LIKE %s " \
+                "OR %s = 'NaN') " \
                 "GROUP BY isbn, title, subtitle, author, publisher, year, edition, " \
                 "dewey, language, image_url, semester, interest " \
                 "LIMIT 40;"
 
         # Use placeholders for the IN clauses
         query = query.format(languages_sql, authors_sql, publishers_sql, categories_sql, years_sql, semesters_sql, interests_sql)
-
+        print(query)
         params = (*languages_list, languages_list[0], *authors_list, authors_list[0], *publishers_list, publishers_list[0],
                   *categories_list, categories_list[0], *years_list, years_list[0], *semesters_list, semesters_list[0],
                   *interests_list, interests_list[0], f"%{searchText}%", f"%{searchText}%",
-                  f"%{searchText}%", f"%{searchText}%", f"%{searchText}%", f"%{searchText}%", f"%{searchText}%", f"%{searchText}%")
+                  f"%{searchText}%", f"%{searchText}%", f"%{searchText}%", f"%{searchText}%", f"%{searchText}%", f"%{searchText}%", searchText)
         print(params)
         cursor.execute(query, params)
         print(query)
@@ -416,24 +423,59 @@ def get_all_selected_books():
         home_page_value=data['value']
         print(home_page_value)
         cursor = db.connection.cursor()
-
+#                 "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn AND favorites.id = (SELECT id FROM visitor WHERE email = %s)) THEN TRUE ELSE FALSE END as isFav, " \
         # Favorite books
         if home_page_value==0:
             query = "SELECT books.isbn, title, subtitle, author, publisher, year, category, " \
                 "edition, dewey, language, image_url, semester, interest," \
                 "CAST(SUM(CASE WHEN books.category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies, " \
-                "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn) THEN TRUE ELSE FALSE END as isFav, " \
-                "CASE WHEN EXISTS (SELECT 1 FROM set_notification WHERE books.isbn = set_notification.isbn) THEN TRUE ELSE FALSE END as isNotified " \
+                "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn AND favorites.id = %s) THEN TRUE ELSE FALSE END as isFav, " \
+                "CASE WHEN EXISTS (SELECT 1 FROM set_notification WHERE books.isbn = set_notification.isbn and set_notification.id = %s) THEN TRUE ELSE FALSE END as isNotified " \
                 "FROM books JOIN favorites ON books.isbn = favorites.isbn " \
                 "WHERE favorites.id = %s GROUP BY books.isbn,title,subtitle,author,publisher,year,edition,dewey,language,image_url LIMIT 10;"
-            params = (visitor_id,)
+            params = (visitor_id, visitor_id, visitor_id,)
             cursor.execute(query, params)
 
-        # New books
+        if home_page_value==1:
+            query = "SELECT books.isbn, title, subtitle, author, publisher, year, category, " \
+                            "edition, dewey, language, image_url, semester, interest," \
+                            "CAST(SUM(CASE WHEN books.category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies, " \
+                            "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn AND favorites.id = %s) THEN TRUE ELSE FALSE END as isFav, " \
+                            "CASE WHEN EXISTS (SELECT 1 FROM set_notification WHERE books.isbn = set_notification.isbn and set_notification.id = %s) THEN TRUE ELSE FALSE END as isNotified " \
+                            "FROM books " \
+                            "WHERE NOT (CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn AND favorites.id = %s) THEN TRUE ELSE FALSE END) " \
+                            "GROUP BY books.isbn,title,subtitle,author,publisher,year,edition,dewey,language,image_url ORDER BY RAND() LIMIT 40;"
+            params = (visitor_id, visitor_id, visitor_id,)
+            cursor.execute(query, params)
+
+            rows= cursor.fetchall()
+
+            # Get column names for favorite books
+            columns = [desc[0] for desc in cursor.description]
+
+            # Convert the list of tuples to a Pandas DataFrame for favorite books
+            df = pd.DataFrame(rows, columns=columns)
+            recs = return_recommendations(df)
+            print(recs)
+            cursor.close()
+            if not recs.empty:
+                # Convert DataFrame to a list of dictionaries
+                results = recs.to_dict(orient='records')
+                return jsonify({'data': results})
+            else:
+                # Handle the case when recs is empty
+                return jsonify({'data': []})
+
+    # New books
         elif home_page_value==2:
-            query="SELECT * FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY isbn ORDER BY id DESC) AS RowNum FROM books) AS RankedBooks WHERE RowNum = 1 ORDER BY id DESC LIMIT 10;"
+            query="SELECT isbn, title, subtitle, author, publisher, year, category, edition, dewey, " \
+                  "CAST(SUM(CASE WHEN category = 'Διαθέσιμο' THEN 1 ELSE 0 END) AS SIGNED) as copies, " \
+                  "CASE WHEN EXISTS (SELECT 1 FROM favorites WHERE books.isbn = favorites.isbn) THEN TRUE ELSE FALSE END as isFav, " \
+                  "CASE WHEN EXISTS (SELECT 1 FROM set_notification WHERE books.isbn = set_notification.isbn) THEN TRUE ELSE FALSE END as isNotified, " \
+                  "language, image_url FROM books GROUP BY isbn,title,subtitle, author, publisher, year, " \
+                  "edition, dewey, language, image_url ORDER BY id DESC LIMIT 10;"
             cursor.execute(query)
-            
+
         # Most popular books
         elif home_page_value==3:
             query="SELECT isbn, title, subtitle, author, publisher, year, category, edition, dewey, " \
@@ -504,6 +546,61 @@ def get_user():
             return jsonify({'error': 'No data found'})
     except Exception as e:
         return jsonify({'error': f'Database error: {str(e)}'})
+
+@app.route('/recommender/load', methods=['GET'])
+def train_recommender():
+    try:
+        email = request.args.get('email', 'NaN')
+        cursor = db.connection.cursor()
+
+        # Query for favorite books
+        query_favorites = "SELECT books.isbn, title, subtitle, author, publisher, year, category, " \
+                          "edition, dewey, language, image_url, semester, interest " \
+                          "FROM books JOIN favorites ON books.isbn = favorites.isbn " \
+                          "WHERE favorites.id = (select id from visitor where email = %s) GROUP BY books.isbn,title,subtitle,author,publisher,year,edition,dewey,language,image_url LIMIT 10;"
+        params_favorites = (email,)
+        cursor.execute(query_favorites, params_favorites)
+        # Fetch all the rows for favorite books
+        rows_favorites = cursor.fetchall()
+
+        # Get column names for favorite books
+        columns_favorites = [desc[0] for desc in cursor.description]
+
+        # Convert the list of tuples to a Pandas DataFrame for favorite books
+        df_favorites = pd.DataFrame(rows_favorites, columns=columns_favorites)
+
+        # Query for 20 random books
+        query_random = "SELECT isbn, title, subtitle, author, publisher, year, category, " \
+                       "edition, dewey, language, image_url, semester, interest " \
+                       "FROM books ORDER BY RAND() LIMIT 20;"
+        cursor.execute(query_random)
+
+        # Fetch all the rows for random books
+        rows_random = cursor.fetchall()
+
+        # Get column names for random books
+        columns_random = [desc[0] for desc in cursor.description]
+
+        # Convert the list of tuples to a Pandas DataFrame for random books
+        df_random = pd.DataFrame(rows_random, columns=columns_random)
+
+        # Add a new column 'constant_column' with values of 1 to both DataFrames
+        df_favorites = df_favorites.assign(recommend=1)
+        df_random = df_random.assign(recommend=np.random.choice([0, 1], size=len(df_random), p=[0.6, 0.4]))
+
+        # Concatenate the two DataFrames
+        df = pd.concat([df_favorites, df_random], ignore_index=True)
+        print(df)
+
+        cursor.close()
+
+        train_model(df)
+
+        return
+
+    except Exception as e:
+        return jsonify({'error': f'Error: {str(e)}'})
+
 
 @app.route('/fav', methods=['POST'])
 def fav():

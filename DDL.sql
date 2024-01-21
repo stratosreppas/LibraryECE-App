@@ -98,7 +98,7 @@ INSERT INTO `books` (`id`, `title`, `subtitle`, `author`, `isbn`, `year`, `langu
 (9423, 'ΕΙΣΑΓΩΓΗ ΣΤΗ ΓΡΑΜΜΙΚΗ ΑΛΓΕΒΡΑ', NULL, NULL, '9786185495329', '2021', 'el', '1', 'Διαθέσιμο', NULL, '512.5', 'ΤΣΟΤΡΑΣ'),
 (9424, 'ΕΙΣΑΓΩΓΗ ΣΤΗ ΓΡΑΜΜΙΚΗ ΑΛΓΕΒΡΑ', NULL, NULL, '9786185495329', '2021', 'el', '1', 'Διαθέσιμο', NULL, '512.5', 'ΤΣΟΤΡΑΣ');
 
-UPDATE books SET semester = 2;
+UPDATE books SET semester = '2ο Εξάμηνο';
 
 -- Temporary Image for all books
 UPDATE `books`
@@ -177,25 +177,65 @@ VALUES
 -- --------------------------------------------------------
 
 -- Insert dummy data into the categories table
-INSERT INTO categories (isbn, category) VALUES
-('960-254-678-6', 'Μαθηματικά'),
-('978-960-466-171-8', 'Μαθηματικά'),
-('978-960-418-639-6', 'Διοίκηση Επιχειρήσεων'),
-('0-89588-533-6', 'Προγραμματισμός'),
-('978-960-266-292-2', 'Λειτουργικά Συστήματα'),
-('978-960-6759-18-5', 'Ενσωματωμένα Συστήματα'),
-('978-960-266-304-2', 'Ηλεκτρική Ενέργεια'),
-('0304-3975', 'Θεωρητική Επιστήμη Υπολογιστών'),
-('978-960-7225-18-4', 'Φυσική'),
-('978-960-7225-02-3', 'Διαφορικές Εξισώσεις'),
-('960-8250-29-3', 'Ηλεκτρομαγνητισμός'),
-('960-8250-26-9', 'Ηλεκτρομαγνητισμός'),
-('960-8250-30-7', 'Ηλεκτροτεχνία'),
-('978-960-418-739-3', 'Στατική Τεχνική Μηχανική'),
-('960-8250-10-2', 'Αριθμητική Ανάλυση'),
-('978-960-418-292-3', 'Ηλεκτρομαγνητικά Πεδία'),
-('978604613526', 'Οργάνωση και Σχεδίαση Υπολογιστών'),
-('978-960-266-044-7', 'Ηλεκτρικές Μετρήσεις - Κλασσικές'),
-('960-266-045-7', 'Ηλεκτρικές Μετρήσεις - Ηλεκτρονικές'),
-('978-960-266-045-4', 'Ηλεκτρικές Μετρήσεις - Ηλεκτρονικές'),
-('960-7219-82-1', 'Μικροηλεκτρονική');
+-- Update interest for ISBN '960-254-678-6' in the books table
+UPDATE books SET interest = 'Μαθηματικά' WHERE isbn = '960-254-678-6';
+
+-- Update interest for ISBN '978-960-466-171-8' in the books table
+UPDATE books SET interest = 'Μαθηματικά' WHERE isbn = '978-960-466-171-8';
+
+-- Update interest for ISBN '978-960-418-639-6' in the books table
+UPDATE books SET interest = 'Διοίκηση Επιχειρήσεων' WHERE isbn = '978-960-418-639-6';
+
+-- Update interest for ISBN '0-89588-533-6' in the books table
+UPDATE books SET interest = 'Προγραμματισμός' WHERE isbn = '0-89588-533-6';
+
+-- Update interest for ISBN '978-960-266-292-2' in the books table
+UPDATE books SET interest = 'Λειτουργικά Συστήματα' WHERE isbn = '978-960-266-292-2';
+
+-- Update interest for ISBN '978-960-6759-18-5' in the books table
+UPDATE books SET interest = 'Ενσωματωμένα Συστήματα' WHERE isbn = '978-960-6759-18-5';
+
+-- Update interest for ISBN '978-960-266-304-2' in the books table
+UPDATE books SET interest = 'Ηλεκτρική Ενέργεια' WHERE isbn = '978-960-266-304-2';
+
+-- Update interest for ISBN '0304-3975' in the books table
+UPDATE books SET interest = 'Θεωρητική Επιστήμη Υπολογιστών' WHERE isbn = '0304-3975';
+
+-- Update interest for ISBN '978-960-7225-18-4' in the books table
+UPDATE books SET interest = 'Φυσική' WHERE isbn = '978-960-7225-18-4';
+
+-- Update interest for ISBN '978-960-7225-02-3' in the books table
+UPDATE books SET interest = 'Διαφορικές Εξισώσεις' WHERE isbn = '978-960-7225-02-3';
+
+-- Update interest for ISBN '960-8250-29-3' in the books table
+UPDATE books SET interest = 'Ηλεκτρομαγνητισμός' WHERE isbn = '960-8250-29-3';
+
+-- Update interest for ISBN '960-8250-26-9' in the books table
+UPDATE books SET interest = 'Ηλεκτρομαγνητισμός' WHERE isbn = '960-8250-26-9';
+
+-- Update interest for ISBN '960-8250-30-7' in the books table
+UPDATE books SET interest = 'Ηλεκτροτεχνία' WHERE isbn = '960-8250-30-7';
+
+-- Update interest for ISBN '978-960-418-739-3' in the books table
+UPDATE books SET interest = 'Στατική Τεχνική Μηχανική' WHERE isbn = '978-960-418-739-3';
+
+-- Update interest for ISBN '960-8250-10-2' in the books table
+UPDATE books SET interest = 'Αριθμητική Ανάλυση' WHERE isbn = '960-8250-10-2';
+
+-- Update interest for ISBN '978-960-418-292-3' in the books table
+UPDATE books SET interest = 'Ηλεκτρομαγνητικά Πεδία' WHERE isbn = '978-960-418-292-3';
+
+-- Update interest for ISBN '978604613526' in the books table
+UPDATE books SET interest = 'Οργάνωση και Σχεδίαση Υπολογιστών' WHERE isbn = '978604613526';
+
+-- Update interest for ISBN '978-960-266-044-7' in the books table
+UPDATE books SET interest = 'Ηλεκτρικές Μετρήσεις (Κλασσικές)' WHERE isbn = '978-960-266-044-7';
+
+-- Update interest for ISBN '960-266-045-7' in the books table
+UPDATE books SET interest = 'Ηλεκτρικές Μετρήσεις (Ηλεκτρονικές)' WHERE isbn = '960-266-045-7';
+
+-- Update interest for ISBN '978-960-266-045-4' in the books table
+UPDATE books SET interest = 'Ηλεκτρικές Μετρήσεις (Ηλεκτρονικές)' WHERE isbn = '978-960-266-045-4';
+
+-- Update interest for ISBN '960-7219-82-1' in the books table
+UPDATE books SET interest = 'Μικροηλεκτρονική' WHERE isbn = '960-7219-82-1';
