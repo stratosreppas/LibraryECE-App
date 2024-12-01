@@ -1,4 +1,4 @@
-``
+
 # Library ECE
 
 This repository contains the code for the app of the Electrical and Computer Engineering Library. The app is being co-developed by Manolis Pantelakis. Work in progress.
