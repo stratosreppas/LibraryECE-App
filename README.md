@@ -1,5 +1,8 @@
 ``
-# stratos_s_application3
+# Library ECE
+
+This repository contains the code for the app of the Electrical and Computer Engineering Library. The app is being co-developed by Manolis Pantelakis. Work in progress.
+
 ### Table of contents
 - [System requirements](#system-requirements)
 - [Figma design guidelines for better UI accuracy](#figma-design-guideline-for-better-accuracy)
