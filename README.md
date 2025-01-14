@@ -16,9 +16,6 @@ Students can use our app to:
 ## Screenshots
 
 ### Home Screen
-
-
-### Home Page
 <img src="https://github.com/user-attachments/assets/b72bf4ef-f074-4aff-829b-7719f9764f76" alt="Book Rentals" width="200">
 
 ### Book Details
