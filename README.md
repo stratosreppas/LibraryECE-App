@@ -1,62 +1,11 @@
-
 # Library ECE
 
 This repository contains the code for the app of the Electrical and Computer Engineering Library. The app is being co-developed by Manolis Pantelakis. Work in progress.
 
-### Table of contents
-- [System requirements](#system-requirements)
-- [Figma design guidelines for better UI accuracy](#figma-design-guideline-for-better-accuracy)
-- [Check the UI of the entire app](#app-navigations)
-- [Application structure](#project-structure)
-- [How to format your code?](#how-you-can-do-code-formatting)
-- [How you can improve code readability?](#how-you-can-improve-the-readability-of-code)
-- [Libraries and tools used](#libraries-and-tools-used)
-- [Support](#support)
+![Screenshot_2025-01-14-19-38-39-71_9452aa64d87e1be99809a31fe4968822_c](https://github.com/user-attachments/assets/31754878-abfb-418b-bfb5-ec6f75de5435)
 
-### System requirements
+Students can use our app to view our Library's list of books, view and get notifications about their book rentals, locate a book in the Library's bookshelves and more!
 
-Dart SDK Version 2.18.0 or greater.
-Flutter SDK Version 3.3.0 or greater.
+![1Quality_Improved_ECE_Library_Screenshot_c](https://github.com/user-attachments/assets/b72bf4ef-f074-4aff-829b-7719f9764f76)
+![Screenshot_2024-01-12-23-55-04-89_9452aa64d87e1be99809a31fe4968822](https://github.com/user-attachments/assets/81767219-e714-46df-bc07-44ee8bd9f1bf)
 
-### Figma design guidelines for better UI accuracy
-
-Read our guidelines to increase the accuracy of design-to-code conversion by optimizing Figma designs.
-https://docs.dhiwise.com/docs/Designguidelines/intro
-
-### Check the UI of the entire app
-
-Check the UI of all the app screens from a single place by setting up the 'initialRoute'  to AppNavigation in the AppRoutes.dart file.
-
-### Application structure
-After successful build, your application structure should look like this:
-                    
-```
-.
-├── android                         - It contains files required to run the application on an Android platform.
-├── assets                          - It contains all images and fonts of your application.
-├── ios                             - It contains files required to run the application on an iOS platform.
-├── lib                             - Most important folder in the application, used to write most of the Dart code..
-    ├── main.dart                   - Starting point of the application
-    ├── core
-    │   ├── app_export.dart         - It contains commonly used file imports
-    │   ├── constants               - It contains static constant class file
-    │   └── utils                   - It contains common files and utilities of the application
-    ├── presentation                - It contains widgets of the screens
-    ├── routes                      - It contains all the routes of the application
-    └── theme                       - It contains app theme and decoration classes
-    └── widgets                     - It contains all custom widget classes
-```
-### How to format your code?
-
-- if your code is not formatted then run following command in your terminal to format code
-  ```
-  dart format .
-  ```
-
-### How you can improve code readability?
-
-Resolve the errors and warnings that are shown in the application.
-
-### Support
-
-If you have any problems or questions, go to our Discord channel, where we will help you as quickly as possible: https://discord.com/invite/rFMnCG5MZ7
