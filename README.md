@@ -3,7 +3,7 @@
 This repository contains the code for the app of the Electrical and Computer Engineering Library. The app is being co-developed by Manolis Pantelakis. **Work in progress.**
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/31754878-abfb-418b-bfb5-ec6f75de5435" alt="Home Screen" width="300" style="border-radius: 15px;">
+<img src="https://github.com/user-attachments/assets/31754878-abfb-418b-bfb5-ec6f75de5435" alt="Home Screen" width="300" style="border-radius: 50%">
 
 ## Features
 
