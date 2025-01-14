@@ -4,7 +4,6 @@ This repository contains the code for the app of the Electrical and Computer Eng
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/31754878-abfb-418b-bfb5-ec6f75de5435" alt="Home Screen" width="300">
-<\p>
 
 ## Features
 
