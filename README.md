@@ -3,15 +3,15 @@
 This repository contains the code for the app of the Electrical and Computer Engineering Library. The app is being co-developed by Manolis Pantelakis. **Work in progress.**
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/31754878-abfb-418b-bfb5-ec6f75de5435" alt="Home Screen" width="300" style="border-radius: 50%">
+<img src="https://github.com/user-attachments/assets/31754878-abfb-418b-bfb5-ec6f75de5435" alt="Home Screen" width="300">
 
 ## Features
 
 Students can use our app to:
-- View the Library's catalog of books.
+- View the ECE Library's catalog of books.
 - Manage and get notifications about their book rentals.
-- Locate books within the Library's bookshelves.
-- Explore additional functionalities designed to enhance their Library experience.
+- Locate books within the ECE Library's bookshelves using AR.
+- Explore additional functionalities designed to improve the ECE Library services and enhance the student's experience.
 
 ## Screenshots
 
@@ -26,6 +26,6 @@ Students can use our app to:
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/your-username/library-ece.git](https://github.com/stratosreppas/LibraryECE-App.git
+   [git clone https://github.com/your-username/library-ece.git](https://github.com/stratosreppas/LibraryECE-App.git)
 
 
