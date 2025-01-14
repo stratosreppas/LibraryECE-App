@@ -30,6 +30,6 @@ Students can use our app to:
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/your-username/library-ece.git
+   git clone https://github.com/your-username/library-ece.git](https://github.com/stratosreppas/LibraryECE-App.git
 
 
